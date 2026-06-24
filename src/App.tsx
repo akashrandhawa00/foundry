@@ -1,19 +1,22 @@
-import { Sidebar } from "./components/Sidebar";
 import { Route, Routes } from "react-router-dom";
-import { Overview } from "./pages/Overview";
 import { LoginPage } from "./pages/LoginPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { Overview } from "./pages/Overview";
+import DashboardLayout from "./layout/DashboardLayout";
+import { Logs } from "./pages/Logs";
 
-function AppRoutes() {
+const App = () => {
     return (
         <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/*" element={<Overview />} />
+            <Route element={<ProtectedRoute />}>
+                <Route element={<DashboardLayout />}>
+                    <Route index element={<Overview />} />
+                    <Route path="/logs" element={<Logs />} />
+                </Route>
+            </Route>
         </Routes>
     );
-}
-
-const App = () => {
-    return <AppRoutes />;
 };
 
 export default App;

@@ -1,12 +1,12 @@
 import { useAuth } from "../context/AuthContext";
 
-export const Overview = () => {
+export const Logs = () => {
     const { session } = useAuth();
 
     return (
         <div>
-            <h2 className="text-white">Overview</h2>
-            <h3>Hi, {session?.name}</h3>
+            <h1 className="text-white">Logs</h1>
+            <h3>Hi, {session?.id}</h3>
             <h2></h2>
         </div>
     );
