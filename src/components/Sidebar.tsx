@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export const Sidebar = () => {
-    const { user, signOut, session, profile } = useAuth();
+    const { signOut, session } = useAuth();
 
     const NAV_LINKS = [
         { to: "/", label: "Overview" },
