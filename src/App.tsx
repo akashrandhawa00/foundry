@@ -4,6 +4,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { Overview } from "./pages/Overview";
 import DashboardLayout from "./layout/DashboardLayout";
 import { Logs } from "./pages/Logs";
+import { NotFound } from "./pages/NotFound";
 
 const App = () => {
     return (
@@ -13,6 +14,7 @@ const App = () => {
                 <Route element={<DashboardLayout />}>
                     <Route index element={<Overview />} />
                     <Route path="/logs" element={<Logs />} />
+                    <Route path="*" element={<NotFound />} />
                 </Route>
             </Route>
         </Routes>

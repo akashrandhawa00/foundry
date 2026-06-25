@@ -21,19 +21,18 @@ interface AuthContextType {
     signOut: () => void;
 }
 
-interface session {}
-
-// interface Profile {
-//     id: string;
-//     full_name: string | null;
-//     username: string;
-//     avatar_url?: string;
-// }
+interface Profile {
+    id: string;
+    full_name: string | null;
+    username: string;
+    avatar_url?: string;
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [data, setData] = useState<string>("");
     const [profile, setProfile] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
 
