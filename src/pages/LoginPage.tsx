@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Navigate, replace, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
     const { user, loading: authLoading, signInWithEmail } = useAuth();
@@ -30,7 +30,7 @@ export const LoginPage = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center text-white">
-            <div className="bg-neutral-700 p-8 w-full max-w-[480px]">
+            <div className="bg-neutral-700 p-8 w-full max-w-120">
                 <form onSubmit={handleLogin} className="flex flex-col">
                     <div className="flex-col flex">
                         <label>Email</label>

@@ -1,8 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Modal } from "./ui/Modal";
+import { useState } from "react";
 
 export const Sidebar = () => {
-    const { signOut, session } = useAuth();
+    const { signOut, currentUser } = useAuth();
 
     const NAV_LINKS = [
         { to: "/", label: "Overview" },
@@ -11,6 +13,7 @@ export const Sidebar = () => {
         { to: "/parts", label: "Parts" },
         { to: "/users", label: "Users" },
     ];
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     return (
         <aside className="text-white w-64 min-h-screen  border-r  border-r-white/20 flex flex-col  gap-1, px-4, py-7 bg-neutral-950 pl-3.5">
@@ -40,6 +43,18 @@ export const Sidebar = () => {
                 </NavLink>
             ))}
 
+            <div>
+                <button onClick={() => setShowModal((prev) => !prev)}>
+                    Open Modal
+                </button>
+            </div>
+
+            {showModal && (
+                <Modal title="test-modal" open={showModal}>
+                    "Hi!"
+                </Modal>
+            )}
+
             {/* <div> */}
             {/*     <NavLink to="/" className="w-full"> */}
             {/*         Overview */}
@@ -50,7 +65,7 @@ export const Sidebar = () => {
             {/* </div> */}
 
             <div className="flex-1"></div>
-            <div> -- {session?.name} -- </div>
+            <div> -- {currentUser?.name} -- </div>
             <button
                 onClick={() => {
                     signOut();

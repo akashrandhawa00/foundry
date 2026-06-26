@@ -10,7 +10,7 @@ import { supabase } from "../lib/supabase-client";
 
 interface AuthContextType {
     user: User | null;
-    session: {
+    currentUser: {
         id: string | null;
         email: string | null;
         name: string | null;
@@ -24,8 +24,8 @@ interface AuthContextType {
 interface Profile {
     id: string;
     full_name: string | null;
-    username: string;
-    avatar_url?: string;
+    username: string | null;
+    avatar_url?: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -36,12 +36,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [loading, setLoading] = useState(true);
 
     const fetchProfile = useCallback(async (userId: string) => {
-        const { data } = await supabase
+        const { data, error: fetchError } = await supabase
             .from("profiles")
             .select("*")
             .eq("id", userId)
             .single();
         setProfile(data ?? null);
+
+        if (fetchError) throw new Error(fetchError.message);
     }, []);
 
     useEffect(() => {
@@ -52,9 +54,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         });
 
         const { data: listener } = supabase.auth.onAuthStateChange(
-            async (_, session) => {
-                setUser(session?.user ?? null);
-                if (session?.user) await fetchProfile(session?.user.id);
+            async (_, currentUser) => {
+                setUser(currentUser?.user ?? null);
+                if (currentUser?.user) await fetchProfile(currentUser?.user.id);
+
+                setLoading(false);
             },
         );
 
@@ -64,15 +68,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [fetchProfile]);
 
     const signInWithEmail = async (email: string, password: string) => {
-        const { data, error: signInError } =
-            await supabase.auth.signInWithPassword({
-                email,
-                password,
-            });
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
 
         if (signInError) throw new Error(signInError.message);
-
-        setUser(data.user ?? null);
     };
 
     const signOut = async () => {
@@ -81,16 +82,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setProfile(null);
     };
 
-    const session = user
+    const currentUser = user
         ? {
-              id: user?.id,
-              email: user?.email,
-              name: profile?.full_name,
-              avatar: profile?.avatar_url,
+              id: user.id,
+              email: user.email ?? null,
+              name: profile?.full_name ?? null,
+              avatar: profile?.avatar_url ?? null,
           }
         : null;
 
-    const value = { user, session, loading, signInWithEmail, signOut };
+    const value = { user, currentUser, loading, signInWithEmail, signOut };
 
     return (
         <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
