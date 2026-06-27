@@ -1,13 +1,15 @@
+import UnderConstructionGIF from "../components/ui/UnderConstrucion";
 import { useAuth } from "../context/AuthContext";
 
 export const Overview = () => {
-    const { currentUser } = useAuth();
+    const { sessionUser } = useAuth();
 
     return (
         <div>
-            <h2 className="text-white">Overview</h2>
-            <h3>Hi, {currentUser?.name}</h3>
-            <h2></h2>
+            <h1 className="text-white font-bold text-lg">Overview</h1>
+            <h3>Hi, {sessionUser?.name}</h3>
+
+            <UnderConstructionGIF />
         </div>
     );
 };

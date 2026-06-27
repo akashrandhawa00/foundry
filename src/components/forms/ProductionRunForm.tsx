@@ -83,9 +83,9 @@ export const ProductionRunForm = () => {
     };
 
     return (
-        <form onSubmit={handleSaveRun}>
+        <form onSubmit={handleSaveRun} className="bg-neutral-800 border border-white/20">
             <h1>Form</h1>
-            <div className="bg-neutral-800">
+            <div >
                 <label>Date</label>
                 <input
                     type="date"

@@ -2,9 +2,10 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Modal } from "./ui/Modal";
 import { useState } from "react";
+import { ProductionRunForm } from "./forms/ProductionRunForm";
 
 export const Sidebar = () => {
-    const { signOut, currentUser } = useAuth();
+    const { signOut, sessionUser } = useAuth();
 
     const NAV_LINKS = [
         { to: "/", label: "Overview" },
@@ -16,6 +17,8 @@ export const Sidebar = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
 
     return (
+
+        // Desktop navbar
         <aside className="text-white w-64 min-h-screen  border-r  border-r-white/20 flex flex-col  gap-1, px-4, py-7 bg-neutral-950 pl-3.5">
             <div>
                 <div className="font-medium text-xl uppercase font-mono">
@@ -45,13 +48,13 @@ export const Sidebar = () => {
 
             <div>
                 <button onClick={() => setShowModal((prev) => !prev)}>
-                    Open Modal
+                    Add Run +
                 </button>
             </div>
 
             {showModal && (
-                <Modal title="test-modal" open={showModal}>
-                    "Hi!"
+                <Modal title="test-modal" onClose={() => setShowModal(false)}>
+                    <ProductionRunForm />
                 </Modal>
             )}
 
@@ -65,7 +68,7 @@ export const Sidebar = () => {
             {/* </div> */}
 
             <div className="flex-1"></div>
-            <div> -- {currentUser?.name} -- </div>
+            <div> -- {sessionUser?.name} -- </div>
             <button
                 onClick={() => {
                     signOut();
@@ -74,5 +77,6 @@ export const Sidebar = () => {
                 Sign Out
             </button>
         </aside>
+
     );
 };

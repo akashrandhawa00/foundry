@@ -1,4 +1,4 @@
-import { Sidebar } from "../components/Sidebar.tsx";
+import { Sidebar } from "../components/Navbar.tsx";
 import { Outlet } from "react-router-dom";
 
 const DashboardLayout = () => {
