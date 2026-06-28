@@ -22,7 +22,7 @@ export const Sidebar = () => {
         <aside className="text-white w-64 min-h-screen  border-r  border-r-white/20 flex flex-col  gap-1, px-4, py-7 bg-neutral-950 pl-3.5">
             <div>
                 <div className="font-medium text-xl uppercase font-mono">
-                    EcoTrack
+                    Foundry
                 </div>
 
                 <div className="text-neutral-400">Select Finishing</div>

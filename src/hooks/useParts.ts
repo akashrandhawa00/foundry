@@ -1,13 +1,13 @@
 import { useCallback, useState } from "react";
 import { supabase } from "../lib/supabase-client";
 
-export interface Parts {
+export interface Part {
     partNumber: string;
     description: string;
 }
 
 export function useParts() {
-    const [parts, setParts] = useState<Parts[]>([]);
+    const [parts, setParts] = useState<Part[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -23,6 +23,7 @@ export function useParts() {
 
             if (error) {
                 setError(error.message);
+                setLoading(false)
                 return;
             }
 
