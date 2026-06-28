@@ -23,7 +23,7 @@ export function useParts() {
 
             if (error) {
                 setError(error.message);
-                setLoading(false)
+                setLoading(false);
                 return;
             }
 
@@ -33,8 +33,12 @@ export function useParts() {
                     description: part.part_description,
                 })),
             );
-        } catch (err) {
-            setError(err ? err.message : "Unknown Error.");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("Unknown Error");
+            }
         } finally {
             setLoading(false);
         }
