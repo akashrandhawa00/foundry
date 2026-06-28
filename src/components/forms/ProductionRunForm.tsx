@@ -91,7 +91,7 @@ export const ProductionRunForm = () => {
 
         const totalOut =
             (form.qtyCoated ?? 0) + (form.defects ?? 0) + (form.fallOff ?? 0);
-        if (totalOut > form.qtyLoaded) {
+        if (totalOut > qtyLoaded) {
             newErrors.qtyCoated =
                 "Coated + defects + falloff exceed the load quantity.";
         }
@@ -108,10 +108,18 @@ export const ProductionRunForm = () => {
     const handleSaveRun = async (event: React.FormEvent) => {
         event.preventDefault();
 
+        setError(null);
+        if (!user) {
+            setError("You must be logged in");
+            return;
+        }
+
         if (!validateForm()) return;
 
+        const calculatedFallOff =
+            (form.qtyLoaded ?? 0) - (form.qtyCoated ?? 0) - (form.defects ?? 0);
+
         setLoading(true);
-        setError(null);
 
         try {
             const { error: saveRunError } = await supabase
@@ -122,7 +130,7 @@ export const ProductionRunForm = () => {
                         quantity_loaded: form.qtyLoaded,
                         quantity_coated: form.qtyCoated,
                         quantity_defects: form.defects,
-                        quantity_falloff: form.fallOff,
+                        quantity_falloff: calculatedFallOff,
                         run_date: form.date,
                         shift: form.shift,
                         logged_by: user.id,
@@ -133,15 +141,19 @@ export const ProductionRunForm = () => {
                 throw saveRunError;
             }
         } catch (err) {
-            setError(err.message ?? "Unknown error");
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("Unknown error");
+            }
         } finally {
             setLoading(false);
-            console.log("This ran");
             setForm(initialForm);
         }
     };
 
-    const fallOffQuantity = form.qtyLoaded - form.qtyCoated - form.defects;
+    const fallOffQuantity =
+        (form.qtyLoaded ?? 0) - (form.qtyCoated ?? 0) - (form.defects ?? 0);
 
     return (
         <>
@@ -363,6 +375,7 @@ export const ProductionRunForm = () => {
                                 placeholder="0"
                                 min={0}
                                 value={fallOffQuantity}
+                                readOnly
                                 onChange={(e) =>
                                     setForm({
                                         ...form,
