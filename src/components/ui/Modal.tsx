@@ -7,16 +7,20 @@ export interface ModalProps {
     onClose: () => void;
 }
 
-export const Modal = ({ title, children, onClose }: ModalProps) => {
+export const Modal = ({ children, onClose }: ModalProps) => {
     return (
-        <div className="w-full h-full fixed flex flex-col items-center gap-4 justify-center backdrop-blur-md bg-black/70">
-            <div>
-                <h3>Modal: {title}</h3>
-            </div>
-            {children}
-            <div>
-                <Button onClick={onClose}>close</Button>
-                <Button>add</Button>
+        <div className="w-full h-full fixed inset-0  flex flex-col items-center gap-4 justify-center backdrop-blur-sm bg-black/60">
+            <div className="relative bg-surface-hard border border-white/10 max-w-3xl p-8 rounded-2xl px-6">
+                {" "}
+                <Button
+                    onClick={onClose}
+                    className="absolute right-4 top-4"
+                    variant="destructive"
+                    aria-label="Close"
+                >
+                    x
+                </Button>
+                {children}
             </div>
         </div>
     );

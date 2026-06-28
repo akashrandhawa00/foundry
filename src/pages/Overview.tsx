@@ -6,7 +6,7 @@ export const Overview = () => {
 
     return (
         <div>
-            <h1 className="text-white font-bold text-lg">Overview</h1>
+            <h1 className="text-i font-bold text-lg">Overview</h1>
             <h3>Hi, {sessionUser?.name}</h3>
 
             <UnderConstructionGIF />

@@ -29,7 +29,7 @@ export function useParts() {
             setParts(
                 (data ?? []).map((part) => ({
                     partNumber: part.part_number,
-                    description: part.description,
+                    description: part.part_description,
                 })),
             );
         } finally {
