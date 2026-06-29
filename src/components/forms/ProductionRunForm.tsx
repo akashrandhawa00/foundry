@@ -32,7 +32,7 @@ const initialForm: ProductionFormData = {
 
 const labelBaseStyle = "block uppercase text-sm mb-1";
 const inputeBaseStyle =
-    "w-full rounded outline-none bg-neutral-900 uppercase px-2 py-2 border border-white/20 font-mono focus:border-amber-500 transition-colors duration-200 text-sm text-ink-secondary ";
+    "w-full rounded outline-none bg-neutral-900 uppercase px-2 py-2 border border-white/20 font-mono focus:border-amber-500 transition-colors duration-200 text-sm text-text-secondary ";
 
 export const ProductionRunForm = () => {
     const [loading, setLoading] = useState(false);
@@ -105,10 +105,11 @@ export const ProductionRunForm = () => {
         setValidationErrors({});
     };
 
-    const handleSaveRun = async (event: React.FormEvent) => {
+    const handleSaveRun = async (event: React.SubmitEvent) => {
         event.preventDefault();
 
         setError(null);
+        setValidationErrors(null);
         if (!user) {
             setError("You must be logged in");
             return;
@@ -158,10 +159,10 @@ export const ProductionRunForm = () => {
     return (
         <>
             <form onSubmit={handleSaveRun}>
-                <h1 className="mb-6">Log Production Run</h1>
+                <h1 className="mb-6 text-text">Log Production Run</h1>
                 <div className="grid grid-cols-2 gap-2.5 mb-6">
                     <div>
-                        <label className={`${labelBaseStyle} text-ink-label`}>
+                        <label className={`${labelBaseStyle} text-text-label`}>
                             Date
                         </label>
                         <input
@@ -175,7 +176,7 @@ export const ProductionRunForm = () => {
                         />
                     </div>
                     <div>
-                        <label className={`${labelBaseStyle} text-ink-label`}>
+                        <label className={`${labelBaseStyle} text-text-label`}>
                             Time
                         </label>
                         <input
@@ -190,7 +191,7 @@ export const ProductionRunForm = () => {
                     </div>
                 </div>
                 <div className="mb-6">
-                    <label className={`${labelBaseStyle} text-ink-label`}>
+                    <label className={`${labelBaseStyle} text-text-label`}>
                         Shift
                     </label>
                     <div className="flex gap-2.5">
@@ -239,12 +240,12 @@ export const ProductionRunForm = () => {
                     </div>
                 </div>
 
-                <div className="rounded-md mb-6 bg-black px-4 py-6">
+                <div className="rounded-md mb-6 bg-surface px-4 py-6">
                     {/* Part num and description displayed side by side */}
                     <div className="grid grid-cols-2 gap-2.5 mb-4">
                         <div>
                             <label
-                                className={`${labelBaseStyle} text-ink-label`}
+                                className={`${labelBaseStyle} text-text-label`}
                             >
                                 Part Number
                             </label>
@@ -273,7 +274,7 @@ export const ProductionRunForm = () => {
                         </div>
                         <div>
                             <label
-                                className={`${labelBaseStyle} text-ink-label`}
+                                className={`${labelBaseStyle} text-text-label`}
                             >
                                 Description
                             </label>
@@ -292,7 +293,7 @@ export const ProductionRunForm = () => {
                     <div className="grid grid-cols-4 gap-2.5 ">
                         <div>
                             <label
-                                className={`${labelBaseStyle} text-ink-label`}
+                                className={`${labelBaseStyle} text-text-label`}
                             >
                                 Qty Loaded
                             </label>
@@ -316,9 +317,7 @@ export const ProductionRunForm = () => {
                             />
                         </div>
                         <div>
-                            <label
-                                className={`text-green-400/80 ${labelBaseStyle}`}
-                            >
+                            <label className={`text-success ${labelBaseStyle}`}>
                                 Coated
                             </label>
                             <input
@@ -341,7 +340,7 @@ export const ProductionRunForm = () => {
                             />
                         </div>
                         <div>
-                            <label className={`${labelBaseStyle} text-red-400`}>
+                            <label className={`${labelBaseStyle} text-danger`}>
                                 Defects
                             </label>
                             <input
@@ -392,6 +391,7 @@ export const ProductionRunForm = () => {
                 </div>
                 <div className="flex gap-2.5">
                     <Button
+                        variant="destructive"
                         type="button"
                         onClick={() => handleFormReset()}
                         className="flex-1"
