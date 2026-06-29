@@ -1,31 +1,19 @@
 @import "tailwindcss";
 
 @layer utilities {
-    @keyframes blink {
-        0%,
-        100% {
-            opacity: 1;
-        }
-        50% {
+    @keyframes fadeIn {
+        from {
             opacity: 0;
+            transform: translateY(-4px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 
-    .animate-blink {
-        animation: blink 0.8s step-end infinite;
-    }
-
-    @keyframes loading {
-        0% {
-            transform: translateX(-100%);
-        }
-        100% {
-            transform: translateX(250%);
-        }
-    }
-
-    .animate-loading-bar {
-        animation: loading 0.8s ease infinite;
+    @theme {
+        --animate-fadeIn: fadeIn 0.15s ease-out;
     }
 }
 
@@ -54,32 +42,65 @@ body {
     background-color: rgb(18, 18, 18);
 }
 
+* {
+    /* outline: 1px solid rgb(255, 0, 0, 0.5); */
+}
+
 /* custom color palette */
 
 @theme {
-    /* surface */
-    --color-surface-hard: #0b0d0c;
+    /* background */
+    --color-bg: #252422;
+    --color-bg-surface: #403d39;
     --color-surface: #111413;
-    --color-surface-soft: #181b1a;
-    --color-surface-raised: #1d201f;
-    --color-surface-selected: #252827;
+    --color-surface-2: #181b1a;
+    --color-surface-3: #1d201f;
+    --color-surface-active: #252827;
 
-    /* ink */
-    --color-ink-primary: #f0e4c8;
-    --color-ink-secondary: #fae8bb /*#d4c49c*/;
-    --color-ink-label: #b0a47c;
-    --color-ink-muted: #706656;
+    /* border */
+    --color-border: #2a2d2c;
+    --color-border-muted: #222524;
+    --color-border-strong: #383c3a;
 
-    /* brand */
-    --color-brand: #f59e0b;
-    --color-brand-light: #fcd34d;
+    /* text */
+    --color-text: #fffcf2 /*#f0e4c8*/;
+    --color-text-secondary: #ccc5b9 /*#fae8bb #d4c49c*/;
+    --color-text-label: #b0a47c;
+    --color-text-muted: #706656;
 
-    /* semantic colors */
+    /* Brand */
+    --color-brand: #eb5e28;
+    --color-brand-hover: #fcd34d;
+    --color-brand-active: #fcd34d;
+
+    /* status colors */
     --color-success: #4ade80;
-    --color-danger: #f87171;
+    --color-success-bg: #4ade80;
+
+    --color-danger: #e7000b;
+    --color-danger-bg: #a6121a;
+
     --color-warning: #fb923c;
+    --color-warning-bg: #fb923c;
+
     --color-info: #38bdf8;
+    --color-info-bg: #38bdf8;
+
+    /* role colors */
+
     --color-role: #c084fc;
+}
+
+/* --color-text: #fffcf2; */
+
+@layer base {
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0 1000px theme("color-neutral-950") inset;
+        -webkit-text-fill-color: theme("colors.text");
+        transition: background-color 5000s ease-in-out 0s;
+    }
 }
 
 /* @layer base { */

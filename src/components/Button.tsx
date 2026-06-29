@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-type ButtonVariant = "default" | "destructive" | "shiftActive";
+type ButtonVariant = "default" | "destructive" | "shiftActive" | "primary";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
     classes?: string;
@@ -12,10 +12,11 @@ const base =
     "px-4 py-2 rounded-md border transition-all text-sm duration-200 cursor-pointer";
 
 const variants: Record<ButtonVariant, string> = {
-    default: "border-white/10 text-ink hover:border-white/20",
+    default: "text-text border-white/10 hover:border-white/20",
     destructive:
-        "border-red-500 bg-red-500/40 text-white hover:bg-red-700 hover:border-red-800",
+        "border-red-500 bg-danger/40 text-white hover:bg-danger hover:border-danger",
     shiftActive: "border-amber-500 text-amber-500 bg-amber-500/10",
+    primary: "bg-brand text-text border-brand hover:bg-brand/80",
 };
 
 export const Button = ({

@@ -3,6 +3,10 @@ import { useAuth } from "../context/AuthContext";
 import { Modal } from "./ui/Modal";
 import { useState } from "react";
 import { ProductionRunForm } from "./forms/ProductionRunForm";
+import { Button } from "./Button";
+import { PiSignOut } from "react-icons/pi";
+
+import logo from "../assets/foundry-mark-dark.svg";
 
 export const Sidebar = () => {
     const { signOut, sessionUser } = useAuth();
@@ -17,39 +21,48 @@ export const Sidebar = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
 
     return (
-
         // Desktop navbar
-        <aside className="text-white w-64 min-h-screen  border-r  border-r-white/20 flex flex-col  gap-1, px-4, py-7 bg-neutral-950 pl-3.5">
-            <div>
-                <div className="font-medium text-xl uppercase font-mono">
-                    Foundry
+        <aside className="w-64 min-h-screen border-r  border-r-white/20 flex flex-col gap-1 px-3 py-6 bg-neutral-950">
+            <div className="mb-6 pl-3 flex items-center gap-3">
+                <div>
+                    <img src={logo} className="h-10 w-10" />
                 </div>
+                <div>
+                    <div className="font-medium text-lg uppercase font-mono text-text">
+                        Foundry
+                    </div>
 
-                <div className="text-neutral-400">Select Finishing</div>
+                    <div className="text-neutral-400">Company Name</div>
+                </div>
+            </div>
+            <div>
+                {NAV_LINKS.map((link) => (
+                    <NavLink
+                        key={link.to}
+                        to={link.to}
+                        end={link.to === "/"}
+                        className={({ isActive }) =>
+                            `w-full text-left px-3.5 py-2 rounded-md text-base transition-colors duration-200 cursor-pointer block
+${
+    isActive
+        ? "bg-neutral-300 dark:bg-surface-active text-neutral-800 dark:text-text"
+        : "text-neutral-400 dark:text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-800/60 hover:text-neutral-900 dark:hover:text-neutral-200"
+}`
+                        }
+                    >
+                        {link.label}
+                    </NavLink>
+                ))}
             </div>
 
-            {NAV_LINKS.map((link) => (
-                <NavLink
-                    key={link.to}
-                    to={link.to}
-                    end={link.to === "/"}
-                    className={({ isActive }) =>
-                        `w-full text-left px-3.5 py-2 rounded-md text-[13px] transition-colors duration-150 cursor-pointer block
-            ${
-                isActive
-                    ? "bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
-                    : "text-neutral-400 dark:text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-800/60 hover:text-neutral-900 dark:hover:text-neutral-200"
-            }`
-                    }
+            <div className="mr-3">
+                <Button
+                    variant="primary"
+                    onClick={() => setShowModal((prev) => !prev)}
+                    className="w-full"
                 >
-                    {link.label}
-                </NavLink>
-            ))}
-
-            <div>
-                <button onClick={() => setShowModal((prev) => !prev)}>
                     Add Run +
-                </button>
+                </Button>
             </div>
 
             {showModal && (
@@ -68,15 +81,26 @@ export const Sidebar = () => {
             {/* </div> */}
 
             <div className="flex-1"></div>
-            <div> -- {sessionUser?.name} -- </div>
-            <button
-                onClick={() => {
-                    signOut();
-                }}
-            >
-                Sign Out
-            </button>
+            <div className="flex flex-col items-center justify-center">
+                <div className="text-center">
+                    <p className="text-text-secondary">
+                        -- {sessionUser?.name} --
+                    </p>{" "}
+                    <div className="text-text-label uppercase text-sm">
+                        {sessionUser?.role}
+                    </div>
+                </div>{" "}
+                <Button
+                    variant="default"
+                    onClick={() => {
+                        signOut();
+                    }}
+                    className="border-none text-text-muted hover:text-white hover:bg-danger flex  items-center gap-2"
+                >
+                    Sign Out
+                    <PiSignOut size={20} />
+                </Button>
+            </div>
         </aside>
-
     );
 };
