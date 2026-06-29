@@ -4,6 +4,10 @@ import { supabase } from "../lib/supabase-client";
 export interface Part {
     partNumber: string;
     description: string;
+    client: string;
+    qtyPerBin: string;
+    rackType: string;
+    repackBinType: string;
 }
 
 export function useParts() {
@@ -31,6 +35,10 @@ export function useParts() {
                 (data ?? []).map((part) => ({
                     partNumber: part.part_number,
                     description: part.part_description,
+                    client: part.client,
+                    qtyPerBin: part.quantity_per_bin,
+                    rackType: part.rack_type,
+                    repackBinType: part.repack_bin,
                 })),
             );
         } catch (err: unknown) {

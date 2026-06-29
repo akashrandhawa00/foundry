@@ -17,7 +17,7 @@ export const Logs = () => {
                 title={"Production Log"}
                 runs={runs}
                 filterButton={true}
-                addButton={true}
+                addRunButton={true}
             />
             {loading ? (
                 <ProductionRunsSkeleton />

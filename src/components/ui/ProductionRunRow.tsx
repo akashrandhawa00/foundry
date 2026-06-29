@@ -20,7 +20,6 @@ function yeildRate(run: ProductionRun) {
 
 export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
     const [isExpanded, setIsExpanded] = useState(false);
-    const [showRole, setShowRole] = useState(false);
 
     const totalLoss = run.qtyDefects + run.qtyFallOff;
     const createdAt = new Date(run.createdAt).toLocaleString("en-CA", {
@@ -47,9 +46,9 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                 <td className={`${tdBaseStyle}`}>{run.qtyLoaded}</td>
                 <td className={`${tdBaseStyle}`}>{run.qtyCoated}</td>
                 <td
-                    className={`${tdBaseStyle} ${run.qtyDefects > 0 ? "text-red-400" : ""}`}
+                    className={`${tdBaseStyle} ${totalLoss > 0 ? "text-danger-text" : ""}`}
                 >
-                    {run.qtyDefects}
+                    {totalLoss}
                 </td>
                 <td>{isExpanded ? <IoIosArrowUp /> : <IoIosArrowDown />}</td>
             </tr>
@@ -63,15 +62,25 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                         <div className="grid grid-cols-4 gap-3 mb-4 mx-4">
                             <div className={`${cardBaseStyle}`}>
                                 <p className={cardHeadingStyle}>Yield Rate</p>
-                                <p>{yeildRate(run)}%</p>
+                                <p
+                                    className={`${yeildRate(run) > 97 ? "text-success" : "text-warning"}`}
+                                >
+                                    {yeildRate(run)}%
+                                </p>
                             </div>
                             <div className={`${cardBaseStyle}`}>
                                 <p className={cardHeadingStyle}>Defects</p>
-                                <p>{run.qtyDefects}</p>
+                                <p
+                                    className={`${run.qtyDefects > 0 ? "text-danger-text" : ""}`}
+                                >
+                                    {run.qtyDefects}
+                                </p>
                             </div>
                             <div className={`${cardBaseStyle}`}>
                                 <p className={cardHeadingStyle}>Falloff</p>
-                                <p className="font-medium text-lg">
+                                <p
+                                    className={`${run.qtyFallOff > 0 ? "text-warning" : ""}`}
+                                >
                                     {run.qtyFallOff}
                                 </p>
                             </div>
@@ -85,16 +94,11 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                         <div className="text-sm gap-6 flex text-text-muted px-3 py-2">
                             <span className="group">
                                 Logged By:{" "}
-                                <span
-                                    className="text-text-secondary relative"
-                                    onClick={() => setShowRole((prev) => !prev)}
-                                >
+                                <span className="text-text-secondary relative">
+                                    <div className="translate-y-2 translate-x-5 opacity-0 transition-all duration-200 delay-500 group-hover:opacity-100 text-white group-hover:translate-y-1 px-2 py-2 rounded bg-brand/90 border border-brand absolute">
+                                        {run.loggedByRole}
+                                    </div>
                                     {run.loggedBy}
-                                    {showRole && (
-                                        <div className="translate-y-2 translate-x-5 opacity-0 transition-all duration-200 delay-500 group-hover:opacity-100 text-white group-hover:translate-y-1 px-2 py-2 rounded bg-brand/90 border border-brand absolute">
-                                            Supervisor
-                                        </div>
-                                    )}
                                 </span>
                             </span>
                             <span>

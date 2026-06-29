@@ -11,6 +11,7 @@ export interface ProductionRun {
     qtyDefects: number;
     qtyFallOff: number;
     loggedBy: string;
+    loggedByRole: string;
     shift: "morning" | "afternoon" | "midnight";
     runDate: string;
 }
@@ -28,7 +29,7 @@ export function useProductionRuns() {
             const { data, error } = await supabase
                 .from("production_runs")
                 .select(
-                    "*, parts!inner(part_description), profiles!inner(full_name)",
+                    "*, parts!inner(part_description), profiles(full_name, role)", // swithc profile!inner to profiles to allow material handlers to see runs logged by other
                 )
                 .order("created_at", { ascending: false });
 
@@ -45,6 +46,7 @@ export function useProductionRuns() {
                     qtyDefects: run.quantity_defects,
                     qtyFallOff: run.quantity_falloff,
                     loggedBy: run.profiles?.full_name ?? "Unknown",
+                    loggedByRole: run.profiles?.role ?? "Unknown",
                     shift: run.shift,
                     runDate: run.run_date,
                 })),

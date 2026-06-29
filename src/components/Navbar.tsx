@@ -22,7 +22,7 @@ export const Sidebar = () => {
 
     return (
         // Desktop navbar
-        <aside className="w-64 min-h-screen border-r  border-r-white/20 flex flex-col gap-1 px-3 py-6 bg-neutral-950">
+        <aside className="w-64 sticky top-0 h-screen border-r  border-r-white/20 flex flex-col gap-1 px-3 py-6 bg-neutral-950">
             <div className="mb-6 pl-3 flex items-center gap-3">
                 <div>
                     <img src={logo} className="h-10 w-10" />

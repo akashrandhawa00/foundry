@@ -3,24 +3,30 @@ import { useState } from "react";
 import { ProductionRunForm } from "../forms/ProductionRunForm";
 import { Modal } from "./Modal";
 import type { ProductionRun } from "../../hooks/useProductionRuns";
+import type { Part } from "../../hooks/useParts";
 
 interface Props {
     filterButton: boolean;
-    addButton: boolean;
+    addRunButton?: boolean;
+    addPartButton?: boolean;
     title: string;
-    runs: ProductionRun[];
+    runs?: ProductionRun[];
+    parts?: Part[];
 }
 
 export default function PageHeader({
+    parts,
     runs,
     filterButton,
-    addButton,
+    addRunButton,
+    addPartButton,
     title,
 }: Props) {
-    const [showModal, setShowModal] = useState<boolean>(false);
+    const [showRunModal, setShowRunModal] = useState<boolean>(false);
+    const [showPartModal, setShowPartModal] = useState<boolean>(false);
     const [showFilters, setShowFilters] = useState<boolean>(false);
 
-    const totalRuns = runs.length;
+    const totalRuns = runs?.length || parts?.length;
 
     return (
         <>
@@ -28,7 +34,7 @@ export default function PageHeader({
                 <div>
                     <h1 className="text-xl">{title}</h1>
                     <div className="text-sm text-text-label">
-                        {totalRuns} runs total
+                        {totalRuns} entries total
                     </div>
                 </div>
 
@@ -38,19 +44,36 @@ export default function PageHeader({
                             {showFilters ? "Hide Filters" : "Show Filters"}
                         </Button>
                     )}
-                    {addButton && (
+                    {addPartButton && (
+                        <Button
+                            variant="default"
+                            onClick={() => setShowPartModal((prev) => !prev)}
+                        >
+                            + Add Part
+                        </Button>
+                    )}
+                    {addRunButton && (
                         <Button
                             variant="primary"
-                            onClick={() => setShowModal((prev) => !prev)}
+                            onClick={() => setShowRunModal((prev) => !prev)}
                         >
                             + Log Run
                         </Button>
                     )}
                 </div>
-                {showModal && (
+                {showRunModal && (
                     <Modal
                         title="test-modal"
-                        onClose={() => setShowModal(false)}
+                        onClose={() => setShowRunModal(false)}
+                    >
+                        <ProductionRunForm />
+                    </Modal>
+                )}
+
+                {showPartModal && (
+                    <Modal
+                        title="test-modal"
+                        onClose={() => setShowRunModal(false)}
                     >
                         <ProductionRunForm />
                     </Modal>
