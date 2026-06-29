@@ -28,7 +28,7 @@ export function useProductionRuns() {
             const { data, error } = await supabase
                 .from("production_runs")
                 .select(
-                    "*, parts!inner(part_description), profiles!logged_by(full_name)",
+                    "*, parts!inner(part_description), profiles!inner(full_name)",
                 )
                 .order("created_at", { ascending: false });
 
@@ -44,7 +44,7 @@ export function useProductionRuns() {
                     qtyCoated: run.quantity_coated,
                     qtyDefects: run.quantity_defects,
                     qtyFallOff: run.quantity_falloff,
-                    loggedBy: run.profiles.full_name,
+                    loggedBy: run.profiles?.full_name ?? "Unknown",
                     shift: run.shift,
                     runDate: run.run_date,
                 })),
