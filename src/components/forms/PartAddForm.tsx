@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "../Button";
 import { supabase } from "../../lib/supabase-client";
 import { useAuth } from "../../context/AuthContext";
-import { useParts } from "../../hooks/useParts";
 
 export interface PartFormData {
     partNumber: string;
@@ -37,30 +36,11 @@ export const PartAddForm = () => {
     const { user } = useAuth();
 
     //grab parts from supabase to diplay available parts number and description-----------
-    const { parts, loading: partsLoading, fetchParts } = useParts();
+    // const { parts, loading: partsLoading, fetchParts } = useParts();
 
-    useEffect(() => {
-        fetchParts();
-    }, [fetchParts]);
-
-    const handlePartSelectionChange = (
-        event: React.ChangeEvent<HTMLSelectElement>,
-    ) => {
-        const selectedPartNumber = event.target.value;
-        const selectedPart = parts.find(
-            (part) => part.partNumber === selectedPartNumber,
-        );
-
-        console.log("selected value:", selectedPartNumber);
-        console.log("parts array:", parts);
-        console.log("matched part:", selectedPart);
-
-        setForm({
-            ...form,
-            partNumber: selectedPartNumber,
-            description: selectedPart?.description ?? "",
-        });
-    };
+    // useEffect(() => {
+    //     fetchParts();
+    // }, [fetchParts]);
 
     // form validation and submission
     const validateForm = (): boolean => {
