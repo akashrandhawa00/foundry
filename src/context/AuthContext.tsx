@@ -25,6 +25,8 @@ interface Profile {
     role: string | null;
 }
 
+//TODO Rewrite the auth context
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -33,7 +35,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        
         const { data: listener } = supabase.auth.onAuthStateChange(
             async (_, session) => {
                 const sessionUser = session?.user ?? null;

@@ -100,7 +100,7 @@ ${
             </div>
 
             {/* Desktop navbar */}
-            <aside className="w-64 min-w-64 sticky top-0 h-screen hidden md:flex border-r  border-r-white/20 flex-col gap-1 px-3 py-6 bg-gray-900">
+            <aside className="w-64 min-w-64 sticky top-0 h-dvh hidden md:flex border-r  border-r-white/20 flex-col gap-1 px-3 py-6 bg-gray-900">
                 <div className="mb-6 pl-3 flex items-center gap-3">
                     <div className=" w-full max-w-sm mx-auto my-auto min-w-min text-primary">
                         <div className="pt-2 text-primary font-mono tracking-wider text-2xl">
@@ -134,7 +134,7 @@ ${
                 className={`md:hidden fixed inset-0 bg-black/60 z-40 transition-opacity duration-300 backdrop-blur-md ${showMobileSideBar ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
             />
             <aside
-                className={`w-64 min-w-64 fixed top-0 left-0 z-50 h-screen md:hidden border-r flex border-r-white/20 transition-transform duration-300 flex-col gap-1 px-3 py-6 bg-gray-900 ${showMobileSideBar ? "translate-x-0" : "-translate-x-full"}`}
+                className={`w-64 min-w-64 fixed top-0 left-0 z-50 h-dvh md:hidden border-r flex border-r-white/20 transition-transform duration-300 flex-col gap-1 px-3 py-6 bg-gray-900 ${showMobileSideBar ? "translate-x-0" : "-translate-x-full"}`}
             >
                 <div className="mb-6 pl-3 flex items-center gap-3">
                     <div className=" w-full max-w-sm mx-auto my-auto min-w-min text-primary">

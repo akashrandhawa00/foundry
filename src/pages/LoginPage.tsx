@@ -34,8 +34,8 @@ export const LoginPage = () => {
         "w-full rounded-lg outline-none px-4 py-3 border border-white/10 bg-surface focus:border-brand text-sm";
 
     return (
-        <div className="flex flex-col md:flex-row-reverse min-h-screen">
-            <section className="w-full mx-auto px-4 md:px-0 md:items-center flex items-start md:w-1/3">
+        <div className="relative flex flex-col md:flex-row-reverse min-h-screen">
+            <section className="w-full mx-auto px-4 md:px-0 md:items-center flex items-start md:w-1/3 ">
                 <div className="bg-gray-900 w-full max-w-sm py-4 mx-auto md:mx-0 my-auto min-w-min relative md:-left-3 text-primary">
                     <div className="z-10  pt-4 text-primary font-mono tracking-wider text-3xl">
                         FOUNDRY
@@ -46,7 +46,8 @@ export const LoginPage = () => {
                 </div>
             </section>
 
-            <section className="flex-1 flex-col flex justify-center mt-6 md:mt-0 md:flex md:w-2/3 md:border-r border-white/20 px-4 items-center bg-gray-900 text-white">
+            <section className="flex-1 flex-col flex justify-center mt-6 md:mt-0 md:flex md:w-2/3 md:border-r border-white/25 px-4 items-center bg-gray-900 text-white">
+                <div />
                 {/* sign in form */}
                 <div className="w-full max-w-sm py-4 mx-auto min-w-min my-auto md:py-9 md:w-7/12">
                     <h2 className="text-xl font-semibold md:text-2xl">
