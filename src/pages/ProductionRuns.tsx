@@ -12,7 +12,7 @@ export const ProductionRuns = () => {
     }, [fetchRuns]);
 
     return (
-        <div className="px-10 py-8">
+        <div className="md:px-10 px-6 py-8">
             <PageHeader
                 title={"Production Log"}
                 runs={runs}

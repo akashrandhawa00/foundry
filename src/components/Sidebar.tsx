@@ -57,11 +57,9 @@ ${
     const SideBarFooter = () => {
         return (
             <div className="flex flex-col items-center justify-center">
-                <div className="text-center">
-                    <p className="text-text-secondary">
-                        -- {sessionUser?.name} --
-                    </p>{" "}
-                    <div className="text-text-label uppercase text-sm">
+                <div className="text-center pb-2">
+                    <p className="text-text-secondary">{sessionUser?.name}</p>{" "}
+                    <div className="text-text-label uppercase text-xs">
                         {sessionUser?.role}
                     </div>
                 </div>{" "}
@@ -70,10 +68,10 @@ ${
                     onClick={() => {
                         signOut();
                     }}
-                    className="border-none text-text-muted hover:text-white hover:bg-danger flex  items-center gap-2"
+                    className="border-none text-text-muted hover:text-white hover:bg-red-500 flex items-center gap-2"
                 >
                     Sign Out
-                    <PiSignOut size={20} />
+                    <PiSignOut size={18} />
                 </Button>
             </div>
         );

@@ -11,7 +11,7 @@ export const Parts = () => {
     }, [fetchParts]);
 
     return (
-        <div className="px-10 py-8">
+        <div className="md:px-10 px-6 py-8">
             <PageHeader
                 title={"Parts List"}
                 parts={parts}

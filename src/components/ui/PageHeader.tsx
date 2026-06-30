@@ -33,15 +33,18 @@ export default function PageHeader({
         <>
             <div id="production-log-header" className="flex justify-between">
                 <div>
-                    <h1 className="text-xl">{title}</h1>
-                    <div className="text-sm text-text-label">
+                    <h1 className="md:text-xl">{title}</h1>
+                    <div className="text-xs md:text-sm text-text-label">
                         {totalRuns} entries total
                     </div>
                 </div>
 
                 <div className="flex gap-2 items-center">
                     {filterButton && (
-                        <Button onClick={() => setShowFilters((prev) => !prev)}>
+                        <Button
+                            className="text-xs md:text-base"
+                            onClick={() => setShowFilters((prev) => !prev)}
+                        >
                             {showFilters ? "Hide Filters" : "Show Filters"}
                         </Button>
                     )}
@@ -55,6 +58,7 @@ export default function PageHeader({
                     )}
                     {addRunButton && (
                         <Button
+                            className=""
                             variant="primary"
                             onClick={() => setShowRunModal((prev) => !prev)}
                         >
