@@ -4,6 +4,7 @@ import { ProductionRunForm } from "../forms/ProductionRunForm";
 import { Modal } from "./Modal";
 import type { ProductionRun } from "../../hooks/useProductionRuns";
 import type { Part } from "../../hooks/useParts";
+import { PartAddForm } from "../forms/PartAddForm";
 
 interface Props {
     filterButton: boolean;
@@ -73,9 +74,9 @@ export default function PageHeader({
                 {showPartModal && (
                     <Modal
                         title="test-modal"
-                        onClose={() => setShowRunModal(false)}
+                        onClose={() => setShowPartModal(false)}
                     >
-                        <ProductionRunForm />
+                        <PartAddForm />
                     </Modal>
                 )}
             </div>

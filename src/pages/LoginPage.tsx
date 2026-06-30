@@ -14,7 +14,7 @@ export const LoginPage = () => {
 
     if (!authLoading && user) return <Navigate to="/" replace />;
 
-    const handleLogin = async (e: React.FormEvent) => {
+    const handleLogin = async (e: React.SubmitEvent) => {
         e.preventDefault();
 
         try {
@@ -37,24 +37,24 @@ export const LoginPage = () => {
     return (
         <div className="min-h-screen flex flex-col items-center bg-black justify-center text-white">
             {/*  logo */}
-            <div className="mb-6 pl-3 gap-2 flex flex-col items-center">
-                <div className="flex items-end gap-2">
-                    <img src={logo} className="h-8 w-8" />
-                    <div>
-                        <h1 className="font-medium text-2xl uppercase font-mono text-text">
-                            Foundry
-                        </h1>
-                    </div>
-                </div>
-                <div>
-                    <p className="text-[14px] text-text-muted">
-                        Production Dashboard
-                    </p>
-                </div>
-            </div>
 
             {/* sign in form */}
             <div className="bg-surface-2 w-full max-w-120 rounded-xl border border-white/10 py-10 px-8">
+                <div className="mb-6 pl-3 gap-2 flex flex-col items-center">
+                    <div className="flex flex-col items-end gap-2">
+                        <img src={logo} className="h-8 w-8" />
+                        <div>
+                            <h1 className="font-medium text-2xl uppercase font-mono text-text">
+                                Foundry
+                            </h1>
+                        </div>
+                    </div>
+                    <div>
+                        <p className="text-[14px] text-text-muted">
+                            Production Dashboard
+                        </p>
+                    </div>
+                </div>
                 <div className="pb-6">Sign in</div>
                 <form onSubmit={handleLogin} className="flex flex-col">
                     <div className="flex-col flex mb-4">
