@@ -31,7 +31,7 @@
 }
 
 html {
-    background-color: rgb(50, 80, 80);
+    background-color: rgb(17, 17, 17);
     height: 100%;
 }
 /* body { */
@@ -39,7 +39,7 @@ html {
 /* } */
 
 body {
-    background-color: rgb(18, 18, 18);
+    background-color: rgb(17, 17, 17);
 }
 
 * {
@@ -56,14 +56,13 @@ body {
     --color-surface-2: #181b1a;
     --color-surface-3: #1d201f;
     --color-surface-active: #252827;
-
-    /* border */
+    --color-gray-900: #111111; /* border */
     --color-border: #2a2d2c;
     --color-border-muted: #222524;
     --color-border-strong: #383c3a;
 
     /* text */
-    --color-text: #fffcf2 /*#f0e4c8*/;
+    --color-primary: #fffcf2 /*#f0e4c8*/;
     --color-text-secondary: #ccc5b9 /*#fae8bb #d4c49c*/;
     --color-text-label: #b0a47c;
     --color-text-muted: #706656;
@@ -90,6 +89,8 @@ body {
     /* role colors */
 
     --color-role: #c084fc;
+
+    --font-mono: "JetBrains Mono", monospace;
 }
 
 /* --color-text: #fffcf2; */
@@ -99,7 +100,7 @@ body {
     input:-webkit-autofill:hover,
     input:-webkit-autofill:focus {
         -webkit-box-shadow: 0 0 0 1000px theme("color-neutral-950") inset;
-        -webkit-text-fill-color: theme("colors.text");
+        -webkit-text-fill-color: theme("colors.text-secondary");
         transition: background-color 5000s ease-in-out 0s;
     }
 }

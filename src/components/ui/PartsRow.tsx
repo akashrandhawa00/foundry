@@ -3,18 +3,12 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import type { Part } from "../../hooks/useParts";
 
 const tdBaseStyle = "px-3 py-3 text-sm";
-const cardBaseStyle = "rounded-lg px-4 py-3 border border-white/20 bg-surface";
+const cardBaseStyle = "rounded-lg px-4 py-3 border border-white/20 bg-gray-900";
 const cardHeadingStyle =
     "mb-1 tracking-wide uppercase text-xs text-text-secondary";
 
 export const PartsRow = ({ part }: { part: Part }) => {
     const [isExpanded, setIsExpanded] = useState(false);
-    // const [showRole, setShowRole] = useState(false);
-
-    // const createdAt = new Date(run.createdAt).toLocaleString("en-CA", {
-    //     dateStyle: "medium",
-    //     timeStyle: "short",
-    // });
 
     return (
         <>

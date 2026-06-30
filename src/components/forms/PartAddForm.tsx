@@ -105,7 +105,7 @@ export const PartAddForm = () => {
     return (
         <>
             <form onSubmit={handleSaveRun}>
-                <h1 className="mb-6 text-text">Log Production Run</h1>
+                <h1 className="mb-6 text-primary">Log Production Run</h1>
                 <div className="grid grid-cols-2 gap-2.5 mb-6">
                     <div>
                         <label className={`${labelBaseStyle} text-text-label`}>

@@ -3,7 +3,7 @@ import { LoginPage } from "./pages/LoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Overview } from "./pages/Overview";
 import DashboardLayout from "./layout/DashboardLayout";
-import { Logs } from "./pages/Logs";
+import { ProductionRuns } from "./pages/ProductionRuns";
 import { NotFound } from "./pages/NotFound";
 import { Parts } from "./pages/Parts";
 import { Users } from "./pages/Users";
@@ -16,7 +16,7 @@ const App = () => {
             <Route element={<ProtectedRoute />}>
                 <Route element={<DashboardLayout />}>
                     <Route index element={<Overview />} />
-                    <Route path="/logs" element={<Logs />} />
+                    <Route path="/production-runs" element={<ProductionRuns />} />
                     <Route path="/quality" element={<Quality />} />
                     <Route path="/parts" element={<Parts />} />
                     <Route path="/users" element={<Users />} />

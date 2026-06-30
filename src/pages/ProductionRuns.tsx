@@ -4,7 +4,7 @@ import { useProductionRuns } from "../hooks/useProductionRuns";
 import { ProductionRunRow } from "../components/ui/ProductionRunRow";
 import { ProductionRunsSkeleton } from "../components/ui/ProductionRunsSkeleton";
 
-export const Logs = () => {
+export const ProductionRuns = () => {
     const { runs, loading, error, fetchRuns } = useProductionRuns();
 
     useEffect(() => {
@@ -24,8 +24,8 @@ export const Logs = () => {
             ) : error ? (
                 <div>Error: {error}</div>
             ) : (
-                <div id="production-run-table">
-                    <table className="w-full border-collapse text-left mt-8">
+                <div id="production-run-table" className="overflow-x-auto">
+                    <table className="min-w-max w-full border-collapse text-left mt-8">
                         <thead>
                             <tr className="py-6 px-12 border-b border-surface-active">
                                 {[

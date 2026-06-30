@@ -8,7 +8,7 @@ const shiftStyles = {
     afternoon: "bg-yellow-500 text-yellow-900",
     midnight: "bg-purple-400 text-purple-800",
 };
-const cardBaseStyle = "rounded-lg px-4 py-3 border border-white/20 bg-surface";
+const cardBaseStyle = "rounded-lg px-4 py-3 border border-white/20 bg-gray-900";
 const cardHeadingStyle =
     "mb-1 tracking-wide uppercase text-xs text-text-secondary";
 

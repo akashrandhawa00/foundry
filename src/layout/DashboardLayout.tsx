@@ -1,11 +1,11 @@
-import { Sidebar } from "../components/Navbar.tsx";
+import { Sidebar } from "../components/Sidebar.tsx";
 import { Outlet } from "react-router-dom";
 
 const DashboardLayout = () => {
     return (
-        <div className="flex">
+        <div className="md:flex h-screen overflow-hidden">
             <Sidebar />
-            <main className="flex-1 text-white">
+            <main className="md:flex-1 text-primary overflow-y-auto">
                 <Outlet />
             </main>
         </div>

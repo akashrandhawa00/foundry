@@ -24,8 +24,8 @@ export const Parts = () => {
             ) : error ? (
                 <div>Error: {error}</div>
             ) : (
-                <div id="parts-table">
-                    <table className="w-full border-collapse text-left mt-8">
+                <div id="parts-table" className="overflow-x-auto">
+                    <table className="min-w-max w-full border-collapse text-left mt-8">
                         <thead>
                             <tr className="py-6 px-12 border-b border-surface-active">
                                 {[
