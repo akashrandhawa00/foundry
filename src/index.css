@@ -73,10 +73,10 @@ body {
     --color-brand-active: #fcd34d;
 
     /* status colors */
-    --color-success: #4ade80;
+    --color-success: #22C55E;
     --color-success-bg: #4ade80;
 
-    --color-danger: #e7000b;
+    --color-danger: #450A0A /* #e7000b*/;
     --color-danger-bg: #a6121a;
     --color-danger-text: #ef5350;
 

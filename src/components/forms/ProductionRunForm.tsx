@@ -30,9 +30,9 @@ const initialForm: ProductionFormData = {
     fallOff: null,
 };
 
-const labelBaseStyle = "block uppercase text-sm mb-1";
+const labelBaseStyle = "inline-block text-sm mb-1.5";
 const inputeBaseStyle =
-    "w-full rounded outline-none bg-neutral-900 uppercase px-2 py-2 border border-white/20 font-mono focus:border-amber-500 transition-colors duration-200 text-sm text-text-secondary ";
+    "w-full rounded outline-none bg-neutral-950  px-2 py-2 border border-white/10 focus:border-brand transition-colors duration-200 text-sm text-text-secondary ";
 
 export const ProductionRunForm = () => {
     const [loading, setLoading] = useState(false);
@@ -160,7 +160,7 @@ export const ProductionRunForm = () => {
         <>
             <form onSubmit={handleSaveRun}>
                 <h1 className="mb-6 text-primary">Log Production Run</h1>
-                <div className="grid grid-cols-2 gap-2.5 mb-6">
+                <div className="grid grid-cols-2 gap-2 mb-3 md:mb-6">
                     <div>
                         <label className={`${labelBaseStyle} text-text-label`}>
                             Date
@@ -190,14 +190,14 @@ export const ProductionRunForm = () => {
                         />
                     </div>
                 </div>
-                <div className="mb-6">
+                <div className="mb-3 md:mb-6">
                     <label className={`${labelBaseStyle} text-text-label`}>
                         Shift
                     </label>
-                    <div className="flex gap-2.5">
+                    <div className="flex gap-2">
                         <Button
                             type="button"
-                            className="w-full"
+                            className={`w-full ${form.shift !== "morning" ? "text-text-secondary" : ""} `}
                             variant={
                                 form.shift === "morning"
                                     ? "shiftActive"
@@ -211,7 +211,7 @@ export const ProductionRunForm = () => {
                         </Button>
                         <Button
                             type="button"
-                            className="w-full"
+                            className={`w-full ${form.shift !== "afternoon" ? "text-text-secondary" : ""} `}
                             variant={
                                 form.shift === "afternoon"
                                     ? "shiftActive"
@@ -225,7 +225,7 @@ export const ProductionRunForm = () => {
                         </Button>
                         <Button
                             type="button"
-                            className="w-full"
+                            className={`w-full ${form.shift !== "midnight" ? "text-text-secondary" : ""} `}
                             variant={
                                 form.shift === "midnight"
                                     ? "shiftActive"
@@ -240,7 +240,7 @@ export const ProductionRunForm = () => {
                     </div>
                 </div>
 
-                <div className="rounded-md mb-6 bg-surface px-4 py-6">
+                <div className="rounded-md mb-6 bg-surface pb-6">
                     {/* Part num and description displayed side by side */}
                     <div className="grid grid-cols-2 gap-2.5 mb-4">
                         <div>
@@ -284,13 +284,13 @@ export const ProductionRunForm = () => {
                                 placeholder="Part Description"
                                 value={form.description}
                                 readOnly
-                                className={`${inputeBaseStyle}`}
+                                className={`${inputeBaseStyle} uppercase`}
                             />
                         </div>
                     </div>
 
                     {/* quantities input in a grid */}
-                    <div className="grid grid-cols-4 gap-2.5 ">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 ">
                         <div>
                             <label
                                 className={`${labelBaseStyle} text-text-label`}
@@ -298,6 +298,7 @@ export const ProductionRunForm = () => {
                                 Qty Loaded
                             </label>
                             <input
+                                inputMode="numeric"
                                 type="number"
                                 name="qtyLoaded"
                                 value={form.qtyLoaded ?? ""}
@@ -321,6 +322,7 @@ export const ProductionRunForm = () => {
                                 Coated
                             </label>
                             <input
+                                inputMode="numeric"
                                 type="number"
                                 name="qtyCoated"
                                 min={0}
@@ -340,10 +342,11 @@ export const ProductionRunForm = () => {
                             />
                         </div>
                         <div>
-                            <label className={`${labelBaseStyle} text-danger`}>
+                            <label className={`${labelBaseStyle} text-red-500`}>
                                 Defects
                             </label>
                             <input
+                                inputMode="numeric"
                                 type="number"
                                 name="qtyDefects"
                                 min={0}
@@ -369,6 +372,7 @@ export const ProductionRunForm = () => {
                                 Falloff
                             </label>
                             <input
+                                inputMode="numeric"
                                 type="number"
                                 name="qtyFallOff"
                                 placeholder="0"
@@ -389,9 +393,9 @@ export const ProductionRunForm = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex gap-2.5">
+                <div className="flex flex-col-reverse md:flex-row gap-2">
                     <Button
-                        variant="destructive"
+                        variant="default"
                         type="button"
                         onClick={() => handleFormReset()}
                         className="flex-1"
@@ -400,6 +404,7 @@ export const ProductionRunForm = () => {
                     </Button>
                     <Button
                         type="submit"
+                        variant="primary"
                         className="flex-2 hover:bg-amber-500"
                         disabled={
                             loading || Object.keys(validationErrors).length > 0

@@ -26,7 +26,7 @@ export const ProductionRuns = () => {
             ) : (
                 <div
                     id="production-run-table"
-                    className="relative overflow-x-auto"
+                    className=" overflow-x-auto"
                 >
                     <table className="min-w-max w-full border-collapse text-left mt-8">
                         <thead>

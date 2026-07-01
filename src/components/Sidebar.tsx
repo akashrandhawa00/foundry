@@ -81,7 +81,7 @@ ${
     return (
         <>
             {/* mobile topbar */}
-            <div className="md:hidden sticky top-0 z-30 flex items-center justify-between px-4 py-3 text-primary">
+            <div className="md:hidden sticky top-0 flex items-center justify-between px-4 py-3 text-primary">
                 <button
                     className="p-1"
                     onClick={() => setShowMobileSideBar((prev) => !prev)}
