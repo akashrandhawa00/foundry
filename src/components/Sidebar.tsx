@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import logo from "../assets/Foundry_light.svg";
 import { useAuth } from "../context/AuthContext";
 import { Modal } from "./ui/Modal";
 import { useState } from "react";
@@ -89,12 +90,37 @@ ${
                 </button>
                 <div className="flex items-center gap-3">
                     <div className=" w-full max-w-sm mx-auto my-auto min-w-min text-primary">
-                        <div className="pt-2 text-primary font-mono tracking-wider text-2xl">
-                            FOUNDRY
+                        {/* <div className="pt-2 text-primary font-mono tracking-wider text-2xl"> */}
+                        {/*     FOUNDRY */}
+                        {/* </div> */}
+                        {/* <div className="text-xs tracking-wider text-text-secondary/90"> */}
+                        {/*     Production Tracker */}
+                        {/* </div> */}
+                        <div className="pt-2 ">
+                            <img src={logo} className="w-28 text-red-300" />
                         </div>
-                        <div className="text-xs tracking-wider text-text-secondary/90">
-                            Production Tracker
-                        </div>
+                        {/* <div className="text-xs flex justify-between w-28 pb-4 text-text-secondary/90"> */}
+                        {/*     <span>P</span> */}
+                        {/*     <span>r</span> */}
+                        {/*     <span>o</span> */}
+                        {/*     <span>d</span> */}
+                        {/*     <span>u</span> */}
+                        {/*     <span>c</span> */}
+                        {/*     <span>t</span> */}
+                        {/*     <span>i</span> */}
+                        {/*     <span>o</span> */}
+                        {/*     <span>n</span> */}
+                        {/*     <span> </span> */}
+                        {/*     <span> </span> */}
+                        {/*     <span> </span> */}
+                        {/*     <span>T</span> */}
+                        {/*     <span>r</span> */}
+                        {/*     <span>a</span> */}
+                        {/*     <span>c</span> */}
+                        {/*     <span>k</span> */}
+                        {/*     <span>e</span> */}
+                        {/*     <span>r</span> */}
+                        {/* </div> */}
                     </div>
                 </div>
             </div>
@@ -103,11 +129,36 @@ ${
             <aside className="w-64 min-w-64 sticky top-0 h-dvh hidden md:flex border-r  border-r-white/20 flex-col gap-1 px-3 py-6 bg-gray-900">
                 <div className="mb-6 pl-3 flex items-center gap-3">
                     <div className=" w-full max-w-sm mx-auto my-auto min-w-min text-primary">
-                        <div className="pt-2 text-primary font-mono tracking-wider text-2xl">
-                            FOUNDRY
+                        {/* <div className="pt-2 text-primary font-mono tracking-wider text-2xl"> */}
+                        {/*     FOUNDRY */}
+                        {/* </div> */}
+                        {/* <div className="text-xs tracking-wider pb-4 text-text-secondary/90"> */}
+                        {/*     Production Tracker */}
+                        {/* </div> */}
+                        <div className="pt-2 ">
+                            <img src={logo} className="w-28 text-red-300" />
                         </div>
-                        <div className="text-xs tracking-wider pb-4 text-text-secondary/90">
-                            Production Tracker
+                        <div className="text-xs flex justify-between w-28 pb-4 text-text-secondary/90">
+                            <span>P</span>
+                            <span>r</span>
+                            <span>o</span>
+                            <span>d</span>
+                            <span>u</span>
+                            <span>c</span>
+                            <span>t</span>
+                            <span>i</span>
+                            <span>o</span>
+                            <span>n</span>
+                            <span> </span>
+                            <span> </span>
+                            <span> </span>
+                            <span>T</span>
+                            <span>r</span>
+                            <span>a</span>
+                            <span>c</span>
+                            <span>k</span>
+                            <span>e</span>
+                            <span>r</span>
                         </div>
                     </div>
                 </div>
@@ -138,11 +189,36 @@ ${
             >
                 <div className="mb-6 pl-3 flex items-center gap-3">
                     <div className=" w-full max-w-sm mx-auto my-auto min-w-min text-primary">
-                        <div className="pt-2 text-primary font-mono tracking-wider text-2xl">
-                            FOUNDRY
+                        {/* <div className="pt-2 text-primary font-mono tracking-wider text-2xl"> */}
+                        {/*     FOUNDRY */}
+                        {/* </div> */}
+                        {/* <div className="text-xs tracking-wider pb-4 text-text-secondary/90"> */}
+                        {/*     Production Tracke */}
+                        {/* </div> */}
+                        <div className="pt-2 ">
+                            <img src={logo} className="w-28 text-red-300" />
                         </div>
-                        <div className="text-xs tracking-wider pb-4 text-text-secondary/90">
-                            Production Tracker
+                        <div className="text-xs flex justify-between w-28 pb-4 text-text-secondary/90">
+                            <span>P</span>
+                            <span>r</span>
+                            <span>o</span>
+                            <span>d</span>
+                            <span>u</span>
+                            <span>c</span>
+                            <span>t</span>
+                            <span>i</span>
+                            <span>o</span>
+                            <span>n</span>
+                            <span> </span>
+                            <span> </span>
+                            <span> </span>
+                            <span>T</span>
+                            <span>r</span>
+                            <span>a</span>
+                            <span>c</span>
+                            <span>k</span>
+                            <span>e</span>
+                            <span>r</span>
                         </div>
                     </div>
                 </div>

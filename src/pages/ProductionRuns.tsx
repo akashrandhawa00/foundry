@@ -24,7 +24,10 @@ export const ProductionRuns = () => {
             ) : error ? (
                 <div>Error: {error}</div>
             ) : (
-                <div id="production-run-table" className="overflow-x-auto">
+                <div
+                    id="production-run-table"
+                    className="relative overflow-x-auto"
+                >
                     <table className="min-w-max w-full border-collapse text-left mt-8">
                         <thead>
                             <tr className="py-6 px-12 border-b border-surface-active">

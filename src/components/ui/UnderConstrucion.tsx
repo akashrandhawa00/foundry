@@ -7,10 +7,13 @@ export default function UnderConstructionGIF() {
                 <DotLottieReact src="/working-animation.lottie" loop autoplay />
             </div>
             <div className="text-center px-4">
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-200" style={{ fontFamily: '"JetBrains Mono", monospace' }}>
-                    git push origin coming-soon
+                <h2
+                    className="text-lg md:text-2xl font-bold text-gray-200"
+                    style={{ fontFamily: '"JetBrains Mono", monospace' }}
+                >
+                     git push origin coming-soon
                 </h2>
-                <p className="text-sm sm:text-base text-gray-500 mt-2">
+                <p className="md:text-sm text-xs text-text-muted mt-2">
                     This page is currently in peer review. By me. I am the peer.
                 </p>
             </div>

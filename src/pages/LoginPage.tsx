@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
+import logo from "../assets/Foundry_light.svg";
 
 export const LoginPage = () => {
     const { user, loading: authLoading, signInWithEmail } = useAuth();
@@ -35,13 +36,34 @@ export const LoginPage = () => {
 
     return (
         <div className="relative flex flex-col md:flex-row-reverse min-h-screen">
-            <section className="w-full mx-auto px-4 md:px-0 md:items-center flex items-start md:w-1/3 ">
-                <div className="bg-gray-900 w-full max-w-sm py-4 mx-auto md:mx-0 my-auto min-w-min relative md:-left-3 text-primary">
-                    <div className="z-10  pt-4 text-primary font-mono tracking-wider text-3xl">
-                        FOUNDRY
+            <section className="relative w-full mx-auto px-4 md:px-0 md:items-center flex items-start md:w-1/3 ">
+                <div className="hidden md:block absolute inset-0 h-dvh w-full " />
+                {/* bg-[radial-gradient(#47484a_1px,transparent_1px)] bg-size-[16px_16px] */}
+                <div className="bg-gray-900 max-w-sm py-4 mx-auto md:mx-0 my-auto min-w-min relative md:-left-3 text-primary">
+                    <div className="z-10  pt-4 text-primary ">
+                        <img src={logo} className="w-36" />
                     </div>
-                    <div className="text-sm tracking-wider pb-4 text-text-secondary/90">
-                        Production Tracker
+                    <div className="text-sm flex justify-between w-36 pb-4 text-text-secondary/90">
+                        <span>P</span>
+                        <span>r</span>
+                        <span>o</span>
+                        <span>d</span>
+                        <span>u</span>
+                        <span>c</span>
+                        <span>t</span>
+                        <span>i</span>
+                        <span>o</span>
+                        <span>n</span>
+                        <span> </span>
+                        <span> </span>
+                        <span> </span>
+                        <span>T</span>
+                        <span>r</span>
+                        <span>a</span>
+                        <span>c</span>
+                        <span>k</span>
+                        <span>e</span>
+                        <span>r</span>
                     </div>
                 </div>
             </section>

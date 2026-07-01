@@ -7,7 +7,7 @@ import type { Part } from "../../hooks/useParts";
 import { PartAddForm } from "../forms/PartAddForm";
 
 interface Props {
-    filterButton: boolean;
+    filterButton?: boolean;
     addRunButton?: boolean;
     addPartButton?: boolean;
     title: string;
