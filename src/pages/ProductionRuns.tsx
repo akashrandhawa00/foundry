@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import { useProductionRuns } from "../hooks/useProductionRuns";
 import { ProductionRunRow } from "../components/ui/ProductionRunRow";
-import { ProductionRunsSkeleton } from "../components/ui/ProductionRunsSkeleton";
+import { TableSkeleton } from "../components/ui/TableSkeleton";
 
 export const ProductionRuns = () => {
     const { runs, loading, error, fetchRuns } = useProductionRuns();
@@ -20,14 +20,11 @@ export const ProductionRuns = () => {
                 addRunButton={true}
             />
             {loading ? (
-                <ProductionRunsSkeleton />
+                <TableSkeleton />
             ) : error ? (
                 <div>Error: {error}</div>
             ) : (
-                <div
-                    id="production-run-table"
-                    className=" overflow-x-auto"
-                >
+                <div id="production-run-table" className=" overflow-x-auto">
                     <table className="min-w-max w-full border-collapse text-left mt-8">
                         <thead>
                             <tr className="py-6 px-12 border-b border-surface-active">

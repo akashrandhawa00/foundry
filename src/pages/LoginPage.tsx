@@ -5,7 +5,8 @@ import { Button } from "../components/Button";
 import logo from "../assets/Foundry_light.svg";
 
 export const LoginPage = () => {
-    const { user, loading: authLoading, signInWithEmail } = useAuth();
+    const { user, isLoading: authLoading, signInWithEmail } = useAuth();
+    console.log("isLoading: ", authLoading);
     const navigate = useNavigate();
 
     const [email, setEmail] = useState<string>("");

@@ -30,7 +30,7 @@ const initialForm: ProductionFormData = {
     fallOff: null,
 };
 
-const labelBaseStyle = "inline-block text-sm mb-1.5";
+const labelBaseStyle = "block text-sm mb-1.5";
 const inputeBaseStyle =
     "w-full rounded outline-none bg-neutral-950  px-2 py-2 border border-white/10 focus:border-brand transition-colors duration-200 text-sm text-text-secondary ";
 
@@ -81,7 +81,6 @@ export const ProductionRunForm = () => {
 
         if (!form.date) newErrors.date = "Date is required.";
         if (!form.time) newErrors.time = "Time is required.";
-        if (!form.shift) newErrors.shift = "Please select a shift.";
         if (!form.partNumber) newErrors.partNumber = "Please select a part.";
         if (qtyLoaded <= 0) newErrors.qtyLoaded = "Must be more than 0.";
         if (qtyCoated > qtyLoaded)
@@ -171,6 +170,7 @@ export const ProductionRunForm = () => {
                             value={form.date}
                             onChange={(e) =>
                                 setForm({ ...form, date: e.target.value })
+                                
                             }
                             className={`${inputeBaseStyle}`}
                         />
@@ -393,6 +393,30 @@ export const ProductionRunForm = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* error diplay */}
+                <div className="w-full text-red-400 px-2 pb-1 mb-4 flex items-center border-l-2 border-red-400 ">
+                    {Object.keys(validationErrors).length > 0 && (
+                        <ul>
+                            {Object.entries(validationErrors).map(
+                                ([field, message]) =>
+                                    message ? (
+                                        <li key={field}>
+                                            <span className="text-red-400">
+                                                {message}
+                                            </span>
+                                        </li>
+                                    ) : null,
+                            )}
+                        </ul>
+                    )}
+                    {error && (
+                        <p className="text-red-400">
+                            An error occured: {error}
+                        </p>
+                    )}
+                </div>
+
                 <div className="flex flex-col-reverse md:flex-row gap-2">
                     <Button
                         variant="default"
@@ -412,30 +436,6 @@ export const ProductionRunForm = () => {
                     >
                         Save Run
                     </Button>
-                </div>
-                <div className="pt-2">
-                    {Object.keys(validationErrors).length > 0 && (
-                        <ul>
-                            {Object.entries(validationErrors).map(
-                                ([field, message]) =>
-                                    message ? (
-                                        <li key={field}>
-                                            <span className="text-red-400">
-                                                {message}
-                                            </span>
-                                        </li>
-                                    ) : null,
-                            )}
-                        </ul>
-                        // <span className="text-sm text-red-300">
-                        //     {validationErrors}
-                        // </span>
-                    )}
-                    {error && (
-                        <p className="text-red-400">
-                            An error occured: {error}
-                        </p>
-                    )}
                 </div>
             </form>
         </>

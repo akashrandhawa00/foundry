@@ -230,7 +230,10 @@ ${
                 <div className="mr-3">
                     <Button
                         variant="primary"
-                        onClick={() => setShowModal((prev) => !prev)}
+                        onClick={() => {
+                            setShowModal((prev) => !prev);
+                            setShowMobileSideBar((prev) => !prev);
+                        }}
                         className="w-full"
                     >
                         Add Run +

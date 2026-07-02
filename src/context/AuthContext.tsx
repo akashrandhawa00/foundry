@@ -1,96 +1,95 @@
-import type { User } from "@supabase/supabase-js";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import type { Session, User } from "@supabase/supabase-js";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase-client";
-
-interface AuthContextType {
-    user: User | null;
-    sessionUser: {
-        id: string | null;
-        email: string | null;
-        name: string | null;
-        avatar: string | null;
-        role: string | null;
-    } | null;
-    loading: boolean;
-    signInWithEmail: (email: string, password: string) => Promise<void>;
-    signOut: () => Promise<void>;
-}
 
 interface Profile {
     id: string;
     full_name: string | null;
-    username: string | null;
     avatar_url?: string | null;
     role: string | null;
 }
 
-async function fetchProfile(userId: string) {
-    const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", userId)
-        .maybeSingle();
-
-    if (error) {
-        console.error("Failed to fetch profile:", error.message);
-        return null;
-    }
-
-    return data;
+interface AuthContextType {
+    session: Session | null;
+    user: User | null;
+    profile: Profile | null;
+    isLoading: boolean;
+    signInWithEmail: (
+        email: string,
+        password: string,
+    ) => Promise<{ error: string | null }>;
+    signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<User | null>(null);
+    const [session, setSession] = useState<Session | null>(null);
     const [profile, setProfile] = useState<Profile | null>(null);
-    const [loading, setLoading] = useState(true);
-    // const mounted = useRef(true);
+
+    const [sessionLoading, setSessionLoading] = useState(true);
+    const [profileLoading, setProfileLoading] = useState(false);
+
+    const isLoading = sessionLoading && profileLoading;
+
+    const user = session?.user ?? null;
+    const currentUserId = useRef<string | null>(null);
+
+    async function fetchProfile(userId: string) {
+        setProfileLoading(true);
+        const { data, error } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", userId)
+            .single();
+
+        if (error) {
+            console.error("Failed to fetch profile:", error.message);
+            setProfile(null);
+        } else {
+            setProfile({
+                id: data.id,
+                full_name: data.full_name,
+                avatar_url: data.avatar_url,
+                role: data.role,
+            });
+        }
+
+        setProfileLoading(false);
+    }
 
     useEffect(() => {
-        // check for a session
-        const initialize = async () => {
-            const {
-                data: { session },
-            } = await supabase.auth.getSession();
+        //fetch existing session if it existing
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            console.log('tried to fetch existing session')
+            setSession(session);
+            setSessionLoading(false);
 
-            const sessionUser = session?.user ?? null;
-            setUser(sessionUser);
+            const userId = session?.user.id ?? null;
+            currentUserId.current = userId;
 
-            if (sessionUser) {
-                const profileData = await fetchProfile(sessionUser.id);
-                setProfile(profileData);
-            }
+            if (userId) fetchProfile(userId);
+        });
 
-            setLoading(false);
-        };
+        //listen to auth changes
+        const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session);
+            console.log('fired up onauthstatechange')
 
-        initialize();
+            const newUserId = session?.user.id ?? null;
 
-        //update when auth state changes
-        const { data: listener } = supabase.auth.onAuthStateChange(
-            async (_event, session) => {
-                const sessionUser = session?.user ?? null;
-                setUser(sessionUser);
-
-                if (sessionUser) {
-                    try {
-                        const profileData = await fetchProfile(sessionUser.id);
-                        setProfile(profileData);
-                    } catch (err) {
-                        console.error("Profile fetch error:", err);
-                        setProfile(null);
-                    }
+            if (newUserId != currentUserId.current) {
+                currentUserId.current = newUserId;
+                if (newUserId) {
+                    fetchProfile(newUserId);
                 } else {
                     setProfile(null);
                 }
-
-                setLoading(false);
-            },
-        );
+            }
+        });
 
         return () => {
-            listener.subscription.unsubscribe();
+            data.subscription.unsubscribe();
         };
     }, []);
 
@@ -100,29 +99,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             password,
         });
 
-        if (signInError) throw new Error(signInError.message);
+        return { error: signInError?.message ?? null };
     };
 
     const signOut = async () => {
         await supabase.auth.signOut();
-        // <Navigate to="/login" replace />;
     };
 
-    const sessionUser = useMemo(
-        () =>
-            user
-                ? {
-                      id: user.id,
-                      email: user.email ?? null,
-                      name: profile?.full_name ?? null,
-                      avatar: profile?.avatar_url ?? null,
-                      role: profile?.role ?? null,
-                  }
-                : null,
-        [user, profile],
-    );
-
-    const value = { user, sessionUser, loading, signInWithEmail, signOut };
+    const value: AuthContextType = {
+        user,
+        session,
+        profile,
+        isLoading,
+        signInWithEmail,
+        signOut,
+    };
+    console.log("Profiel", profile);
+    console.log("User", user);
+    console.log("Session", session);
 
     return (
         <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
