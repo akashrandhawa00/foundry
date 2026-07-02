@@ -17,6 +17,10 @@ export interface ProductionFormData {
     fallOff: number | null;
 }
 
+interface ProductionRunFormProps {
+    onClose: () => void;
+}
+
 const now = new Date();
 
 const initialForm: ProductionFormData = {
@@ -35,7 +39,7 @@ const labelBaseStyle = "block text-sm mb-1.5";
 const inputeBaseStyle =
     "w-full rounded outline-none bg-neutral-950  px-2 py-2 border border-white/10 focus:border-brand transition-colors duration-200 text-sm text-text-secondary ";
 
-export const ProductionRunForm = ({ onClose }) => {
+export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<
