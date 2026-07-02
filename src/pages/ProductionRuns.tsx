@@ -24,42 +24,35 @@ export const ProductionRuns = () => {
             ) : error ? (
                 <div>Error: {error}</div>
             ) : (
-                <div className="relative">
-                    
-                    {/* scroll gradient */}
-                    <div className="inset-y-0 w-8 pointer-events-none bg-linear-to-r from-transparent to-gray-900 right-0 absolute" />
-
-                    {/* table container */}
-                    <div id="production-run-table" className="overflow-x-auto">
-                        <table className="min-w-max w-full border-collapse text-left mt-8">
-                            <thead>
-                                <tr className="py-6 px-12 border-b border-surface-active">
-                                    {[
-                                        "Run ID",
-                                        "Part",
-                                        "Shift",
-                                        "Description",
-                                        "Loaded",
-                                        "Coated",
-                                        "Defects",
-                                        "",
-                                    ].map((header) => (
-                                        <th
-                                            key={header}
-                                            className="px-3 py-2 text-sm font-medium text-text-label uppercase tracking-wide"
-                                        >
-                                            {header}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {runs.map((run) => (
-                                    <ProductionRunRow key={run.id} run={run} />
+                <div id="production-run-table" className="overflow-x-auto">
+                    <table className="min-w-max w-full border-collapse text-left mt-8">
+                        <thead>
+                            <tr className="py-6 px-12 border-b border-surface-active">
+                                {[
+                                    "Run ID",
+                                    "Part",
+                                    "Shift",
+                                    "Description",
+                                    "Loaded",
+                                    "Coated",
+                                    "Defects",
+                                    "",
+                                ].map((header) => (
+                                    <th
+                                        key={header}
+                                        className="px-3 py-2 text-sm font-medium text-text-label uppercase tracking-wide"
+                                    >
+                                        {header}
+                                    </th>
                                 ))}
-                            </tbody>
-                        </table>
-                    </div>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {runs.map((run) => (
+                                <ProductionRunRow key={run.id} run={run} />
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             )}
         </div>

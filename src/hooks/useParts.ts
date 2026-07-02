@@ -5,9 +5,17 @@ export interface Part {
     partNumber: string;
     description: string;
     client: string;
-    qtyPerBin: string;
-    rackType: string;
-    repackBinType: string;
+    incomingQtyPerBin: number;
+    outgoingQtyPerBin: number;
+    rackName: string;
+    partsPerRack: number;
+    reqRacksPerBin: number;
+    substrate: string;
+    repackBinType: number;
+    annualVolume: number;
+    oem: string;
+    oemPartNumber: string;
+    programName: string;
 }
 
 export function useParts() {
@@ -23,7 +31,7 @@ export function useParts() {
             const { data, error } = await supabase
                 .from("parts")
                 .select("*")
-                .order("part_number");
+                .order("created_at", { ascending: false });
 
             if (error) {
                 setError(error.message);
@@ -36,9 +44,17 @@ export function useParts() {
                     partNumber: part.part_number,
                     description: part.part_description,
                     client: part.client,
-                    qtyPerBin: part.quantity_per_bin,
-                    rackType: part.rack_type,
+                    incomingQtyPerBin: part.incoming_bin_quantity,
+                    outgoingQtyPerBin: part.total_parts_per_packaging_bin,
+                    rackName: part.rack_type,
+                    partsPerRack: part.estimated_parts_per_rack,
+                    reqRacksPerBin: part.required_rack_per_bin,
+                    substrate: part.substrate,
                     repackBinType: part.repack_bin,
+                    annualVolume: part.annual_volume,
+                    oem: part.oem,
+                    oemPartNumber: part.oem_part_number,
+                    programName: part.program_name,
                 })),
             );
         } catch (err: unknown) {

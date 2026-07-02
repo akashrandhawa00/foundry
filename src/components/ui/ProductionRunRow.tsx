@@ -3,7 +3,7 @@ import type { ProductionRun } from "../../hooks/useProductionRuns";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const tdBaseStyle = "px-3 py-3 text-sm";
-const shiftStyles = {
+export const shiftStyles = {
     morning: "bg-emerald-700 text-emerald-200",
     afternoon: "bg-blue-600 text-blue-200",
     midnight: "bg-rose-800 text-rose-200",
@@ -73,7 +73,7 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                             <div className={`${cardBaseStyle}`}>
                                 <p className={cardHeadingStyle}>Defects</p>
                                 <p
-                                    className={`${run.qtyDefects > 0 ? "text-danger-text" : ""}`}
+                                    className={`${run.qtyDefects > 0 ? "text-red-300" : ""}`}
                                 >
                                     {run.qtyDefects}
                                 </p>
@@ -81,14 +81,18 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                             <div className={`${cardBaseStyle}`}>
                                 <p className={cardHeadingStyle}>Falloff</p>
                                 <p
-                                    className={`${run.qtyFallOff > 0 ? "text-warning" : ""}`}
+                                    className={`${run.qtyFallOff > 0 ? "text-orange-300" : ""}`}
                                 >
                                     {run.qtyFallOff}
                                 </p>
                             </div>
                             <div className={`${cardBaseStyle}`}>
                                 <p className={cardHeadingStyle}>Total Loss</p>
-                                <p>{totalLoss}</p>
+                                <p
+                                    className={`${run.qtyDefects + run.qtyFallOff > 0 ? "text-danger-text" : ""}`}
+                                >
+                                    {totalLoss}
+                                </p>
                             </div>
                         </div>
 
@@ -97,8 +101,8 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                             <span className="group">
                                 Logged By:{" "}
                                 <span className="text-text-secondary relative">
-                                    <div className="translate-y-2 translate-x-5 opacity-0 transition-all duration-200 delay-500 group-hover:opacity-100 text-white group-hover:translate-y-1 px-2 py-2 rounded bg-brand/90 border border-brand absolute">
-                                        {run.loggedByRole}
+                                    <div className="translate-y-2 translate-x-5 opacity-0 capitalize transition-all duration-200 delay-500 group-hover:opacity-100 text-white group-hover:translate-y-1 px-2 py-2 rounded bg-brand/90 border border-brand absolute">
+                                        {run.loggedByRole.split("_").join(" ")}
                                     </div>
                                     {run.loggedBy}
                                 </span>

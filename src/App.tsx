@@ -8,22 +8,29 @@ import { NotFound } from "./pages/NotFound";
 import { Parts } from "./pages/Parts";
 import { Users } from "./pages/Users";
 import { Quality } from "./pages/Quality";
+import { Toaster } from "sonner";
 
 const App = () => {
     return (
-        <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route element={<ProtectedRoute />}>
-                <Route element={<DashboardLayout />}>
-                    <Route index element={<Overview />} />
-                    <Route path="/production-runs" element={<ProductionRuns />} />
-                    <Route path="/quality" element={<Quality />} />
-                    <Route path="/parts" element={<Parts />} />
-                    <Route path="/users" element={<Users />} />
-                    <Route path="*" element={<NotFound />} />
+        <>
+            <Toaster position="top-right" richColors theme="dark" />
+            <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route element={<ProtectedRoute />}>
+                    <Route element={<DashboardLayout />}>
+                        <Route index element={<Overview />} />
+                        <Route
+                            path="/production-runs"
+                            element={<ProductionRuns />}
+                        />
+                        <Route path="/quality" element={<Quality />} />
+                        <Route path="/parts" element={<Parts />} />
+                        <Route path="/users" element={<Users />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Route>
                 </Route>
-            </Route>
-        </Routes>
+            </Routes>
+        </>
     );
 };
 

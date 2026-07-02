@@ -3,6 +3,7 @@ import { Button } from "../Button";
 import { supabase } from "../../lib/supabase-client";
 import { useAuth } from "../../context/AuthContext";
 import { useParts } from "../../hooks/useParts";
+import { toast } from "sonner";
 
 export interface ProductionFormData {
     date: string;
@@ -34,7 +35,7 @@ const labelBaseStyle = "block text-sm mb-1.5";
 const inputeBaseStyle =
     "w-full rounded outline-none bg-neutral-950  px-2 py-2 border border-white/10 focus:border-brand transition-colors duration-200 text-sm text-text-secondary ";
 
-export const ProductionRunForm = () => {
+export const ProductionRunForm = ({ onClose }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<
@@ -84,16 +85,17 @@ export const ProductionRunForm = () => {
         if (!form.partNumber) newErrors.partNumber = "Please select a part.";
         if (qtyLoaded <= 0) newErrors.qtyLoaded = "Must be more than 0.";
         if (qtyCoated > qtyLoaded)
-            newErrors.qtyCoated = "Cannot exceed Quantity Loaded";
+            newErrors.qtyCoated =
+                "Parts unloaded cannot exceed quantity loaded.";
         if (defects < 0) newErrors.defects = "Cannot be negative.";
         if (fallOff < 0) newErrors.fallOff = "Cannot be negative.";
 
-        const totalOut =
-            (form.qtyCoated ?? 0) + (form.defects ?? 0) + (form.fallOff ?? 0);
-        if (totalOut > qtyLoaded) {
-            newErrors.qtyCoated =
-                "Coated + defects + falloff exceed the load quantity.";
-        }
+        // const totalOut =
+        //     (form.qtyCoated ?? 0) + (form.defects ?? 0) + (form.fallOff ?? 0);
+        // if (totalOut > qtyLoaded) {
+        //     newErrors.qtyCoated =
+        //         "Coated + defects + falloff exceed the load quantity.";
+        // }
 
         setValidationErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -149,6 +151,8 @@ export const ProductionRunForm = () => {
         } finally {
             setLoading(false);
             setForm(initialForm);
+            onClose();
+            toast.success("Production run saved successfully");
         }
     };
 
@@ -170,7 +174,6 @@ export const ProductionRunForm = () => {
                             value={form.date}
                             onChange={(e) =>
                                 setForm({ ...form, date: e.target.value })
-                                
                             }
                             className={`${inputeBaseStyle}`}
                         />
@@ -395,27 +398,25 @@ export const ProductionRunForm = () => {
                 </div>
 
                 {/* error diplay */}
-                <div className="w-full text-red-400 px-2 pb-1 mb-4 flex items-center border-l-2 border-red-400 ">
-                    {Object.keys(validationErrors).length > 0 && (
-                        <ul>
-                            {Object.entries(validationErrors).map(
-                                ([field, message]) =>
-                                    message ? (
-                                        <li key={field}>
-                                            <span className="text-red-400">
-                                                {message}
-                                            </span>
-                                        </li>
-                                    ) : null,
-                            )}
-                        </ul>
-                    )}
-                    {error && (
-                        <p className="text-red-400">
-                            An error occured: {error}
-                        </p>
-                    )}
-                </div>
+                {/* <div className="w-full text-red-400 px-2 pb-1 mb-4 flex items-center border-l-2 border-red-400 "> */}
+                {Object.keys(validationErrors).length > 0 && (
+                    <ul className="w-full text-red-400 px-2 pb-1 mb-4 flex items-center border-l-2 border-red-400 ">
+                        {Object.entries(validationErrors).map(
+                            ([field, message]) =>
+                                message ? (
+                                    <li key={field}>
+                                        <span className="text-red-400">
+                                            {message}
+                                        </span>
+                                    </li>
+                                ) : null,
+                        )}
+                    </ul>
+                )}
+                {error && (
+                    <p className="text-red-400">An error occured: {error}</p>
+                )}
+                {/* </div> */}
 
                 <div className="flex flex-col-reverse md:flex-row gap-2">
                     <Button

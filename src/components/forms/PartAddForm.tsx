@@ -81,8 +81,8 @@ export const PartAddForm = () => {
                         part_number: form.partNumber,
                         part_description: form.description,
                         client: form.client,
-                        rack_type: form.rackType,
-                        quantity_per_bin: form.qtyPerBin,
+                        rack_name: form.rackType,
+                        incoming_bin_quantity: form.qtyPerBin,
                         repack_bin: form.repackBin,
                     },
                 ]);

@@ -71,7 +71,9 @@ export default function PageHeader({
                         title="test-modal"
                         onClose={() => setShowRunModal(false)}
                     >
-                        <ProductionRunForm />
+                        <ProductionRunForm
+                            onClose={() => setShowRunModal(false)}
+                        />
                     </Modal>
                 )}
 

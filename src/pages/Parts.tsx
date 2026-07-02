@@ -32,6 +32,7 @@ export const Parts = () => {
                                     "Part Number",
                                     "Description",
                                     "Client",
+                                    "Substrate",
                                     "",
                                 ].map((header) => (
                                     <th
