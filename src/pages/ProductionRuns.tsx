@@ -7,9 +7,9 @@ import { Button } from "../components/Button";
 
 export const ProductionRuns = () => {
     const from = new Date();
-    const [filter, setFilter] = useState<string | null>(null);
+    const [filter, setFilter] = useState<string>();
 
-    const { runs, loading, error, fetchRuns } = useProductionRuns({
+    const { runs, deleteRun, loading, error, fetchRuns } = useProductionRuns({
         from: filter,
     });
 
@@ -90,7 +90,11 @@ export const ProductionRuns = () => {
                         </thead>
                         <tbody>
                             {runs.map((run) => (
-                                <ProductionRunRow key={run.id} run={run} />
+                                <ProductionRunRow
+                                    key={run.id}
+                                    run={run}
+                                    deleteRun={deleteRun}
+                                />
                             ))}
                         </tbody>
                     </table>

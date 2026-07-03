@@ -20,7 +20,7 @@ const App = () => {
                     <Route element={<DashboardLayout />}>
                         <Route index element={<Overview />} />
                         <Route
-                            path="/production-runs"
+                            path="/production-log"
                             element={<ProductionRuns />}
                         />
                         <Route path="/quality" element={<Quality />} />

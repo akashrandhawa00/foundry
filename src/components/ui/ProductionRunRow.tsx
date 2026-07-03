@@ -20,7 +20,12 @@ function yeildRate(run: ProductionRun) {
         : 0;
 }
 
-export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
+export const ProductionRunRow = ({
+    run,
+    deleteRun,
+}: {
+    run: ProductionRun; deleteRun: (runId:number) => Promise<void> 
+}) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const totalLoss = run.qtyDefects + run.qtyFallOff;
@@ -102,11 +107,19 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                             <div
                                 className={`rounded-lg flex flex-col py-1 gap-2 order-first`}
                             >
-                                <button className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center py-1.5 duration-200 cursor-pointer text-sm border text-text-secondary bg-text-secondary/10 hover:bg-text-secondary/20">
+                                <button
+                                    onClick={() =>
+                                        console.log("editing ", run.id)
+                                    }
+                                    className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center py-1.5 duration-200 cursor-pointer text-sm border text-text-secondary bg-text-secondary/10 hover:bg-text-secondary/20"
+                                >
                                     <GoPencil />
                                     Edit
                                 </button>
-                                <button className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center py-1.5 duration-200 cursor-pointer text-sm border text-red-400 bg-red-500/10 hover:bg-red-500/20">
+                                <button
+                                    onClick={() => deleteRun(run.id)}
+                                    className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center py-1.5 duration-200 cursor-pointer text-sm border text-red-400 bg-red-500/10 hover:bg-red-500/20"
+                                >
                                     <GoTrash />
                                     Delete
                                 </button>

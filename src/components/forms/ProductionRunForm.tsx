@@ -140,6 +140,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                         run_date: form.date,
                         shift: form.shift,
                         logged_by: user.id,
+                        run_time: form.time,
                     },
                 ]);
 
@@ -427,7 +428,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                         variant="default"
                         type="button"
                         onClick={() => handleFormReset()}
-                        className="flex-1"
+                        className="flex-1 border-dashed text-text-secondary border-text-secondary hover:text-primary hover:border-text-primary"
                     >
                         Reset
                     </Button>

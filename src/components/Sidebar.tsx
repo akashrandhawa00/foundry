@@ -17,7 +17,7 @@ export const Sidebar = () => {
 
     const NAV_LINKS = [
         { to: "/", label: "Overview", logo: RxDashboard },
-        { to: "/production-runs", label: "Production Runs", logo: LuLogs },
+        { to: "/production-log", label: "Production Log", logo: LuLogs },
         { to: "/quality", label: "Quality", logo: FaSprayCan },
         { to: "/parts", label: "Parts", logo: BiSolidComponent },
         { to: "/users", label: "Users", logo: FaUser },
@@ -165,16 +165,6 @@ ${
                 </div>
 
                 <NavLinks />
-
-                <div className="mr-3">
-                    <Button
-                        variant="primary"
-                        onClick={() => setShowModal((prev) => !prev)}
-                        className="w-full"
-                    >
-                        Add Run +
-                    </Button>
-                </div>
 
                 <div className="flex-1"></div>
                 <SideBarFooter />
