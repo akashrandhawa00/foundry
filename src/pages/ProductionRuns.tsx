@@ -1,11 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import { useProductionRuns } from "../hooks/useProductionRuns";
 import { ProductionRunRow } from "../components/ui/ProductionRunRow";
 import { TableSkeleton } from "../components/ui/TableSkeleton";
+import { Button } from "../components/Button";
 
 export const ProductionRuns = () => {
-    const { runs, loading, error, fetchRuns } = useProductionRuns();
+    const from = new Date();
+    const [filter, setFilter] = useState<string | null>();
+
+    const { runs, loading, error, fetchRuns } = useProductionRuns({
+        from: filter,
+    });
+
+    const [showFilters, setShowFilters] = useState<boolean>(false);
 
     useEffect(() => {
         fetchRuns();
@@ -19,6 +27,39 @@ export const ProductionRuns = () => {
                 filterButton={true}
                 addRunButton={true}
             />
+            <div className="flex justify-end">
+                <div
+                    className={`${showFilters ? "block" : "hidden"} flex mt-2 gap-2`}
+                >
+                    <Button
+                        onClick={() => {
+                            from.setDate(from.getDate());
+                            setFilter(from.toISOString().slice(0, 10));
+                        }}
+                    >
+                        Today
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            from.setDate(from.getDate() - 7);
+                            setFilter(from.toISOString().slice(0, 10));
+                        }}
+                    >
+                        Week
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            from.setDate(from.getDate() - 30);
+                            setFilter(from.toISOString().slice(0, 10));
+                        }}
+                    >
+                        Month
+                    </Button>
+                </div>
+                <Button onClick={() => setShowFilters((prev) => !prev)}>
+                    {showFilters ? "x" : "Filter Logs"}
+                </Button>
+            </div>
             {loading ? (
                 <TableSkeleton />
             ) : error ? (
@@ -29,7 +70,7 @@ export const ProductionRuns = () => {
                         <thead>
                             <tr className="py-6 px-12 border-b border-surface-active">
                                 {[
-                                    "Run ID",
+                                    "Run Date",
                                     "Part",
                                     "Shift",
                                     "Description",

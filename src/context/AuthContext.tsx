@@ -25,7 +25,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [session, setSession] = useState<Session | null>(null);
-    const [profile, setProfile] = useState<Profile | null>(null);
+    const [profile, setProfile] = useState<Profile | null>();
 
     const [sessionLoading, setSessionLoading] = useState(true);
     const [profileLoading, setProfileLoading] = useState(false);
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         //fetch existing session if it existing
         supabase.auth.getSession().then(({ data: { session } }) => {
-            console.log('tried to fetch existing session')
+            console.log("tried to fetch existing session");
             setSession(session);
             setSessionLoading(false);
 
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         //listen to auth changes
         const { data } = supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
-            console.log('fired up onauthstatechange')
+            console.log("fired up onauthstatechange");
 
             const newUserId = session?.user.id ?? null;
 

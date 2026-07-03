@@ -25,7 +25,7 @@ export const Modal = ({ children, onClose }: ModalProps) => {
 
     return (
         <div className="z-100 w-full h-dvh fixed inset-0  flex flex-col md:items-center justify-end md:justify-center backdrop-blur-sm bg-black/60">
-            <div className="relative bg-gray-900 border border-white/10 md:mx-1 mt-2 mx-auto max-w-3xl p-8 rounded-2xl px-6">
+            <div className="relative bg-gray-900 border border-white/10 md:mx-1 mt-2 mx-auto max-w-3xl p-8 rounded-2xl px-6 overflow-y-auto">
                 <div className="md:hidden"></div>{" "}
                 <Button
                     onClick={onClose}

@@ -16,7 +16,7 @@ export interface ProductionRun {
     runDate: string;
 }
 
-export function useProductionRuns() {
+export function useProductionRuns(range?: { from?: string; to?: string }) {
     const [runs, setRuns] = useState<ProductionRun[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -26,13 +26,18 @@ export function useProductionRuns() {
         setError(null);
 
         try {
-            const { data, error } = await supabase
+            let query = supabase
                 .from("production_runs")
                 .select(
                     "*, parts!inner(part_description), profiles(full_name, role)", // swithc profile!inner to profiles to allow material handlers to see runs logged by other
                 )
+                .order("run_date", { ascending: false })
                 .order("created_at", { ascending: false });
 
+            if (range?.from) query = query.gte("run_date", range.from);
+            if (range?.to) query = query.lte("run_date", range.to);
+
+            const { data, error } = await query;
             if (error) throw error;
 
             setRuns(
@@ -60,7 +65,7 @@ export function useProductionRuns() {
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [range?.from, range?.to]);
 
     return { runs, loading, error, fetchRuns };
 }

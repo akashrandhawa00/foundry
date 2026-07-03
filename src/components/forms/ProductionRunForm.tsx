@@ -247,7 +247,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                     </div>
                 </div>
 
-                <div className="rounded-md mb-6 bg-surface pb-6">
+                <div className="rounded-md mb-6 pb-6">
                     {/* Part num and description displayed side by side */}
                     <div className="grid grid-cols-2 gap-2.5 mb-4">
                         <div>

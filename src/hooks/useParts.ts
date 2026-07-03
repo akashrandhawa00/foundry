@@ -11,7 +11,7 @@ export interface Part {
     partsPerRack: number;
     reqRacksPerBin: number;
     substrate: string;
-    repackBinType: number;
+    repackBinType: string;
     annualVolume: number;
     oem: string;
     oemPartNumber: string;

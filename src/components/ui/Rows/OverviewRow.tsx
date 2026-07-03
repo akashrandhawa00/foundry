@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GoPencil, GoTrash } from "react-icons/go";
-import type { ProductionRun } from "../../hooks/useProductionRuns";
+import type { ProductionRun } from "../../../hooks/useProductionRuns";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const tdBaseStyle = "px-3 py-3 text-sm";
@@ -10,7 +10,7 @@ export const shiftStyles = {
     midnight: "bg-rose-800 text-rose-200",
 };
 const cardBaseStyle =
-    "col-span-2 rounded-lg px-4 py-3 border border-white/10 bg-gray-900 hover:scale-105 hover:border-white/20 transition-all duration-200";
+    "col-span-2 rounded-lg px-4 py-3 border border-white/20 bg-gray-900";
 const cardHeadingStyle =
     "mb-1 tracking-wide uppercase text-xs text-text-secondary";
 
@@ -20,7 +20,7 @@ function yeildRate(run: ProductionRun) {
         : 0;
 }
 
-export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
+export const OverviewRow = ({ run }: { run: ProductionRun }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const totalLoss = run.qtyDefects + run.qtyFallOff;
@@ -28,17 +28,14 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
         dateStyle: "medium",
         timeStyle: "short",
     });
-    const runDate = new Date(run.runDate).toLocaleString("en-CA", {
-        dateStyle: "medium",
-    });
 
     return (
         <>
             <tr
                 onClick={() => setIsExpanded((prev) => !prev)}
-                className={`${isExpanded ? "bg-surface-active/60 " : "hover:bg-brand/40"}  cursor-pointer transition-colors duration-200 border-t border-surface-active `}
+                className={`${isExpanded ? "bg-surface-active/60 hover:bg-surface-active" : "hover:bg-brand/40"}  cursor-pointer transition-colors duration-200 border-t border-surface-active `}
             >
-                <td className={`${tdBaseStyle}`}>{runDate}</td>
+                <td className={`${tdBaseStyle}`}>{run.id}</td>
                 <td className={`${tdBaseStyle}`}>{run.partNumber}</td>
                 <td className={`${tdBaseStyle}`}>
                     <span
@@ -63,11 +60,11 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
             {/* expanded row */}
             {isExpanded && (
                 <tr
-                    className={`${isExpanded ? "bg-surface-active/60 " : ""} border-b border-white/20 animate-fadeIn`}
+                    className={`${isExpanded ? "bg-surface-active/60 hover:bg-surface-active" : ""} border-b border-white/20 animate-fadeIn`}
                 >
                     <td colSpan={8} className="pt-3">
                         <div className="grid grid-cols-9 gap-3 mb-4 mx-4">
-                            <div className={`${cardBaseStyle} `}>
+                            <div className={`${cardBaseStyle}`}>
                                 <p className={cardHeadingStyle}>Yield Rate</p>
                                 <p
                                     className={`${yeildRate(run) > 97 ? "text-success" : "text-warning"}`}

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button } from "../Button";
 import { supabase } from "../../lib/supabase-client";
 import { useAuth } from "../../context/AuthContext";
+import { toast } from "sonner";
+import type { Part } from "../../hooks/useParts";
 
 export interface PartFormData {
     partNumber: string;
@@ -12,26 +14,43 @@ export interface PartFormData {
     repackBin: string;
 }
 
-const initialForm: PartFormData = {
+interface PartAddFormProps {
+    onClose: () => void;
+}
+
+const initialForm: Part = {
     partNumber: "",
     description: "",
-    client: "",
-    rackType: "",
-    qtyPerBin: 0,
-    repackBin: "",
+    client: null,
+    incomingQtyPerBin: null,
+    outgoingQtyPerBin: null,
+    rackName: null,
+    partsPerRack: null,
+    reqRacksPerBin: null,
+    substrate: null,
+    repackBinType: null,
+    annualVolume: null,
+    oem: null,
+    oemPartNumber: null,
+    programName: null,
 };
 
 const labelBaseStyle = "block uppercase text-sm mb-1";
 const inputeBaseStyle =
-    "w-full rounded outline-none bg-neutral-900 uppercase px-2 py-2 border border-white/20 font-mono focus:border-amber-500 transition-colors duration-200 text-sm text-text-secondary ";
+    "w-full rounded outline-none bg-neutral-950 uppercase mb-3 px-2 py-2 border border-white/20 font-mono focus:border-amber-500 transition-colors duration-200 text-sm text-text-secondary ";
+const optionalTagStyle = "lowercase text-text-muted text-xs";
 
-export const PartAddForm = () => {
+const OptionalTag = () => {
+    return <span className={optionalTagStyle}> (opt)</span>;
+};
+
+export const PartAddForm = ({ onClose }: PartAddFormProps) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<
         Partial<Record<keyof PartFormData, string>>
     >({});
-    const [form, setForm] = useState<PartFormData>(initialForm);
+    const [form, setForm] = useState<Part>(initialForm);
 
     const { user } = useAuth();
 
@@ -59,7 +78,7 @@ export const PartAddForm = () => {
         setValidationErrors({});
     };
 
-    const handleSaveRun = async (event: React.SubmitEvent) => {
+    const handlePartAdd = async (event: React.SubmitEvent) => {
         event.preventDefault();
 
         setError(null);
@@ -81,9 +100,17 @@ export const PartAddForm = () => {
                         part_number: form.partNumber,
                         part_description: form.description,
                         client: form.client,
-                        rack_name: form.rackType,
-                        incoming_bin_quantity: form.qtyPerBin,
-                        repack_bin: form.repackBin,
+                        incomingQtyPerBin: form.incomingQtyPerBin,
+                        outgoingQtyPerBin: form.outgoingQtyPerBin,
+                        rackName: form.rackName,
+                        partsPerRack: form.partsPerRack,
+                        reqRacksPerBin: form.reqRacksPerBin,
+                        substrate: form.substrate,
+                        repackBinType: form.repackBinType,
+                        annualVolume: form.annualVolume,
+                        oem: form.oem,
+                        oemPartNumber: form.oemPartNumber,
+                        programName: form.programName,
                     },
                 ]);
 
@@ -99,19 +126,22 @@ export const PartAddForm = () => {
         } finally {
             setLoading(false);
             setForm(initialForm);
+            onClose();
+            toast.success("Part added successfully");
         }
     };
 
     return (
         <>
-            <form onSubmit={handleSaveRun}>
-                <h1 className="mb-6 text-primary">Log Production Run</h1>
-                <div className="grid grid-cols-2 gap-2.5 mb-6">
+            <h1 className="mb-6 text-primary">Add Part</h1>
+            <form onSubmit={handlePartAdd} className="max-h-dvh">
+                <div className="grid grid-cols-2 gap-2">
                     <div>
                         <label className={`${labelBaseStyle} text-text-label`}>
                             Part Number
                         </label>
                         <input
+                            placeholder="EC-0000"
                             type="text"
                             name="partNumber"
                             value={form.partNumber}
@@ -120,84 +150,259 @@ export const PartAddForm = () => {
                             }
                             className={`${inputeBaseStyle}`}
                         />
-                        <label className={`${labelBaseStyle} text-text-label`}>
-                            Description
-                        </label>
-                        <input
-                            type="text"
-                            name="description"
-                            placeholder="Part Description"
-                            value={form.description}
-                            onChange={(e) =>
-                                setForm({
-                                    ...form,
-                                    description: e.target.value,
-                                })
-                            }
-                            className={`${inputeBaseStyle}`}
-                        />
+                    </div>
+                    <div>
                         <label className={`${labelBaseStyle} text-text-label`}>
                             Client
                         </label>
                         <input
                             type="text"
-                            name="client"
-                            placeholder="Client Name"
+                            name="partNumber"
                             value={form.client}
                             onChange={(e) =>
                                 setForm({ ...form, client: e.target.value })
                             }
                             className={`${inputeBaseStyle}`}
                         />
+                    </div>
+                </div>
+                <div>
+                    <label className={`${labelBaseStyle} text-text-label`}>
+                        Description
+                    </label>
+                    <input
+                        type="text"
+                        name="description"
+                        value={form.description}
+                        onChange={(e) =>
+                            setForm({
+                                ...form,
+                                description: e.target.value,
+                            })
+                        }
+                        className={`${inputeBaseStyle}`}
+                    />
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 border-b-2 border-white/10 mb-4 pb-2">
+                    <div className="col-span-2 md:col-span-1">
                         <label className={`${labelBaseStyle} text-text-label`}>
-                            Rack Type
+                            Rack Name
                         </label>
                         <input
                             type="text"
-                            name="rackType"
-                            placeholder="Rack Type"
-                            value={form.rackType}
-                            onChange={(e) =>
-                                setForm({ ...form, rackType: e.target.value })
-                            }
-                            className={`${inputeBaseStyle}`}
-                        />
-                        <label className={`${labelBaseStyle} text-text-label`}>
-                            Qty per bin
-                        </label>
-                        <input
-                            type="number"
-                            name="qtyPerBin"
-                            placeholder="0"
-                            value={form.qtyPerBin}
+                            name="rackName"
+                            value={form.rackName}
                             onChange={(e) =>
                                 setForm({
                                     ...form,
-                                    qtyPerBin: Number(e.target.value),
+                                    rackName: e.target.value,
                                 })
                             }
                             className={`${inputeBaseStyle}`}
                         />
+                    </div>
+                    <div>
                         <label className={`${labelBaseStyle} text-text-label`}>
-                            Ra
+                            Parts per rack
+                            <OptionalTag />
+                        </label>
+                        <input
+                            type="number"
+                            name="partsPerRack"
+                            placeholder="0"
+                            value={form.partsPerRack}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    partsPerRack: Number(e.target.value),
+                                })
+                            }
+                            className={`${inputeBaseStyle}`}
+                        />
+                    </div>
+                    <div>
+                        <label className={`${labelBaseStyle} text-text-label`}>
+                            Racks per bin
+                            <OptionalTag />
+                        </label>
+                        <input
+                            type="number"
+                            step={0.1}
+                            name="partsPerRack"
+                            placeholder="0"
+                            value={form.reqRacksPerBin}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    reqRacksPerBin: Number(e.target.value),
+                                })
+                            }
+                            className={`${inputeBaseStyle}`}
+                        />
+                    </div>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-7 mb-4 pb-2 border-b-2 border-white/10 gap-2">
+                    <div className="col-span-2 md:col-span-3 ">
+                        <label className={`${labelBaseStyle} text-text-label`}>
+                            Repack Bin
                         </label>
                         <input
                             type="text"
                             name="repackBin"
-                            placeholder="Repack Bin"
-                            value={form.repackBin}
+                            placeholder="Leave blank if not applicable"
+                            value={form.repackBinType}
                             onChange={(e) =>
-                                setForm({ ...form, repackBin: e.target.value })
+                                setForm({
+                                    ...form,
+                                    repackBinType: e.target.value,
+                                })
+                            }
+                            className={`${inputeBaseStyle}`}
+                        />
+                    </div>
+                    <div className="col-span-1 md:col-span-2">
+                        <label className={`${labelBaseStyle} text-text-label`}>
+                            Incoming qty per bin
+                            <OptionalTag />
+                        </label>
+                        <input
+                            type="number"
+                            name="incomingQtyPerBin"
+                            placeholder="0"
+                            value={form.incomingQtyPerBin}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    incomingQtyPerBin: Number(e.target.value),
+                                })
+                            }
+                            className={`${inputeBaseStyle}`}
+                        />
+                    </div>
+                    <div className="col-span-1 md:col-span-2">
+                        <label className={`${labelBaseStyle} text-text-label`}>
+                            Outgoing qty per bin
+                            <OptionalTag />
+                        </label>
+                        <input
+                            type="number"
+                            name="outgoingQtyPerBin"
+                            placeholder="0"
+                            value={form.outgoingQtyPerBin}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    outgoingQtyPerBin: Number(e.target.value),
+                                })
                             }
                             className={`${inputeBaseStyle}`}
                         />
                     </div>
                 </div>
 
-                {/* quantities input in a grid */}
-                <div className="flex gap-2.5">
+                {/* OEM Section */}
+                <div className="grid grid-cols-2 gap-2 mb-4">
+                    <div>
+                        <label className={`${labelBaseStyle} text-text-label`}>
+                            OEM
+                        </label>
+                        <input
+                            type="text"
+                            name="oem"
+                            value={form.oem}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    oem: e.target.value,
+                                })
+                            }
+                            className={`${inputeBaseStyle}`}
+                        />
+                    </div>
+                    <div>
+                        <label className={`${labelBaseStyle} text-text-label`}>
+                            OEM Part Number
+                            <OptionalTag />
+                        </label>
+                        <input
+                            type="text"
+                            name="oemPartNumber"
+                            value={form.oemPartNumber}
+                            onChange={(e) =>
+                                setForm({
+                                    ...form,
+                                    oemPartNumber: e.target.value,
+                                })
+                            }
+                            className={`${inputeBaseStyle}`}
+                        />
+                    </div>
+                    <div className="col-span-2 grid grid-cols-6 gap-2 justify-center">
+                        <div className="col-span-6 md:col-span-2">
+                            <label
+                                className={`${labelBaseStyle} text-text-label`}
+                            >
+                                Program Name
+                                <OptionalTag />
+                            </label>
+                            <input
+                                type="text"
+                                name="programName"
+                                value={form.programName}
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        programName: e.target.value,
+                                    })
+                                }
+                                className={`${inputeBaseStyle}`}
+                            />
+                        </div>
+                        <div className="md:col-span-2 col-span-3">
+                            <label
+                                className={`${labelBaseStyle} text-text-label`}
+                            >
+                                Annual Vol.
+                                <OptionalTag />
+                            </label>
+                            <input
+                                type="number"
+                                name="annualVolume"
+                                value={form.annualVolume}
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        annualVolume: Number(e.target.value),
+                                    })
+                                }
+                                className={`${inputeBaseStyle}`}
+                            />
+                        </div>
+                        <div className="md:col-span-2 col-span-3">
+                            <label
+                                className={`${labelBaseStyle} text-text-label`}
+                            >
+                                Substrate
+                                <OptionalTag />
+                            </label>
+                            <input
+                                type="text"
+                                name="substrate"
+                                value={form.substrate}
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        substrate: e.target.value,
+                                    })
+                                }
+                                className={`${inputeBaseStyle}`}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex flex-col-reverse md:flex-row gap-2">
                     <Button
-                        variant="destructive"
                         type="button"
                         onClick={() => handleFormReset()}
                         className="flex-1"
@@ -206,6 +411,7 @@ export const PartAddForm = () => {
                     </Button>
                     <Button
                         type="submit"
+                        variant="primary"
                         className="flex-2 hover:bg-amber-500"
                         disabled={
                             loading || Object.keys(validationErrors).length > 0
