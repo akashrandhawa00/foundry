@@ -1,5 +1,4 @@
 import { useEffect, type ReactNode } from "react";
-import { Button } from "../Button";
 import { IoIosClose } from "react-icons/io";
 
 export interface ModalProps {
