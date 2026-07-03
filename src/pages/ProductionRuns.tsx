@@ -7,7 +7,7 @@ import { Button } from "../components/Button";
 
 export const ProductionRuns = () => {
     const from = new Date();
-    const [filter, setFilter] = useState<string | null>();
+    const [filter, setFilter] = useState<string | null>(null);
 
     const { runs, loading, error, fetchRuns } = useProductionRuns({
         from: filter,
