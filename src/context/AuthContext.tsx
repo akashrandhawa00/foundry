@@ -25,12 +25,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [session, setSession] = useState<Session | null>(null);
-    const [profile, setProfile] = useState<Profile | null>();
+    const [profile, setProfile] = useState<Profile | null>(null);
 
     const [sessionLoading, setSessionLoading] = useState(true);
     const [profileLoading, setProfileLoading] = useState(false);
 
-    const isLoading = sessionLoading && profileLoading;
+    const isLoading = sessionLoading || profileLoading;
 
     const user = session?.user ?? null;
     const currentUserId = useRef<string | null>(null);
@@ -114,9 +114,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         signInWithEmail,
         signOut,
     };
-    console.log("Profiel", profile);
-    console.log("User", user);
-    console.log("Session", session);
 
     return (
         <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

@@ -15,9 +15,11 @@ const cardHeadingStyle =
     "mb-1 tracking-wide uppercase text-xs text-text-secondary";
 
 function yeildRate(run: ProductionRun) {
-    return run.qtyLoaded > 0
-        ? Math.round((run.qtyCoated / run.qtyLoaded) * 100)
-        : 0;
+    return Math.round((run.qtyCoated / run.qtyLoaded) * 100);
+}
+
+function defectRate(run: ProductionRun) {
+    return Number(((run.qtyDefects / run.qtyLoaded) * 100).toFixed(2));
 }
 
 export const OverviewRow = ({ run }: { run: ProductionRun }) => {
@@ -28,6 +30,9 @@ export const OverviewRow = ({ run }: { run: ProductionRun }) => {
         dateStyle: "medium",
         timeStyle: "short",
     });
+    const runDate = new Date(run.runDate).toLocaleString("en-CA", {
+        dateStyle: "medium",
+    });
 
     return (
         <>
@@ -35,7 +40,7 @@ export const OverviewRow = ({ run }: { run: ProductionRun }) => {
                 onClick={() => setIsExpanded((prev) => !prev)}
                 className={`${isExpanded ? "bg-surface-active/60 hover:bg-surface-active" : "hover:bg-brand/40"}  cursor-pointer transition-colors duration-200 border-t border-surface-active `}
             >
-                <td className={`${tdBaseStyle}`}>{run.id}</td>
+                <td className={`${tdBaseStyle}`}>{runDate}</td>
                 <td className={`${tdBaseStyle}`}>{run.partNumber}</td>
                 <td className={`${tdBaseStyle}`}>
                     <span
@@ -44,15 +49,12 @@ export const OverviewRow = ({ run }: { run: ProductionRun }) => {
                         {run.shift}
                     </span>
                 </td>
-                <td className={`${tdBaseStyle} uppercase`}>
-                    {run.partDescription}
-                </td>
                 <td className={`${tdBaseStyle}`}>{run.qtyLoaded}</td>
                 <td className={`${tdBaseStyle}`}>{run.qtyCoated}</td>
                 <td
                     className={`${tdBaseStyle} ${totalLoss > 0 ? "text-danger-text" : ""}`}
                 >
-                    {totalLoss}
+                    {defectRate(run)} %
                 </td>
                 <td>{isExpanded ? <IoIosArrowUp /> : <IoIosArrowDown />}</td>
             </tr>

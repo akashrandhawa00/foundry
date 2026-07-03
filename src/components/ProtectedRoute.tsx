@@ -10,7 +10,9 @@ export default function ProtectedRoute() {
                 <div className="text-lg animate-pulse">Loading...</div>
             </div>
         );
-    if (!user) return <Navigate to="/login" replace />;
+    if (!user) {
+        return <Navigate to="/login" replace />;
+    }
 
     return <Outlet />;
 }
