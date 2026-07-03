@@ -4,18 +4,18 @@ import { supabase } from "../lib/supabase-client";
 export interface Part {
     partNumber: string;
     description: string;
-    client: string | null;
-    incomingQtyPerBin: number | null;
-    outgoingQtyPerBin: number | null;
-    rackName: string | null;
-    partsPerRack: number | null;
-    reqRacksPerBin: number | null;
-    substrate: string | null;
-    repackBinType: string | null;
-    annualVolume: number | null;
-    oem: string | null;
-    oemPartNumber: string | null;
-    programName: string | null;
+    client: string;
+    incomingQtyPerBin: number;
+    outgoingQtyPerBin: number;
+    rackName: string;
+    partsPerRack: number;
+    reqRacksPerBin: number;
+    substrate: string;
+    repackBinType: string;
+    annualVolume: number;
+    oem: string;
+    oemPartNumber: string;
+    programName: string;
 }
 
 export function useParts() {
