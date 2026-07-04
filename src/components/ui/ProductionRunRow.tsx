@@ -2,6 +2,8 @@ import { useState } from "react";
 import { GoPencil, GoTrash } from "react-icons/go";
 import type { ProductionRun } from "../../hooks/useProductionRuns";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { Modal } from "./Modal";
+import { ProductionEditForm } from "../forms/ProductionEditForm";
 
 const tdBaseStyle = "px-3 py-3 text-sm";
 export const shiftStyles = {
@@ -23,10 +25,14 @@ function yeildRate(run: ProductionRun) {
 export const ProductionRunRow = ({
     run,
     deleteRun,
+    editRun,
 }: {
-    run: ProductionRun; deleteRun: (runId:number) => Promise<void> 
+    run: ProductionRun;
+    deleteRun: (runId: number) => Promise<void>;
+    editRun: any;
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const [showEditRunModal, setShowEditRunModal] = useState(false);
 
     const totalLoss = run.qtyDefects + run.qtyFallOff;
     const createdAt = new Date(run.createdAt).toLocaleString("en-CA", {
@@ -109,7 +115,7 @@ export const ProductionRunRow = ({
                             >
                                 <button
                                     onClick={() =>
-                                        console.log("editing ", run.id)
+                                        setShowEditRunModal((prev) => !prev)
                                     }
                                     className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center py-1.5 duration-200 cursor-pointer text-sm border text-text-secondary bg-text-secondary/10 hover:bg-text-secondary/20"
                                 >
@@ -125,6 +131,22 @@ export const ProductionRunRow = ({
                                 </button>
                             </div>
                         </div>
+                        {showEditRunModal && (
+                            <Modal
+                                title="Edit Run"
+                                onClose={() =>
+                                    setShowEditRunModal((prev) => !prev)
+                                }
+                            >
+                                <ProductionEditForm
+                                    editRun={editRun}
+                                    run={run}
+                                    onClose={() =>
+                                        setShowEditRunModal((prev) => !prev)
+                                    }
+                                />
+                            </Modal>
+                        )}
 
                         {/* additiona info  */}
                         <div className="text-sm gap-6 flex text-text-muted px-3 py-2">

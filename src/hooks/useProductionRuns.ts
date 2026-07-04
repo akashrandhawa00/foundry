@@ -14,6 +14,7 @@ export interface ProductionRun {
     loggedByRole: string;
     shift: "morning" | "afternoon" | "midnight";
     runDate: string;
+    runTime: string;
 }
 
 export function useProductionRuns(range?: { from?: string; to?: string }) {
@@ -34,7 +35,7 @@ export function useProductionRuns(range?: { from?: string; to?: string }) {
 
             if (error) throw error;
         } catch (err: unknown) {
-            console.log('del req err')
+            console.log("del req err");
             if (err instanceof Error) {
                 setError(err.message);
             } else {
@@ -132,6 +133,7 @@ export function useProductionRuns(range?: { from?: string; to?: string }) {
                     loggedByRole: run.profiles?.role ?? "Unknown",
                     shift: run.shift,
                     runDate: run.run_date,
+                    runTime: run.run_time,
                 })),
             );
         } catch (err: unknown) {

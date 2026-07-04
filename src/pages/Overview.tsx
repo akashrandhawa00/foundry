@@ -47,10 +47,10 @@ export const Overview = () => {
                     <thead>
                         <tr className="py-6 px-12 border-b border-surface-active">
                             {[
-                                "Date",
+                                "Time",
                                 "Part",
+                                "Description",
                                 "Shift",
-                                "Loaded",
                                 "Coated",
                                 "Defect %",
                                 "",

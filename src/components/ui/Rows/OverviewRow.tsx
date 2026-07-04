@@ -30,6 +30,7 @@ export const OverviewRow = ({ run }: { run: ProductionRun }) => {
         dateStyle: "medium",
         timeStyle: "short",
     });
+
     const runDate = new Date(run.runDate).toLocaleString("en-CA", {
         dateStyle: "medium",
     });
@@ -38,10 +39,11 @@ export const OverviewRow = ({ run }: { run: ProductionRun }) => {
         <>
             <tr
                 onClick={() => setIsExpanded((prev) => !prev)}
-                className={`${isExpanded ? "bg-surface-active/60 hover:bg-surface-active" : "hover:bg-brand/40"}  cursor-pointer transition-colors duration-200 border-t border-surface-active `}
+                className={`${isExpanded ? "bg-surface-active/60 " : "hover:bg-brand/40"}  cursor-pointer transition-colors duration-200 border-t border-surface-active `}
             >
-                <td className={`${tdBaseStyle}`}>{runDate}</td>
+                <td className={`${tdBaseStyle}`}>{run.runTime.slice(0, 5)}</td>
                 <td className={`${tdBaseStyle}`}>{run.partNumber}</td>
+                <td className={`${tdBaseStyle}`}>{run.partDescription}</td>
                 <td className={`${tdBaseStyle}`}>
                     <span
                         className={`rounded inline-block px-2 py-0.5 ${shiftStyles[run.shift]}`}
@@ -49,10 +51,9 @@ export const OverviewRow = ({ run }: { run: ProductionRun }) => {
                         {run.shift}
                     </span>
                 </td>
-                <td className={`${tdBaseStyle}`}>{run.qtyLoaded}</td>
                 <td className={`${tdBaseStyle}`}>{run.qtyCoated}</td>
                 <td
-                    className={`${tdBaseStyle} ${totalLoss > 0 ? "text-danger-text" : ""}`}
+                    className={`${tdBaseStyle} ${defectRate(run) > 3 ? "text-danger-text" : "text-orange-300"}`}
                 >
                     {defectRate(run)} %
                 </td>
@@ -62,7 +63,7 @@ export const OverviewRow = ({ run }: { run: ProductionRun }) => {
             {/* expanded row */}
             {isExpanded && (
                 <tr
-                    className={`${isExpanded ? "bg-surface-active/60 hover:bg-surface-active" : ""} border-b border-white/20 animate-fadeIn`}
+                    className={`${isExpanded ? "bg-surface-active/60 " : ""} border-b border-white/20 animate-fadeIn`}
                 >
                     <td colSpan={8} className="pt-3">
                         <div className="grid grid-cols-9 gap-3 mb-4 mx-4">
@@ -114,13 +115,19 @@ export const OverviewRow = ({ run }: { run: ProductionRun }) => {
 
                         {/* additiona info  */}
                         <div className="text-sm gap-6 flex text-text-muted px-3 py-2">
-                            <span className="group">
+                            <span>
                                 Logged By:{" "}
                                 <span className="text-text-secondary relative">
-                                    <div className="translate-y-2 translate-x-5 opacity-0 capitalize transition-all duration-200 delay-500 group-hover:opacity-100 text-white group-hover:translate-y-1 px-2 py-2 rounded bg-brand/90 border border-brand absolute">
+                                    <div className="translate-y-2 translate-x-5 opacity-0 capitalize transition-all duration-200 delay-500  text-white  px-2 py-2 rounded bg-brand/90 border border-brand absolute">
                                         {run.loggedByRole.split("_").join(" ")}
                                     </div>
                                     {run.loggedBy}
+                                </span>
+                            </span>
+                            <span>
+                                Run Date:{" "}
+                                <span className="text-text-secondary">
+                                    {runDate}
                                 </span>
                             </span>
                             <span>

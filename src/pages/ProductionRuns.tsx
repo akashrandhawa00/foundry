@@ -9,9 +9,10 @@ export const ProductionRuns = () => {
     const from = new Date();
     const [filter, setFilter] = useState<string>();
 
-    const { runs, deleteRun, loading, error, fetchRuns } = useProductionRuns({
-        from: filter,
-    });
+    const { runs, deleteRun, editRun, loading, error, fetchRuns } =
+        useProductionRuns({
+            from: filter,
+        });
 
     const [showFilters, setShowFilters] = useState<boolean>(false);
 
@@ -94,6 +95,7 @@ export const ProductionRuns = () => {
                                     key={run.id}
                                     run={run}
                                     deleteRun={deleteRun}
+                                    editRun={editRun}
                                 />
                             ))}
                         </tbody>
