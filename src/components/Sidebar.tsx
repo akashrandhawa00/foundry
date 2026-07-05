@@ -13,11 +13,11 @@ import { BiSolidComponent } from "react-icons/bi";
 import { HiOutlineMenu } from "react-icons/hi";
 
 export const Sidebar = () => {
-    const { signOut, sessionUser } = useAuth();
+    const { signOut, profile } = useAuth();
 
     const NAV_LINKS = [
         { to: "/", label: "Overview", logo: RxDashboard },
-        { to: "/production-runs", label: "Production Runs", logo: LuLogs },
+        { to: "/production-log", label: "Production Log", logo: LuLogs },
         { to: "/quality", label: "Quality", logo: FaSprayCan },
         { to: "/parts", label: "Parts", logo: BiSolidComponent },
         { to: "/users", label: "Users", logo: FaUser },
@@ -56,12 +56,13 @@ ${
     };
 
     const SideBarFooter = () => {
+        const role = profile?.role;
         return (
             <div className="flex flex-col items-center justify-center">
                 <div className="text-center pb-2">
-                    <p className="text-text-secondary">{sessionUser?.name}</p>{" "}
+                    <p className="text-text-secondary">{profile?.full_name}</p>{" "}
                     <div className="text-text-label uppercase text-xs">
-                        {sessionUser?.role}
+                        {role?.split("_").join(" ")}
                     </div>
                 </div>{" "}
                 <Button
@@ -81,7 +82,7 @@ ${
     return (
         <>
             {/* mobile topbar */}
-            <div className="md:hidden sticky top-0 flex items-center justify-between px-4 py-3 text-primary">
+            <div className="bg-gray-900 md:hidden sticky top-0 flex items-center justify-between px-4 py-3 text-primary">
                 <button
                     className="p-1"
                     onClick={() => setShowMobileSideBar((prev) => !prev)}
@@ -126,7 +127,7 @@ ${
             </div>
 
             {/* Desktop navbar */}
-            <aside className="w-64 min-w-64 sticky top-0 h-dvh hidden md:flex border-r  border-r-white/20 flex-col gap-1 px-3 py-6 bg-gray-900">
+            <aside className="w-64 min-w-64 md:sticky top-0 h-dvh hidden md:flex border-r  border-r-white/20 flex-col gap-1 px-3 py-6 bg-gray-900">
                 <div className="mb-6 pl-3 flex items-center gap-3">
                     <div className=" w-full max-w-sm mx-auto my-auto min-w-min text-primary">
                         {/* <div className="pt-2 text-primary font-mono tracking-wider text-2xl"> */}
@@ -164,16 +165,6 @@ ${
                 </div>
 
                 <NavLinks />
-
-                <div className="mr-3">
-                    <Button
-                        variant="primary"
-                        onClick={() => setShowModal((prev) => !prev)}
-                        className="w-full"
-                    >
-                        Add Run +
-                    </Button>
-                </div>
 
                 <div className="flex-1"></div>
                 <SideBarFooter />
@@ -230,7 +221,10 @@ ${
                 <div className="mr-3">
                     <Button
                         variant="primary"
-                        onClick={() => setShowModal((prev) => !prev)}
+                        onClick={() => {
+                            setShowModal((prev) => !prev);
+                            setShowMobileSideBar((prev) => !prev);
+                        }}
                         className="w-full"
                     >
                         Add Run +
@@ -243,7 +237,7 @@ ${
 
             {showModal && (
                 <Modal title="test-modal" onClose={() => setShowModal(false)}>
-                    <ProductionRunForm />
+                    <ProductionRunForm onClose={() => setShowModal(false)} />
                 </Modal>
             )}
         </>

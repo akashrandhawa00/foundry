@@ -1,9 +1,9 @@
-export function ProductionRunsSkeleton() {
+export function TableSkeleton() {
     return (
         <div className="w-full animate-pulse mt-8">
             {/* Table header */}
             <div className="grid grid-cols-7 gap-4 px-6 py-6 border-b border-surface-active bg-zinc-900">
-                {["", "", "", "", "", "", ""].map((col) => (
+                {[1, 2, 3, 4, 5, 6, 7].map((col) => (
                     <div
                         key={col}
                         className="h-3 bg-text-label rounded w-3/4"
