@@ -21,7 +21,7 @@ export const LoginPage = () => {
         try {
             await signInWithEmail(email, password);
 
-            navigate("/production-runs", { replace: true });
+            navigate("/production-log", { replace: true });
         } catch (error) {
             if (error instanceof Error) {
                 setError(error.message);

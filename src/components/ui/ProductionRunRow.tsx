@@ -1,10 +1,12 @@
+import { useProductionRunsMutation } from "../../hooks/useProductionRunsMutation";
 import { useState } from "react";
-import { GoPencil, GoTrash } from "react-icons/go";
-import type { ProductionRun } from "../../hooks/useProductionRuns";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { Modal } from "./Modal";
 import { ProductionEditForm } from "../forms/ProductionEditForm";
+import type { ProductionRun } from "../../hooks/useProductionRuns";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { GoPencil, GoTrash } from "react-icons/go";
 
+//styles-----------
 const tdBaseStyle = "px-3 py-3 text-sm";
 export const shiftStyles = {
     morning: "bg-emerald-700 text-emerald-200",
@@ -15,6 +17,7 @@ const cardBaseStyle =
     "col-span-2 rounded-lg px-4 py-3 border border-white/10 bg-gray-900 hover:scale-105 hover:border-white/20 transition-all duration-200";
 const cardHeadingStyle =
     "mb-1 tracking-wide uppercase text-xs text-text-secondary";
+//-----------------
 
 function yeildRate(run: ProductionRun) {
     return run.qtyLoaded > 0
@@ -22,17 +25,11 @@ function yeildRate(run: ProductionRun) {
         : 0;
 }
 
-export const ProductionRunRow = ({
-    run,
-    deleteRun,
-    editRun,
-}: {
-    run: ProductionRun;
-    deleteRun: (runId: number) => Promise<void>;
-    editRun: any;
-}) => {
+export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showEditRunModal, setShowEditRunModal] = useState(false);
+
+    const { editRun, deleteRun } = useProductionRunsMutation();
 
     const totalLoss = run.qtyDefects + run.qtyFallOff;
     const createdAt = new Date(run.createdAt).toLocaleString("en-CA", {
@@ -117,14 +114,14 @@ export const ProductionRunRow = ({
                                     onClick={() =>
                                         setShowEditRunModal((prev) => !prev)
                                     }
-                                    className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center py-1.5 duration-200 cursor-pointer text-sm border text-text-secondary bg-text-secondary/10 hover:bg-text-secondary/20"
+                                    className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center px-2 py-1.5 duration-200 cursor-pointer text-sm border text-text-secondary bg-text-secondary/10 hover:bg-text-secondary/20"
                                 >
                                     <GoPencil />
                                     Edit
                                 </button>
                                 <button
-                                    onClick={() => deleteRun(run.id)}
-                                    className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center py-1.5 duration-200 cursor-pointer text-sm border text-red-400 bg-red-500/10 hover:bg-red-500/20"
+                                    onClick={() => deleteRun.mutate(run.id)}
+                                    className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center px-2 py-1.5 duration-200 cursor-pointer text-sm border text-red-400 bg-red-500/10 hover:bg-red-500/20"
                                 >
                                     <GoTrash />
                                     Delete

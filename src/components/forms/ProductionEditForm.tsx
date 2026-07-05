@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { Button } from "../Button";
-import { supabase } from "../../lib/supabase-client";
-import { useAuth } from "../../context/AuthContext";
 import { useParts } from "../../hooks/useParts";
 import { toast } from "sonner";
 import type { ProductionRun } from "../../hooks/useProductionRuns";
+import { useProductionRunsMutation } from "../../hooks/useProductionRunsMutation";
 
 export interface ProductionFormData {
     date: string;
@@ -19,7 +18,7 @@ export interface ProductionFormData {
 }
 
 interface ProductionEditFormProps {
-    editRun: () => void;
+    editRun: ReturnType<typeof useProductionRunsMutation>["editRun"];
     onClose: () => void;
     run: ProductionRun;
 }
@@ -29,10 +28,10 @@ const inputeBaseStyle =
     "w-full rounded outline-none bg-neutral-950  px-2 py-2 border border-white/10 focus:border-brand transition-colors duration-200 text-sm text-text-secondary ";
 
 export const ProductionEditForm = ({
+    editRun,
     onClose,
     run,
 }: ProductionEditFormProps) => {
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<
         Partial<Record<keyof ProductionFormData, string>>
@@ -49,11 +48,8 @@ export const ProductionEditForm = ({
         defects: run.qtyDefects,
         fallOff: run.qtyFallOff,
     };
+
     const [form, setForm] = useState<ProductionFormData>(initialForm);
-
-    const { user } = useAuth();
-
-    //grab parts from supabase to diplay available parts number and description-----------
     const { parts, loading: partsLoading, fetchParts } = useParts();
 
     useEffect(() => {
@@ -67,10 +63,6 @@ export const ProductionEditForm = ({
         const selectedPart = parts.find(
             (part) => part.partNumber === selectedPartNumber,
         );
-
-        console.log("selected value:", selectedPartNumber);
-        console.log("parts array:", parts);
-        console.log("matched part:", selectedPart);
 
         setForm({
             ...form,
@@ -98,71 +90,55 @@ export const ProductionEditForm = ({
         if (defects < 0) newErrors.defects = "Cannot be negative.";
         if (fallOff < 0) newErrors.fallOff = "Cannot be negative.";
 
-        // const totalOut =
-        //     (form.qtyCoated ?? 0) + (form.defects ?? 0) + (form.fallOff ?? 0);
-        // if (totalOut > qtyLoaded) {
-        //     newErrors.qtyCoated =
-        //         "Coated + defects + falloff exceed the load quantity.";
-        // }
-
         setValidationErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const handleFormReset = () => {
         setForm(initialForm);
+        setError(null);
         setValidationErrors({});
     };
 
-    const editRunTEMP = async (event: React.SubmitEvent) => {
+    const handleEditRun = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         setError(null);
         setValidationErrors({});
-        if (!user) {
-            setError("You must be logged in");
-            return;
-        }
 
         if (!validateForm()) return;
 
         const calculatedFallOff =
             (form.qtyLoaded ?? 0) - (form.qtyCoated ?? 0) - (form.defects ?? 0);
 
-        setLoading(true);
-
-        try {
-            const { error: saveRunError } = await supabase
-                .from("production_runs")
-                .insert([
-                    {
-                        part_number: form.partNumber,
-                        quantity_loaded: form.qtyLoaded,
-                        quantity_coated: form.qtyCoated,
-                        quantity_defects: form.defects,
-                        quantity_falloff: calculatedFallOff,
-                        run_date: form.date,
-                        shift: form.shift,
-                        logged_by: user.id,
-                        run_time: form.time,
-                    },
-                ]);
-
-            if (saveRunError) {
-                throw saveRunError;
-            }
-        } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError("Unknown error");
-            }
-        } finally {
-            setLoading(false);
-            setForm(initialForm);
-            onClose();
-            toast.success("Production run saved successfully");
-        }
+        editRun.mutate(
+            {
+                runId: run.id,
+                updates: {
+                    partNumber: form.partNumber,
+                    qtyLoaded: form.qtyLoaded ?? undefined,
+                    qtyCoated: form.qtyCoated ?? undefined,
+                    qtyDefects: form.defects ?? undefined,
+                    qtyFallOff: calculatedFallOff,
+                    runDate: form.date,
+                    shift: form.shift,
+                    runTime: form.time,
+                },
+            },
+            {
+                onSuccess: () => {
+                    toast.success("Edit successfully");
+                    onClose();
+                },
+                onError: (editRunError) => {
+                    toast.error("Error");
+                    setError(
+                        editRunError instanceof Error
+                            ? editRunError.message
+                            : "Unknown error",
+                    );
+                },
+            },
+        );
     };
 
     const fallOffQuantity =
@@ -170,7 +146,7 @@ export const ProductionEditForm = ({
 
     return (
         <>
-            <form onSubmit={editRunTEMP}>
+            <form onSubmit={handleEditRun}>
                 <h1 className="mb-6 text-primary">Edit Production Run</h1>
                 <div className="grid grid-cols-2 gap-2 mb-3 md:mb-6">
                     <div>
@@ -441,10 +417,11 @@ export const ProductionEditForm = ({
                         variant="primary"
                         className="flex-2 hover:bg-amber-500"
                         disabled={
-                            loading || Object.keys(validationErrors).length > 0
+                            editRun.isPending ||
+                            Object.keys(validationErrors).length > 0
                         }
                     >
-                        Save Run
+                        Edit Run
                     </Button>
                 </div>
             </form>

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import { useAuth } from "../context/AuthContext";
 import { useProductionRuns } from "../hooks/useProductionRuns";
@@ -13,13 +12,9 @@ export const Overview = () => {
     const from = new Date();
     from.setDate(from.getDate());
 
-    const { runs, fetchRuns } = useProductionRuns({
+    const { runs } = useProductionRuns({
         from: from.toISOString().slice(0, 10),
     });
-
-    useEffect(() => {
-        fetchRuns();
-    }, [fetchRuns]);
 
     return (
         <div className="md:px-10 px-6 py-8">
@@ -28,12 +23,12 @@ export const Overview = () => {
                 addRunButton={true}
                 showTagline={false}
             />
-            <div className="grid grid-cols-2 lg:grid-cols-4 mt-8 gap-5">
-                <div className={`${overViewCardStyle} min-h-30`}>
+            <div className="grid grid-cols-2 lg:grid-cols-2 mt-8 gap-5">
+                <div className={`${overViewCardStyle} min-h-60`}>
                     Today's Production
                 </div>
                 <div className={`${overViewCardStyle}`}>This week</div>
-                <div className={`${overViewCardStyle} min-h-30`}>Yield %</div>
+                <div className={`${overViewCardStyle} min-h-60`}>Yield %</div>
                 <div className={`${overViewCardStyle}`}>Defect %</div>
             </div>
             <div

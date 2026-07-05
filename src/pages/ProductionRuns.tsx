@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import { useProductionRuns } from "../hooks/useProductionRuns";
 import { ProductionRunRow } from "../components/ui/ProductionRunRow";
@@ -9,16 +9,11 @@ export const ProductionRuns = () => {
     const from = new Date();
     const [filter, setFilter] = useState<string>();
 
-    const { runs, deleteRun, editRun, loading, error, fetchRuns } =
-        useProductionRuns({
-            from: filter,
-        });
+    const { runs, loading, error } = useProductionRuns({
+        from: filter,
+    });
 
     const [showFilters, setShowFilters] = useState<boolean>(false);
-
-    useEffect(() => {
-        fetchRuns();
-    }, [fetchRuns]);
 
     return (
         <div className="md:px-10 px-6 py-8">
@@ -91,12 +86,7 @@ export const ProductionRuns = () => {
                         </thead>
                         <tbody>
                             {runs.map((run) => (
-                                <ProductionRunRow
-                                    key={run.id}
-                                    run={run}
-                                    deleteRun={deleteRun}
-                                    editRun={editRun}
-                                />
+                                <ProductionRunRow key={run.id} run={run} />
                             ))}
                         </tbody>
                     </table>
