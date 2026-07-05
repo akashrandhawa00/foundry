@@ -7,25 +7,27 @@ import type { Part } from "../../hooks/useParts";
 import { PartAddForm } from "../forms/PartAddForm";
 
 interface Props {
-    filterButton?: boolean;
-    addRunButton?: boolean;
-    addPartButton?: boolean;
+    showFilterButton?: boolean;
+    showAddRunButton?: boolean;
+    showAddPartButton?: boolean;
     title: string;
     runs?: ProductionRun[];
     parts?: Part[];
     classes?: string;
     showTagline?: boolean;
+    description?: string;
 }
 
 export default function PageHeader({
     parts,
     runs,
-    filterButton,
-    addRunButton,
-    addPartButton,
+    showFilterButton: filterButton,
+    showAddRunButton: addRunButton,
+    showAddPartButton: addPartButton,
     title,
     classes,
     showTagline = true,
+    description,
 }: Props) {
     const [showRunModal, setShowRunModal] = useState<boolean>(false);
     const [showPartModal, setShowPartModal] = useState<boolean>(false);
@@ -37,9 +39,16 @@ export default function PageHeader({
         <>
             <div id="production-log-header" className="flex justify-between">
                 <div>
-                    <h1 className={`md:text-xl ${classes}`}>{title}</h1>
+                    <h1
+                        className={`text-lg md:text-2xl text-primary ${classes}`}
+                    >
+                        {title}
+                    </h1>
+                    <div className="text-sm md:text-base mb-2 text-neutral-500">
+                        {description}
+                    </div>
                     {showTagline && (
-                        <div className="text-xs md:text-sm text-text-label">
+                        <div className="text-xs md:text-sm text-text-muted">
                             {totalRuns} entries total
                         </div>
                     )}
@@ -75,7 +84,7 @@ export default function PageHeader({
             </div>
             {showRunModal && (
                 <Modal
-                    title="test-modal"
+                    title="Production Run Modal"
                     onClose={() => setShowRunModal(false)}
                 >
                     <ProductionRunForm onClose={() => setShowRunModal(false)} />
@@ -83,7 +92,7 @@ export default function PageHeader({
             )}
             {showPartModal && (
                 <Modal
-                    title="test-modal"
+                    title="Part Add Modal"
                     onClose={() => setShowPartModal(false)}
                 >
                     <PartAddForm onClose={() => setShowPartModal(false)} />

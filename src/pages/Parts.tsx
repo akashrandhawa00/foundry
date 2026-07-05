@@ -4,20 +4,16 @@ import { useParts } from "../hooks/useParts";
 import { PartsRow } from "../components/ui/PartsRow";
 
 export const Parts = () => {
-    const { parts, loading, error, fetchParts } = useParts();
-
-    useEffect(() => {
-        fetchParts();
-    }, [fetchParts]);
+    const { parts, loading, error } = useParts();
 
     return (
         <div className="md:px-10 px-6 py-8">
             <PageHeader
                 title={"Parts List"}
                 parts={parts}
-                filterButton={false}
-                addPartButton={true}
-                addRunButton={true}
+                showFilterButton={false}
+                showAddPartButton={true}
+                showAddRunButton={true}
             />
             {loading ? (
                 <p>loading</p>

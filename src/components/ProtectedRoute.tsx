@@ -7,7 +7,9 @@ export default function ProtectedRoute() {
     if (isLoading)
         return (
             <div className="flex h-dvh items-center justify-center">
-                <div className="text-lg animate-pulse">Loading...</div>
+                <div className="text-netural-500 text-lg animate-pulse">
+                    Loading...
+                </div>
             </div>
         );
     if (!user) {

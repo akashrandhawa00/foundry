@@ -3,7 +3,7 @@ import { GoPencil, GoTrash } from "react-icons/go";
 import type { ProductionRun } from "../../../hooks/useProductionRuns";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
-const tdBaseStyle = "px-3 py-3 text-sm";
+const tdBaseStyle = "px-3 py-3 text-sm ";
 export const shiftStyles = {
     morning: "bg-emerald-700 text-emerald-200",
     afternoon: "bg-blue-600 text-blue-200",
@@ -35,13 +35,26 @@ export const OverviewRow = ({ run }: { run: ProductionRun }) => {
         dateStyle: "medium",
     });
 
+    let defectRateStyle = "";
+    if (defectRate(run) > 1) {
+        defectRateStyle = "border-l-4 border-orange-300 text-orange-300";
+    }
+    if (defectRate(run) > 2) {
+        defectRateStyle = "border-l-4 border-red-400 text-red-400";
+    }
+
     return (
         <>
             <tr
                 onClick={() => setIsExpanded((prev) => !prev)}
                 className={`${isExpanded ? "bg-surface-active/60 " : "hover:bg-brand/40"}  cursor-pointer transition-colors duration-200 border-t border-surface-active `}
             >
-                <td className={`${tdBaseStyle}`}>{run.runTime.slice(0, 5)}</td>
+                <td className={`${tdBaseStyle} text-lg ${defectRateStyle}`}>
+                    {defectRate(run)} %
+                </td>
+                <td className={`${tdBaseStyle} hidden md:table-cell`}>
+                    {run.runTime?.slice(0, 5) ?? "-"}
+                </td>
                 <td className={`${tdBaseStyle}`}>{run.partNumber}</td>
                 <td className={`${tdBaseStyle}`}>{run.partDescription}</td>
                 <td className={`${tdBaseStyle}`}>
@@ -52,11 +65,6 @@ export const OverviewRow = ({ run }: { run: ProductionRun }) => {
                     </span>
                 </td>
                 <td className={`${tdBaseStyle}`}>{run.qtyCoated}</td>
-                <td
-                    className={`${tdBaseStyle} ${defectRate(run) > 3 ? "text-danger-text" : "text-orange-300"}`}
-                >
-                    {defectRate(run)} %
-                </td>
                 <td>{isExpanded ? <IoIosArrowUp /> : <IoIosArrowDown />}</td>
             </tr>
 
@@ -102,11 +110,11 @@ export const OverviewRow = ({ run }: { run: ProductionRun }) => {
                             <div
                                 className={`rounded-lg flex flex-col py-1 gap-2 order-first`}
                             >
-                                <button className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center py-1.5 duration-200 cursor-pointer text-sm border text-text-secondary bg-text-secondary/10 hover:bg-text-secondary/20">
+                                <button className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center px-2 py-1.5 duration-200 cursor-pointer text-sm border text-text-secondary bg-text-secondary/10 hover:bg-text-secondary/20">
                                     <GoPencil />
                                     Edit
                                 </button>
-                                <button className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center py-1.5 duration-200 cursor-pointer text-sm border text-red-400 bg-red-500/10 hover:bg-red-500/20">
+                                <button className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center px-2 py-1.5 duration-200 cursor-pointer text-sm border text-red-400 bg-red-500/10 hover:bg-red-500/20">
                                     <GoTrash />
                                     Delete
                                 </button>

@@ -50,11 +50,7 @@ export const ProductionEditForm = ({
     };
 
     const [form, setForm] = useState<ProductionFormData>(initialForm);
-    const { parts, loading: partsLoading, fetchParts } = useParts();
-
-    useEffect(() => {
-        fetchParts();
-    }, [fetchParts]);
+    const { parts, loading: partsLoading } = useParts();
 
     const handlePartSelectionChange = (
         event: React.ChangeEvent<HTMLSelectElement>,

@@ -36,8 +36,11 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
         dateStyle: "medium",
         timeStyle: "short",
     });
-    const runDate = new Date(run.runDate).toLocaleString("en-CA", {
-        dateStyle: "medium",
+    const runDate = new Date(run.runDate).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone: "UTC",
     });
 
     return (

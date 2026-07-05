@@ -51,17 +51,8 @@ export const PartAddForm = ({ onClose }: PartAddFormProps) => {
         Partial<Record<keyof PartFormData, string>>
     >({});
     const [form, setForm] = useState<Part>(initialForm);
-
     const { user } = useAuth();
 
-    //grab parts from supabase to diplay available parts number and description-----------
-    // const { parts, loading: partsLoading, fetchParts } = useParts();
-
-    // useEffect(() => {
-    //     fetchParts();
-    // }, [fetchParts]);
-
-    // form validation and submission
     const validateForm = (): boolean => {
         const newErrors: Partial<Record<keyof PartFormData, string>> = {};
 

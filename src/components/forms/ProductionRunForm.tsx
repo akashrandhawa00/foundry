@@ -50,11 +50,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
     const { user } = useAuth();
 
     //grab parts from supabase to diplay available parts number and description-----------
-    const { parts, loading: partsLoading, fetchParts } = useParts();
-
-    useEffect(() => {
-        fetchParts();
-    }, [fetchParts]);
+    const { parts, loading: partsLoading } = useParts();
 
     const handlePartSelectionChange = (
         event: React.ChangeEvent<HTMLSelectElement>,

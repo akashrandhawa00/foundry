@@ -20,8 +20,8 @@ export const ProductionRuns = () => {
             <PageHeader
                 title={"Production Log"}
                 runs={runs}
-                filterButton={true}
-                addRunButton={true}
+                showFilterButton={true}
+                showAddRunButton={true}
             />
             <div className="flex justify-end">
                 <div
