@@ -52,7 +52,7 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                 className={`${isExpanded ? "bg-surface-active/60 " : "hover:bg-brand/40"}  cursor-pointer transition-colors duration-200 border-t border-surface-active `}
             >
                 <td className={`${tdBaseStyle}`}>{runDate}</td>
-                <td className={`${tdBaseStyle}`}>{run.partNumber}</td>
+                <td className={`${tdBaseStyle} uppercase`}>{run.partNumber}</td>
                 <td className={`${tdBaseStyle}`}>
                     <span
                         className={`rounded inline-block px-2 py-0.5 ${shiftStyles[run.shift]}`}

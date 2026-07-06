@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Button } from "../Button";
-import { supabase } from "../../lib/supabase-client";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "sonner";
-import type { Part } from "../../hooks/useParts";
+import { useParts, type Part } from "../../hooks/useParts";
 
 export interface PartFormData {
     partNumber: string;
@@ -45,13 +44,13 @@ const OptionalTag = () => {
 };
 
 export const PartAddForm = ({ onClose }: PartAddFormProps) => {
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<
         Partial<Record<keyof PartFormData, string>>
     >({});
     const [form, setForm] = useState<Part>(initialForm);
     const { user } = useAuth();
+    const { addPart } = useParts();
 
     const validateForm = (): boolean => {
         const newErrors: Partial<Record<keyof PartFormData, string>> = {};
@@ -71,7 +70,6 @@ export const PartAddForm = ({ onClose }: PartAddFormProps) => {
 
     const handlePartAdd = async (event: React.SubmitEvent) => {
         event.preventDefault();
-
         setError(null);
         setValidationErrors({});
 
@@ -79,48 +77,44 @@ export const PartAddForm = ({ onClose }: PartAddFormProps) => {
             setError("You must be logged in");
             return;
         }
-
         if (!validateForm()) return;
 
-        setLoading(true);
+        addPart.mutate(
+            {
+                partNumber: form.partNumber,
+                description: form.description,
+                client: form.client,
+                incomingQtyPerBin: form.incomingQtyPerBin,
+                outgoingQtyPerBin: form.outgoingQtyPerBin,
+                rackName: form.rackName,
+                partsPerRack: form.partsPerRack,
+                reqRacksPerBin: form.reqRacksPerBin,
+                substrate: form.substrate,
+                repackBinType: form.repackBinType,
+                annualVolume: form.annualVolume,
+                oem: form.oem,
+                oemPartNumber: form.oemPartNumber,
+                programName: form.programName,
+            },
+            {
+                onSuccess: () => {
+                    toast.success("Part added successfully");
+                    onClose();
+                },
+                onError: (addPartError) => {
+                    toast.error("Error");
+                    setError(
+                        addPartError instanceof Error
+                            ? addPartError.message
+                            : "Unknown error",
+                    );
+                },
+            },
+        );
 
-        try {
-            const { error: saveRunError } = await supabase
-                .from("parts")
-                .insert([
-                    {
-                        part_number: form.partNumber,
-                        part_description: form.description,
-                        client: form.client,
-                        incoming_bin_quantity: form.incomingQtyPerBin,
-                        total_parts_per_packaging_bin: form.outgoingQtyPerBin,
-                        rack_name: form.rackName,
-                        estimated_parts_per_rack: form.partsPerRack,
-                        required_rack_per_bin: form.reqRacksPerBin,
-                        substrate: form.substrate,
-                        repack_bin: form.repackBinType,
-                        annual_volume: form.annualVolume,
-                        oem: form.oem,
-                        oem_part_number: form.oemPartNumber,
-                        program_name: form.programName,
-                    },
-                ]);
-
-            if (saveRunError) {
-                throw saveRunError;
-            }
-        } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError("Unknown error");
-            }
-        } finally {
-            setLoading(false);
-            setForm(initialForm);
-            onClose();
-            toast.success("Part added successfully");
-        }
+        setForm(initialForm);
+        onClose();
+        toast.success("Part added successfully");
     };
 
     return (
@@ -406,7 +400,7 @@ export const PartAddForm = ({ onClose }: PartAddFormProps) => {
                         variant="primary"
                         className="flex-2 hover:bg-amber-500"
                     >
-                        {loading ? "Adding..." : "Add Part"}
+                        {addPart.isPending ? "Adding..." : "Add Part"}
                     </Button>
                 </div>
                 <div className="pt-2">

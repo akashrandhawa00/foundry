@@ -60,6 +60,35 @@ export function useParts() {
         queryFn: () => fetchParts(),
     });
 
+    const addPart = useMutation({
+        mutationFn: async (input: Part) => {
+            const { error: addPartError } = await supabase
+                .from("parts")
+                .insert([
+                    {
+                        part_number: input.partNumber,
+                        part_description: input.description,
+                        client: input.client,
+                        incoming_bin_quantity: input.incomingQtyPerBin,
+                        total_parts_per_packaging_bin: input.outgoingQtyPerBin,
+                        rack_name: input.rackName,
+                        estimated_parts_per_rack: input.partsPerRack,
+                        required_rack_per_bin: input.reqRacksPerBin,
+                        substrate: input.substrate,
+                        repack_bin: input.repackBinType,
+                        annual_volume: input.annualVolume,
+                        oem: input.oem,
+                        oem_part_number: input.oemPartNumber,
+                        program_name: input.programName,
+                    },
+                ]);
+
+            if (addPartError) throw addPartError;
+        },
+
+        onSuccess: invalidate,
+    });
+
     const deletePart = useMutation({
         mutationFn: async (partNumber: string) => {
             const { data, error: deletePartError } = await supabase
@@ -83,6 +112,7 @@ export function useParts() {
     return {
         parts: query.data ?? [],
         deletePart,
+        addPart,
         loading: query.isLoading,
         error: query.error instanceof Error,
     };
