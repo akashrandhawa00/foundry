@@ -6,7 +6,7 @@ import { Button } from "./Button";
 import { PiSignOut } from "react-icons/pi";
 import { RxDashboard } from "react-icons/rx";
 import { LuLogs } from "react-icons/lu";
-import { FaSprayCan, FaUser } from "react-icons/fa";
+import { FaSprayCan } from "react-icons/fa";
 import { BiSolidComponent } from "react-icons/bi";
 import { HiOutlineMenu } from "react-icons/hi";
 
@@ -18,7 +18,7 @@ export const Sidebar = () => {
         { to: "/production-log", label: "Production Log", logo: LuLogs },
         { to: "/quality", label: "Quality", logo: FaSprayCan },
         { to: "/parts", label: "Parts", logo: BiSolidComponent },
-        { to: "/users", label: "Users", logo: FaUser },
+        // { to: "/users", label: "Users", logo: FaUser },
     ];
     const [showMobileSideBar, setShowMobileSideBar] = useState(false);
 

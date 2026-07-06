@@ -3,6 +3,7 @@ import { Button } from "../Button";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "sonner";
 import { useParts, type Part } from "../../hooks/useParts";
+import { IoIosClose } from "react-icons/io";
 
 export interface PartFormData {
     partNumber: string;
@@ -119,8 +120,17 @@ export const PartAddForm = ({ onClose }: PartAddFormProps) => {
 
     return (
         <>
-            <h1 className="mb-6 text-primary">Add Part</h1>
-            <form onSubmit={handlePartAdd} className="max-h-dvh">
+            <form
+                className="relative bg-gray-900 border border-neutral-800 md:mx-1 mt-2 mx-auto max-w-3xl p-8 rounded-2xl px-6 overflow-y-auto"
+                onSubmit={handlePartAdd}
+            >
+                <button
+                    className="absolute top-4 right-4 rounded-md p-1.5 text-neutral-500 hover:text-neutral-200 hover:bg-white/5 transition-colors duration-150"
+                    onClick={onClose}
+                >
+                    <IoIosClose size={28} />
+                </button>
+                <h1 className="mb-6 text-primary">Add Part</h1>
                 <div className="grid grid-cols-2 gap-2">
                     <div>
                         <label className={`${labelBaseStyle} text-text-label`}>

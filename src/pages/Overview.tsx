@@ -3,9 +3,10 @@ import { useAuth } from "../context/AuthContext";
 import { useProductionRuns } from "../hooks/useProductionRuns";
 import { OverviewRow } from "../components/ui/Rows/OverviewRow";
 import { useNavigate } from "react-router-dom";
-
-const overViewCardStyle =
-    "rounded-md bg-neutral-900 border border-white/20 px-3 py-2";
+import {
+    DashboardCharts,
+    overViewCardStyle,
+} from "../components/DashboardCharts";
 
 export const Overview = () => {
     const { profile } = useAuth();
@@ -23,21 +24,14 @@ export const Overview = () => {
                 showAddRunButton={true}
                 showTagline={false}
             />
-            <div className="grid grid-cols-2 lg:grid-cols-2 mt-8 gap-5">
-                <div className={`${overViewCardStyle} min-h-60`}>
-                    Today's Production
-                </div>
-                <div className={`${overViewCardStyle}`}>This week</div>
-                <div className={`${overViewCardStyle} min-h-60`}>Yield %</div>
-                <div className={`${overViewCardStyle}`}>Defect %</div>
-            </div>
+            <DashboardCharts />
             <div
                 id="overview-run-table"
-                className={`col-span-2 md:col-span-full  mt-5 rounded-md bg-neutral-900 border border-white/20 pl-3 md:px-3 py-2 `}
+                className={`col-span-2 md:col-span-full  mt-5 ${overViewCardStyle}`}
             >
                 <h2
                     onClick={() => navigate("/production-log")}
-                    className="border-l-4 border-brand px-2 uppercase font-mono my-2 mx-2 cursor-pointer"
+                    className="border-l-4 border-brand px-2 uppercase font-mono my-2 cursor-pointer"
                 >
                     Recent Runs
                 </h2>
