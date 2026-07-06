@@ -38,7 +38,7 @@ async function fetchParts() {
         client: part.client,
         incomingQtyPerBin: part.incoming_bin_quantity,
         outgoingQtyPerBin: part.total_parts_per_packaging_bin,
-        rackName: part.rack_type,
+        rackName: part.rack_name,
         partsPerRack: part.estimated_parts_per_rack,
         reqRacksPerBin: part.required_rack_per_bin,
         substrate: part.substrate,

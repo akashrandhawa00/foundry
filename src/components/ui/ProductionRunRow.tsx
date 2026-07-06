@@ -6,6 +6,7 @@ import type { ProductionRun } from "../../hooks/useProductionRuns";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import DeleteConfirmation from "./DeleteConfirmation";
 import { FaPen, FaTrash } from "react-icons/fa";
+import { toast } from "sonner";
 
 //styles-----------
 const tdBaseStyle = "px-3 py-3 text-sm";
@@ -139,11 +140,27 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                             >
                                 {
                                     <DeleteConfirmation
+                                        itemName="this run"
                                         onClose={() =>
                                             setShowDeleteModal(false)
                                         }
                                         onDelete={() =>
-                                            deleteRun.mutate(run.id)
+                                            deleteRun.mutate(run.id, {
+                                                onSuccess: () => {
+                                                    toast.success(
+                                                        "Production run deleted successfully",
+                                                        {
+                                                            icon: <FaTrash />,
+                                                        },
+                                                    );
+                                                },
+                                                onError: (deleteError) => {
+                                                    toast.error(
+                                                        "Failed to delete run",
+                                                    );
+                                                    console.error(deleteError);
+                                                },
+                                            })
                                         }
                                     />
                                 }
@@ -190,25 +207,6 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                                 </button>
                             </div>
                         </div>
-                        {/* delete confirmation */}
-                        {showDeleteModal && (
-                            <Modal
-                                title=""
-                                onClose={() => setShowDeleteModal(false)}
-                                showCloseButton={false}
-                            >
-                                {
-                                    <DeleteConfirmation
-                                        onClose={() =>
-                                            setShowDeleteModal(false)
-                                        }
-                                        onDelete={() =>
-                                            deleteRun.mutate(run.id)
-                                        }
-                                    />
-                                }
-                            </Modal>
-                        )}
                     </td>
                 </tr>
             )}

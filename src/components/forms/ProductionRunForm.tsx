@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useParts } from "../../hooks/useParts";
 import { toast } from "sonner";
 import { useProductionRunsMutation } from "../../hooks/useProductionRunsMutation";
+import { IoIosClose } from "react-icons/io";
 
 export interface ProductionFormData {
     date: string;
@@ -150,7 +151,16 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
 
     return (
         <>
-            <form onSubmit={handleSaveRun}>
+            <form
+                className="relative bg-gray-900 border border-neutral-800 md:mx-1 mt-2 mx-auto max-w-3xl p-8 rounded-2xl px-6 overflow-y-auto"
+                onSubmit={handleSaveRun}
+            >
+                <button
+                    className="absolute top-4 right-4 rounded-md p-1.5 text-neutral-500 hover:text-neutral-200 hover:bg-white/5 transition-colors duration-150"
+                    onClick={onClose}
+                >
+                    <IoIosClose size={26} />
+                </button>
                 <h1 className="mb-6 text-primary">Log Production Run</h1>
                 <div className="grid grid-cols-2 gap-2 mb-3 md:mb-6">
                     <div>
@@ -412,7 +422,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                         variant="default"
                         type="button"
                         onClick={() => handleFormReset()}
-                        className="flex-1 border-dashed text-text-secondary border-text-secondary hover:text-primary hover:border-text-primary"
+                        className="flex-1 border-dashed text-neutral-500 border-white/10 hover:text-neutral-300 hover:border-white/20"
                     >
                         Reset
                     </Button>

@@ -5,6 +5,7 @@ import { RiMultiImageLine } from "react-icons/ri";
 import { FaTrash } from "react-icons/fa";
 import { Modal } from "./Modal";
 import DeleteConfirmation from "./DeleteConfirmation";
+import { toast } from "sonner";
 
 const tdBaseStyle = "px-3 py-3 text-sm";
 const cardBaseStyle = "rounded-lg px-4 py-3 border border-white/20 bg-gray-900";
@@ -65,7 +66,7 @@ export const PartsRow = ({ part }: { part: Part }) => {
                                         className={`flex justify-between ${cardTextSpan} `}
                                     >
                                         <span>Repack</span>
-                                        <span>{`${part.repackBinType ?? "Not required"}`}</span>
+                                        <span className="uppercase">{`${part.repackBinType ?? "Not required"}`}</span>
                                     </div>
                                     <div
                                         className={`flex justify-between ${cardTextSpan} `}
@@ -128,7 +129,11 @@ export const PartsRow = ({ part }: { part: Part }) => {
                                         className={`flex justify-between ${cardTextSpan} `}
                                     >
                                         <span>Rack name</span>
-                                        <span>{part.rackName ?? "-"}</span>
+                                        <span className="uppercase">
+                                            {part.rackName?.length < 1
+                                                ? "-"
+                                                : part.rackName}
+                                        </span>
                                     </div>
                                     <div
                                         className={`flex justify-between ${cardTextSpan} `}
@@ -159,7 +164,9 @@ export const PartsRow = ({ part }: { part: Part }) => {
                                     </div>
                                     <div className={cardTextSpan}>
                                         <span>OEM Part Number</span>
-                                        <span>{part.oemPartNumber ?? "-"}</span>
+                                        <span className="uppercase">
+                                            {part.oemPartNumber ?? "-"}
+                                        </span>
                                     </div>
                                 </div>
                                 <div className={cardBaseStyle}>
@@ -187,15 +194,30 @@ export const PartsRow = ({ part }: { part: Part }) => {
                             <Modal
                                 title=""
                                 onClose={() => setShowDeleteModal(false)}
-                                showCloseButton={false}
                             >
                                 {
                                     <DeleteConfirmation
+                                        itemName="this part"
                                         onClose={() =>
                                             setShowDeleteModal(false)
                                         }
                                         onDelete={() =>
-                                            deletePart.mutate(part.partNumber)
+                                            deletePart.mutate(part.partNumber, {
+                                                onSuccess: () => {
+                                                    toast.success(
+                                                        "Production run deleted successfully",
+                                                        {
+                                                            icon: <FaTrash />,
+                                                        },
+                                                    );
+                                                },
+                                                onError: (deleteError) => {
+                                                    toast.error(
+                                                        "Failed to delete run",
+                                                    );
+                                                    console.error(deleteError);
+                                                },
+                                            })
                                         }
                                     />
                                 }
