@@ -4,6 +4,7 @@ import { useProductionRuns } from "../hooks/useProductionRuns";
 import { ProductionRunRow } from "../components/ui/ProductionRunRow";
 import { TableSkeleton } from "../components/ui/TableSkeleton";
 import { Button } from "../components/Button";
+import { FaFilter } from "react-icons/fa";
 
 export const ProductionRuns = () => {
     const from = new Date();
@@ -20,12 +21,31 @@ export const ProductionRuns = () => {
             <PageHeader
                 title={"Production Log"}
                 runs={runs}
-                showFilterButton={true}
                 showAddRunButton={true}
             />
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-4">
+                {/* <div */}
+                {/*     className={`${showFilters ? "block" : "hidden"} flex justify-end items-center gap-2.5`} */}
+                {/* > */}
+                {/*     <div className="flex items-center gap-1"> */}
+                {/*         <label className="text-primary">From: </label> */}
+                {/*         <input */}
+                {/*             value={dateToday} */}
+                {/*             className="px-2 border border-white/10 rounded-md text-neutral-300 py-1 w-42 " */}
+                {/*             type="date" */}
+                {/*             onChange={(e) => setFilter(e.target.value)} */}
+                {/*         /> */}
+                {/*     </div> */}
+                {/*     <div className="flex items-center gap-1"> */}
+                {/*         <label className="text-primary">To: </label> */}
+                {/*         <input */}
+                {/*             type="date" */}
+                {/*             className="px-2 border border-white/10 rounded-md text-neutral-300 py-1 w-42 " */}
+                {/*         /> */}
+                {/*     </div> */}
+                {/* </div> */}
                 <div
-                    className={`${showFilters ? "block" : "hidden"} flex mt-2 gap-2`}
+                    className={`${showFilters ? "block" : "hidden"} flex gap-2`}
                 >
                     <Button
                         onClick={() => {
@@ -52,9 +72,18 @@ export const ProductionRuns = () => {
                         Month
                     </Button>
                 </div>
-                <Button onClick={() => setShowFilters((prev) => !prev)}>
-                    {showFilters ? "x" : "Filter Logs"}
-                </Button>
+                <div
+                    className={` ${showFilters ? "border-l-2 border-neutral-500" : ""}  pl-3`}
+                >
+                    <Button
+                        onClick={() => setShowFilters((prev) => !prev)}
+                        className="w-28 flex flex-1 items-center gap-2 rounded-md transition-all text-text-secondary bg-gray-900 justify-center px-2 py-2 duration-200 cursor-pointer text-sm border border-white/20 hover:border-white/40 hover:text-neutral-300 hover:bg-neutral-500/20 "
+                    >
+                        {" "}
+                        <FaFilter />
+                        {showFilters ? "Hide" : "Filter"}
+                    </Button>
+                </div>
             </div>
             {loading ? (
                 <TableSkeleton />

@@ -16,14 +16,19 @@ import {
 } from "../hooks/useDashboardMetrics";
 
 const colors = {
-    tooltipBg: "var(--color-neutral-300)",
-    morning: "var(--color-emerald-600",
-    afternoon: "var(--color-blue-700",
-    midnight: "var(--color-rose-800",
+    tooltipBg: "var(--color-neutral-900)",
+    tooltipBorder: "var(--color-neutral-700)",
+    tooltipHoverBg: "var(--color-white)",
+    morning: "var(--color-emerald-500",
+    afternoon: "var(--color-sky-500",
+    midnight: "var(--color-rose-400",
 };
 
 export const overViewCardStyle =
     "rounded-lg bg-neutral-900 border border-neutral-800 p-5";
+
+export const cardHeadingStyle =
+    "border-l-4 text-sm border-brand px-2 text-neutral-400 uppercase font-mono my-2";
 
 function KpiCard({
     label,
@@ -36,9 +41,7 @@ function KpiCard({
 }) {
     return (
         <div className={`${overViewCardStyle}`}>
-            <h3 className="border-l-4 text-sm border-brand px-2 text-neutral-300 uppercase font-mono my-2">
-                {label}
-            </h3>
+            <h3 className={cardHeadingStyle}>{label}</h3>
             <p className="mt-2 text-3xl font-semibold text-neutral-100 font-mono">
                 {value}
             </p>
@@ -52,9 +55,7 @@ function KpiCard({
 function ShiftOutputChart({ data }: { data: DashboardMetrics["shift_trend"] }) {
     return (
         <div className={`${overViewCardStyle}`}>
-            <h3 className="border-l-4 text-sm border-brand px-2 text-neutral-300 uppercase font-mono my-2">
-                Output by Shift — This Week
-            </h3>
+            <h3 className={cardHeadingStyle}>Output by Shift — This Week</h3>
             <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={data}>
                     <CartesianGrid
@@ -74,13 +75,17 @@ function ShiftOutputChart({ data }: { data: DashboardMetrics["shift_trend"] }) {
                     />
                     <YAxis stroke="#525252" fontSize={11} />
                     <Tooltip
+                        cursor={{
+                            fill: colors.tooltipHoverBg,
+                            fillOpacity: 0.1,
+                        }}
                         contentStyle={{
                             background: colors.tooltipBg,
-                            border: "1px solid #262626",
-                            borderRadius: 8,
+                            border: `1px solid ${colors.tooltipBorder}`,
+                            borderRadius: 5,
                             fontSize: 12,
                         }}
-                        labelStyle={{ color: "#a3a3a3" }}
+                        labelStyle={{ color: "#a3a3a3", fontWeight: 200 }}
                     />
                     <Legend wrapperStyle={{ fontSize: 12, color: "#a3a3a3" }} />
                     <Bar
@@ -110,9 +115,7 @@ function ShiftOutputChart({ data }: { data: DashboardMetrics["shift_trend"] }) {
 function YieldTrendChart({ data }: { data: DashboardMetrics["trend"] }) {
     return (
         <div className={`${overViewCardStyle}`}>
-            <h3 className="border-l-4 text-sm border-brand px-2 text-neutral-300 uppercase font-mono my-2">
-                Yield — Last 30 Days
-            </h3>
+            <h3 className={cardHeadingStyle}>Yield — Last 30 Days</h3>
             <ResponsiveContainer width="100%" height={220}>
                 <LineChart data={data}>
                     <CartesianGrid
@@ -142,6 +145,7 @@ function YieldTrendChart({ data }: { data: DashboardMetrics["trend"] }) {
                         labelStyle={{ color: "#a3a3a3" }}
                     />
                     <Line
+                        name="Yield"
                         type="monotone"
                         dataKey="yield_pct"
                         stroke="#f59e0b"
@@ -201,16 +205,16 @@ export function DashboardCharts() {
             </div>
 
             <div className={`${overViewCardStyle}`}>
-                <h3 className="border-l-4 text-sm border-brand px-2 text-neutral-300 uppercase font-mono my-2">
-                    Top Parts — Last 7 Days
-                </h3>
+                <h3 className={cardHeadingStyle}>Top Parts — Last 7 Days</h3>
                 <div className="space-y-2">
                     {data.top_parts.map((p) => (
                         <div
                             key={p.part_number}
                             className="flex justify-between text-sm text-neutral-300"
                         >
-                            <span>{p.part_description ?? p.part_number}</span>
+                            <span className="uppercase text-neutral-300">
+                                {p.part_description ?? p.part_number}
+                            </span>
                             <span className="font-mono text-neutral-500">
                                 {p.total.toLocaleString()}
                             </span>

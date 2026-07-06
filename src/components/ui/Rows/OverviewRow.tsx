@@ -3,11 +3,18 @@ import type { ProductionRun } from "../../../hooks/useProductionRuns";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const tdBaseStyle = "px-3 py-3 text-sm ";
+
+// export const shiftStyles = {
+//     morning: "bg-emerald-700 text-emerald-200",
+//     afternoon: "bg-blue-600 text-blue-200",
+//     midnight: "bg-rose-800 text-rose-200",
+// };
 export const shiftStyles = {
-    morning: "bg-emerald-700 text-emerald-200",
-    afternoon: "bg-blue-600 text-blue-200",
-    midnight: "bg-rose-800 text-rose-200",
+    morning: "bg-emerald-400 text-emerald-900",
+    afternoon: "bg-sky-400 text-sky-900",
+    midnight: "bg-rose-500 text-neutral-200",
 };
+
 const cardBaseStyle = "rounded-lg px-4 py-3 border border-white/20 bg-gray-900";
 const cardHeadingStyle =
     "mb-1 tracking-wide uppercase text-xs text-text-secondary";

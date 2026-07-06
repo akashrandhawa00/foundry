@@ -4,6 +4,7 @@ import { useProductionRuns } from "../hooks/useProductionRuns";
 import { OverviewRow } from "../components/ui/Rows/OverviewRow";
 import { useNavigate } from "react-router-dom";
 import {
+    cardHeadingStyle,
     DashboardCharts,
     overViewCardStyle,
 } from "../components/DashboardCharts";
@@ -30,8 +31,8 @@ export const Overview = () => {
                 className={`col-span-2 md:col-span-full  mt-5 ${overViewCardStyle}`}
             >
                 <h2
+                    className={cardHeadingStyle}
                     onClick={() => navigate("/production-log")}
-                    className="border-l-4 border-brand px-2 uppercase font-mono my-2 cursor-pointer"
                 >
                     Recent Runs
                 </h2>
