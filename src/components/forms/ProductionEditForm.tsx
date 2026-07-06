@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "../Button";
 import { useParts } from "../../hooks/useParts";
 import { toast } from "sonner";

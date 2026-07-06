@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import type { Part } from "../../hooks/useParts";
+import { useParts, type Part } from "../../hooks/useParts";
 import { RiMultiImageLine } from "react-icons/ri";
+import { FaTrash } from "react-icons/fa";
+import { Modal } from "./Modal";
+import DeleteConfirmation from "./DeleteConfirmation";
 
 const tdBaseStyle = "px-3 py-3 text-sm";
 const cardBaseStyle = "rounded-lg px-4 py-3 border border-white/20 bg-gray-900";
@@ -10,12 +13,15 @@ const cardTextSpan = "text-sm text-text-secondary justify-between flex";
 
 export const PartsRow = ({ part }: { part: Part }) => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const { deletePart } = useParts();
 
     return (
         <>
             <tr
                 onClick={() => setIsExpanded((prev) => !prev)}
-                className={`${isExpanded ? "bg-surface-active/60 hover:bg-surface-active" : "hover:bg-brand/40"}  cursor-pointer transition-colors duration-200 border-t border-surface-active `}
+                className={`${isExpanded ? "bg-surface-active/60 " : "hover:bg-brand/40"} group cursor-pointer transition-colors duration-200 border-t border-surface-active `}
             >
                 <td className={`${tdBaseStyle} uppercase`}>
                     {part.partNumber}
@@ -35,30 +41,9 @@ export const PartsRow = ({ part }: { part: Part }) => {
             {/* expanded row */}
             {isExpanded && (
                 <tr
-                    className={`${isExpanded ? "bg-surface-active/60 hover:bg-surface-active" : ""} border-b border-white/20 animate-fadeIn`}
+                    className={`${isExpanded ? "bg-surface-active/60 " : ""} border-b border-white/20 animate-fadeIn`}
                 >
                     <td colSpan={8} className="pt-3">
-                        {/* <div className="grid grid-cols-4 gap-3 mb-4 mx-4"> */}
-                        {/*     <div className={`${cardBaseStyle}`}> */}
-                        {/*         <p className={cardHeadingStyle}>-</p> */}
-                        {/*         <p>{}</p> */}
-                        {/*     </div> */}
-                        {/*     <div className={`${cardBaseStyle}`}> */}
-                        {/*         <p className={cardHeadingStyle}>Rack</p> */}
-                        {/*         <p>{part.rackName ?? "-"}</p> */}
-                        {/*     </div> */}
-                        {/*     <div className={`${cardBaseStyle}`}> */}
-                        {/*         <p className={cardHeadingStyle}>Repack Bin</p> */}
-                        {/*         <p>{part.repackBinType}</p> */}
-                        {/*     </div> */}
-                        {/*     <div className={`${cardBaseStyle}`}> */}
-                        {/*         <p className={cardHeadingStyle}> */}
-                        {/*             Quantity Per Bin */}
-                        {/*         </p> */}
-                        {/*         <p>{part.outgoingQtyPerBin}</p> */}
-                        {/*     </div> */}
-                        {/* </div> */}
-
                         <div className="grid grid-cols-3 gap-3 mb-4 mx-4">
                             {/* column 1 */}
                             <div
@@ -187,6 +172,35 @@ export const PartsRow = ({ part }: { part: Part }) => {
                                 </div>
                             </div>
                         </div>
+                        {/* actions column */}
+                        <div className="flex mx-4 mb-4 md:justify-end ">
+                            <button
+                                onClick={() => setShowDeleteModal(true)}
+                                className="max-w-32 flex flex-1 items-center gap-2 rounded-md transition-colors text-text-secondary bg-gray-900 justify-center px-2 py-2 duration-200 cursor-pointer text-sm border border-white/20 hover:border-red-500/40 hover:text-red-300 hover:bg-red-500/20 "
+                            >
+                                <FaTrash /> Delete Part
+                            </button>
+                        </div>
+
+                        {/* delete confirmation */}
+                        {showDeleteModal && (
+                            <Modal
+                                title=""
+                                onClose={() => setShowDeleteModal(false)}
+                                showCloseButton={false}
+                            >
+                                {
+                                    <DeleteConfirmation
+                                        onClose={() =>
+                                            setShowDeleteModal(false)
+                                        }
+                                        onDelete={() =>
+                                            deletePart.mutate(part.partNumber)
+                                        }
+                                    />
+                                }
+                            </Modal>
+                        )}
                     </td>
                 </tr>
             )}

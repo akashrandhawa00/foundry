@@ -1,5 +1,5 @@
 import { supabase } from "../lib/supabase-client";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface Part {
     partNumber: string;
@@ -51,13 +51,38 @@ async function fetchParts() {
 }
 
 export function useParts() {
+    const queryClient = useQueryClient();
+    const invalidate = () => {
+        queryClient.invalidateQueries({ queryKey: ["parts"] });
+    };
     const query = useQuery({
         queryKey: partsQueryKey(),
         queryFn: () => fetchParts(),
     });
 
+    const deletePart = useMutation({
+        mutationFn: async (partNumber: string) => {
+            const { data, error: deletePartError } = await supabase
+                .from("parts")
+                .delete()
+                .eq("part_number", partNumber)
+                .select();
+
+            if (deletePartError) throw deletePartError;
+
+            if (!data || data.length === 0) {
+                throw new Error(
+                    "No matching part was deleted - check permissions or part number.",
+                );
+            }
+        },
+
+        onSuccess: invalidate,
+    });
+
     return {
         parts: query.data ?? [],
+        deletePart,
         loading: query.isLoading,
         error: query.error instanceof Error,
     };

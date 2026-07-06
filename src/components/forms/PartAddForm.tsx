@@ -74,6 +74,7 @@ export const PartAddForm = ({ onClose }: PartAddFormProps) => {
 
         setError(null);
         setValidationErrors({});
+
         if (!user) {
             setError("You must be logged in");
             return;
@@ -91,17 +92,17 @@ export const PartAddForm = ({ onClose }: PartAddFormProps) => {
                         part_number: form.partNumber,
                         part_description: form.description,
                         client: form.client,
-                        incomingQtyPerBin: form.incomingQtyPerBin,
-                        outgoingQtyPerBin: form.outgoingQtyPerBin,
-                        rackName: form.rackName,
-                        partsPerRack: form.partsPerRack,
-                        reqRacksPerBin: form.reqRacksPerBin,
+                        incoming_bin_quantity: form.incomingQtyPerBin,
+                        total_parts_per_packaging_bin: form.outgoingQtyPerBin,
+                        rack_name: form.rackName,
+                        estimated_parts_per_rack: form.partsPerRack,
+                        required_rack_per_bin: form.reqRacksPerBin,
                         substrate: form.substrate,
-                        repackBinType: form.repackBinType,
-                        annualVolume: form.annualVolume,
+                        repack_bin: form.repackBinType,
+                        annual_volume: form.annualVolume,
                         oem: form.oem,
-                        oemPartNumber: form.oemPartNumber,
-                        programName: form.programName,
+                        oem_part_number: form.oemPartNumber,
+                        program_name: form.programName,
                     },
                 ]);
 
@@ -404,11 +405,8 @@ export const PartAddForm = ({ onClose }: PartAddFormProps) => {
                         type="submit"
                         variant="primary"
                         className="flex-2 hover:bg-amber-500"
-                        disabled={
-                            loading || Object.keys(validationErrors).length > 0
-                        }
                     >
-                        Save Run
+                        {loading ? "Adding..." : "Add Part"}
                     </Button>
                 </div>
                 <div className="pt-2">

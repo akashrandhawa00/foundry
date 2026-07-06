@@ -4,7 +4,8 @@ import { Modal } from "./Modal";
 import { ProductionEditForm } from "../forms/ProductionEditForm";
 import type { ProductionRun } from "../../hooks/useProductionRuns";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { GoPencil, GoTrash } from "react-icons/go";
+import DeleteConfirmation from "./DeleteConfirmation";
+import { FaPen, FaTrash } from "react-icons/fa";
 
 //styles-----------
 const tdBaseStyle = "px-3 py-3 text-sm";
@@ -14,7 +15,7 @@ export const shiftStyles = {
     midnight: "bg-rose-800 text-rose-200",
 };
 const cardBaseStyle =
-    "col-span-2 rounded-lg px-4 py-3 border border-white/10 bg-gray-900 hover:scale-105 hover:border-white/20 transition-all duration-200";
+    "rounded-lg px-4 py-3 border border-white/15 bg-gray-900 hover:scale-105 hover:border-white/20 transition-all duration-200";
 const cardHeadingStyle =
     "mb-1 tracking-wide uppercase text-xs text-text-secondary";
 //-----------------
@@ -28,6 +29,7 @@ function yeildRate(run: ProductionRun) {
 export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showEditRunModal, setShowEditRunModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const { editRun, deleteRun } = useProductionRunsMutation();
 
@@ -77,7 +79,7 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                     className={`${isExpanded ? "bg-surface-active/60 " : ""} border-b border-white/20 animate-fadeIn`}
                 >
                     <td colSpan={8} className="pt-3">
-                        <div className="grid grid-cols-9 gap-3 mb-4 mx-4">
+                        <div className="grid grid-cols-4 gap-3 mb-4 mx-4">
                             <div className={`${cardBaseStyle} `}>
                                 <p className={cardHeadingStyle}>Yield Rate</p>
                                 <p
@@ -110,26 +112,6 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                                     {totalLoss}
                                 </p>
                             </div>
-                            <div
-                                className={`rounded-lg flex flex-col py-1 gap-2 order-first`}
-                            >
-                                <button
-                                    onClick={() =>
-                                        setShowEditRunModal((prev) => !prev)
-                                    }
-                                    className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center px-2 py-1.5 duration-200 cursor-pointer text-sm border text-text-secondary bg-text-secondary/10 hover:bg-text-secondary/20"
-                                >
-                                    <GoPencil />
-                                    Edit
-                                </button>
-                                <button
-                                    onClick={() => deleteRun.mutate(run.id)}
-                                    className="flex flex-1 items-center gap-2 rounded-md transition-all font-medium justify-center px-2 py-1.5 duration-200 cursor-pointer text-sm border text-red-400 bg-red-500/10 hover:bg-red-500/20"
-                                >
-                                    <GoTrash />
-                                    Delete
-                                </button>
-                            </div>
                         </div>
                         {showEditRunModal && (
                             <Modal
@@ -148,24 +130,85 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                             </Modal>
                         )}
 
+                        {/* delete confirmation */}
+                        {showDeleteModal && (
+                            <Modal
+                                title=""
+                                onClose={() => setShowDeleteModal(false)}
+                                showCloseButton={false}
+                            >
+                                {
+                                    <DeleteConfirmation
+                                        onClose={() =>
+                                            setShowDeleteModal(false)
+                                        }
+                                        onDelete={() =>
+                                            deleteRun.mutate(run.id)
+                                        }
+                                    />
+                                }
+                            </Modal>
+                        )}
+
                         {/* additiona info  */}
-                        <div className="text-sm gap-6 flex text-text-muted px-3 py-2">
-                            <span className="group">
-                                Logged By:{" "}
-                                <span className="text-text-secondary relative">
-                                    <div className="translate-y-2 translate-x-5 opacity-0 capitalize transition-all duration-200 delay-500 group-hover:opacity-100 text-white group-hover:translate-y-1 px-2 py-2 rounded bg-brand/90 border border-brand absolute">
-                                        {run.loggedByRole.split("_").join(" ")}
-                                    </div>
-                                    {run.loggedBy}
+                        <div className="text-sm md:flex flex flex-col-reverse gap-3 md:flex-row justify-between md:items-center text-text-muted px-4 pb-2">
+                            <div className="flex gap-5">
+                                <span className="group">
+                                    Logged By:{" "}
+                                    <span className="text-text-secondary relative">
+                                        <div className="translate-y-2 translate-x-5 opacity-0 capitalize transition-all duration-200 delay-500 group-hover:opacity-100 text-white group-hover:translate-y-1 px-2 py-2 rounded bg-brand/90 border border-brand absolute">
+                                            {run.loggedByRole
+                                                .split("_")
+                                                .join(" ")}
+                                        </div>
+                                        {run.loggedBy}
+                                    </span>
                                 </span>
-                            </span>
-                            <span>
-                                Created:{" "}
-                                <span className="text-text-secondary">
-                                    {createdAt}
+                                <span>
+                                    Created:{" "}
+                                    <span className="text-text-secondary">
+                                        {createdAt}
+                                    </span>
                                 </span>
-                            </span>
+                            </div>
+                            {/* actions column */}
+                            <div className="flex flex-row gap-2">
+                                <button
+                                    onClick={() =>
+                                        setShowEditRunModal((prev) => !prev)
+                                    }
+                                    className="  w-24 inline-flex  py-2 px-3  items-center gap-2 rounded-md transition-colors text-text-secondary bg-gray-900 justify-center duration-200 cursor-pointer text-sm border border-white/20 hover:border-white/40 hover:text-neutral-300 hover:bg-neutral-500/20 "
+                                >
+                                    <FaPen />
+                                    Edit
+                                </button>
+                                <button
+                                    onClick={() => setShowDeleteModal(true)}
+                                    className="  w-26 inline-flex  py-2 px-3 items-center gap-2 rounded-md transition-colors text-text-secondary bg-gray-900 justify-center duration-200 cursor-pointer text-sm border border-white/20 hover:border-red-500/40 hover:text-red-300 hover:bg-red-500/20 "
+                                >
+                                    <FaTrash /> Delete
+                                </button>
+                            </div>
                         </div>
+                        {/* delete confirmation */}
+                        {showDeleteModal && (
+                            <Modal
+                                title=""
+                                onClose={() => setShowDeleteModal(false)}
+                                showCloseButton={false}
+                            >
+                                {
+                                    <DeleteConfirmation
+                                        onClose={() =>
+                                            setShowDeleteModal(false)
+                                        }
+                                        onDelete={() =>
+                                            deleteRun.mutate(run.id)
+                                        }
+                                    />
+                                }
+                            </Modal>
+                        )}
                     </td>
                 </tr>
             )}

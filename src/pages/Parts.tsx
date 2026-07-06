@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import { useParts } from "../hooks/useParts";
 import { PartsRow } from "../components/ui/PartsRow";
