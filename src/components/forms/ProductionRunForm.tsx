@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "../Button";
-import { supabase } from "../../lib/supabase-client";
 import { useAuth } from "../../context/AuthContext";
 import { useParts } from "../../hooks/useParts";
 import { toast } from "sonner";
+import { useProductionRunsMutation } from "../../hooks/useProductionRunsMutation";
+import { IoIosClose } from "react-icons/io";
 
 export interface ProductionFormData {
     date: string;
@@ -49,12 +50,8 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
 
     const { user } = useAuth();
 
-    //grab parts from supabase to diplay available parts number and description-----------
-    const { parts, loading: partsLoading, fetchParts } = useParts();
-
-    useEffect(() => {
-        fetchParts();
-    }, [fetchParts]);
+    const { parts, loading: partsLoading } = useParts();
+    const { saveRun } = useProductionRunsMutation();
 
     const handlePartSelectionChange = (
         event: React.ChangeEvent<HTMLSelectElement>,
@@ -94,13 +91,6 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
         if (defects < 0) newErrors.defects = "Cannot be negative.";
         if (fallOff < 0) newErrors.fallOff = "Cannot be negative.";
 
-        // const totalOut =
-        //     (form.qtyCoated ?? 0) + (form.defects ?? 0) + (form.fallOff ?? 0);
-        // if (totalOut > qtyLoaded) {
-        //     newErrors.qtyCoated =
-        //         "Coated + defects + falloff exceed the load quantity.";
-        // }
-
         setValidationErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -127,38 +117,33 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
 
         setLoading(true);
 
-        try {
-            const { error: saveRunError } = await supabase
-                .from("production_runs")
-                .insert([
-                    {
-                        part_number: form.partNumber,
-                        quantity_loaded: form.qtyLoaded,
-                        quantity_coated: form.qtyCoated,
-                        quantity_defects: form.defects,
-                        quantity_falloff: calculatedFallOff,
-                        run_date: form.date,
-                        shift: form.shift,
-                        logged_by: user.id,
-                        run_time: form.time,
-                    },
-                ]);
-
-            if (saveRunError) {
-                throw saveRunError;
-            }
-        } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError("Unknown error");
-            }
-        } finally {
-            setLoading(false);
-            setForm(initialForm);
-            onClose();
-            toast.success("Production run saved successfully");
-        }
+        saveRun.mutate(
+            {
+                partNumber: form.partNumber,
+                qtyLoaded: form.qtyLoaded ?? 0,
+                qtyCoated: form.qtyCoated ?? 0,
+                qtyDefects: form.defects ?? 0,
+                qtyFallOff: calculatedFallOff,
+                runDate: form.date,
+                shift: form.shift,
+                loggedBy: user.id,
+                runTime: form.time,
+            },
+            {
+                onSuccess: () => {
+                    toast.success("Production run saved successfully");
+                    onClose();
+                },
+                onError: (saveRunError) => {
+                    toast.error("Failed to add run");
+                    setError(
+                        saveRunError instanceof Error
+                            ? saveRunError.message
+                            : "Unknown error",
+                    );
+                },
+            },
+        );
     };
 
     const fallOffQuantity =
@@ -166,7 +151,16 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
 
     return (
         <>
-            <form onSubmit={handleSaveRun}>
+            <form
+                className="relative bg-gray-900 border border-neutral-800 md:mx-1 mt-2 mx-auto max-w-3xl p-8 rounded-2xl px-6 overflow-y-auto"
+                onSubmit={handleSaveRun}
+            >
+                <button
+                    className="absolute top-4 right-4 rounded-md p-1.5 text-neutral-500 hover:text-neutral-200 hover:bg-white/5 transition-colors duration-150"
+                    onClick={onClose}
+                >
+                    <IoIosClose size={26} />
+                </button>
                 <h1 className="mb-6 text-primary">Log Production Run</h1>
                 <div className="grid grid-cols-2 gap-2 mb-3 md:mb-6">
                     <div>
@@ -205,7 +199,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                     <div className="flex gap-2">
                         <Button
                             type="button"
-                            className={`w-full ${form.shift !== "morning" ? "text-text-secondary" : ""} `}
+                            className={`w-full ${form.shift !== "morning" ? "text-text-secondary" : "border-[#2a9d8f] bg-[#2a9d8f]/10 text-[#2a9d8f]"} `}
                             variant={
                                 form.shift === "morning"
                                     ? "shiftActive"
@@ -219,7 +213,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                         </Button>
                         <Button
                             type="button"
-                            className={`w-full ${form.shift !== "afternoon" ? "text-text-secondary" : ""} `}
+                            className={`w-full ${form.shift !== "afternoon" ? "text-text-secondary" : "border-[#e9c46a] bg-[#e9c46a]/10 text-[#e9c46a]"} `}
                             variant={
                                 form.shift === "afternoon"
                                     ? "shiftActive"
@@ -233,7 +227,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                         </Button>
                         <Button
                             type="button"
-                            className={`w-full ${form.shift !== "midnight" ? "text-text-secondary" : ""} `}
+                            className={`w-full ${form.shift !== "midnight" ? "text-text-secondary" : "border-rose-400 bg-rose-400/10 text-rose-400"} `}
                             variant={
                                 form.shift === "midnight"
                                     ? "shiftActive"
@@ -261,7 +255,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                                 name="partNumber"
                                 value={form.partNumber}
                                 onChange={handlePartSelectionChange}
-                                className={`${inputeBaseStyle}`}
+                                className={`${inputeBaseStyle} uppercase`}
                                 disabled={partsLoading}
                                 required
                             >
@@ -326,7 +320,9 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                             />
                         </div>
                         <div>
-                            <label className={`text-success ${labelBaseStyle}`}>
+                            <label
+                                className={`text-emerald-400 ${labelBaseStyle}`}
+                            >
                                 Coated
                             </label>
                             <input
@@ -350,7 +346,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                             />
                         </div>
                         <div>
-                            <label className={`${labelBaseStyle} text-red-500`}>
+                            <label className={`${labelBaseStyle} text-red-400`}>
                                 Defects
                             </label>
                             <input
@@ -374,9 +370,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                             />
                         </div>
                         <div>
-                            <label
-                                className={`${labelBaseStyle} text-orange-400/80`}
-                            >
+                            <label className={`${labelBaseStyle} text-warning`}>
                                 Falloff
                             </label>
                             <input
@@ -428,7 +422,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                         variant="default"
                         type="button"
                         onClick={() => handleFormReset()}
-                        className="flex-1 border-dashed text-text-secondary border-text-secondary hover:text-primary hover:border-text-primary"
+                        className="flex-1 border-dashed text-neutral-500 border-white/10 hover:text-neutral-300 hover:border-white/20"
                     >
                         Reset
                     </Button>

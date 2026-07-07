@@ -1,14 +1,12 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/Foundry_light.svg";
 import { useAuth } from "../context/AuthContext";
-import { Modal } from "./ui/Modal";
 import { useState } from "react";
-import { ProductionRunForm } from "./forms/ProductionRunForm";
 import { Button } from "./Button";
 import { PiSignOut } from "react-icons/pi";
 import { RxDashboard } from "react-icons/rx";
 import { LuLogs } from "react-icons/lu";
-import { FaSprayCan, FaUser } from "react-icons/fa";
+import { FaSprayCan } from "react-icons/fa";
 import { BiSolidComponent } from "react-icons/bi";
 import { HiOutlineMenu } from "react-icons/hi";
 
@@ -20,9 +18,8 @@ export const Sidebar = () => {
         { to: "/production-log", label: "Production Log", logo: LuLogs },
         { to: "/quality", label: "Quality", logo: FaSprayCan },
         { to: "/parts", label: "Parts", logo: BiSolidComponent },
-        { to: "/users", label: "Users", logo: FaUser },
+        // { to: "/users", label: "Users", logo: FaUser },
     ];
-    const [showModal, setShowModal] = useState<boolean>(false);
     const [showMobileSideBar, setShowMobileSideBar] = useState(false);
 
     const NavLinks = ({ onLinkClick }: { onLinkClick?: () => void }) => {
@@ -218,28 +215,9 @@ ${
                     onLinkClick={() => setShowMobileSideBar((prev) => !prev)}
                 />
 
-                <div className="mr-3">
-                    <Button
-                        variant="primary"
-                        onClick={() => {
-                            setShowModal((prev) => !prev);
-                            setShowMobileSideBar((prev) => !prev);
-                        }}
-                        className="w-full"
-                    >
-                        Add Run +
-                    </Button>
-                </div>
-
                 <div className="flex-1"></div>
                 <SideBarFooter />
             </aside>
-
-            {showModal && (
-                <Modal title="test-modal" onClose={() => setShowModal(false)}>
-                    <ProductionRunForm onClose={() => setShowModal(false)} />
-                </Modal>
-            )}
         </>
     );
 };

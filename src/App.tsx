@@ -13,7 +13,14 @@ import { Toaster } from "sonner";
 const App = () => {
     return (
         <>
-            <Toaster position="top-right" richColors theme="dark" />
+            <Toaster
+                position="top-right"
+                richColors
+                theme="light"
+                duration={5000}
+                expand
+                visibleToasts={3}
+            />
             <Routes>
                 <Route path="/login" element={<LoginPage />} />
                 <Route element={<ProtectedRoute />}>

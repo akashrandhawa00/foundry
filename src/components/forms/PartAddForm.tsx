@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button } from "../Button";
-import { supabase } from "../../lib/supabase-client";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "sonner";
-import type { Part } from "../../hooks/useParts";
+import { useParts, type Part } from "../../hooks/useParts";
+import { IoIosClose } from "react-icons/io";
 
 export interface PartFormData {
     partNumber: string;
@@ -45,23 +45,14 @@ const OptionalTag = () => {
 };
 
 export const PartAddForm = ({ onClose }: PartAddFormProps) => {
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<
         Partial<Record<keyof PartFormData, string>>
     >({});
     const [form, setForm] = useState<Part>(initialForm);
-
     const { user } = useAuth();
+    const { addPart } = useParts();
 
-    //grab parts from supabase to diplay available parts number and description-----------
-    // const { parts, loading: partsLoading, fetchParts } = useParts();
-
-    // useEffect(() => {
-    //     fetchParts();
-    // }, [fetchParts]);
-
-    // form validation and submission
     const validateForm = (): boolean => {
         const newErrors: Partial<Record<keyof PartFormData, string>> = {};
 
@@ -80,61 +71,66 @@ export const PartAddForm = ({ onClose }: PartAddFormProps) => {
 
     const handlePartAdd = async (event: React.SubmitEvent) => {
         event.preventDefault();
-
         setError(null);
         setValidationErrors({});
+
         if (!user) {
             setError("You must be logged in");
             return;
         }
-
         if (!validateForm()) return;
 
-        setLoading(true);
+        addPart.mutate(
+            {
+                partNumber: form.partNumber,
+                description: form.description,
+                client: form.client,
+                incomingQtyPerBin: form.incomingQtyPerBin,
+                outgoingQtyPerBin: form.outgoingQtyPerBin,
+                rackName: form.rackName,
+                partsPerRack: form.partsPerRack,
+                reqRacksPerBin: form.reqRacksPerBin,
+                substrate: form.substrate,
+                repackBinType: form.repackBinType,
+                annualVolume: form.annualVolume,
+                oem: form.oem,
+                oemPartNumber: form.oemPartNumber,
+                programName: form.programName,
+            },
+            {
+                onSuccess: () => {
+                    toast.success("Part added successfully");
+                    onClose();
+                },
+                onError: (addPartError) => {
+                    toast.error("Failed to add part");
+                    setError(
+                        addPartError instanceof Error
+                            ? addPartError.message
+                            : "Unknown error",
+                    );
+                },
+            },
+        );
 
-        try {
-            const { error: saveRunError } = await supabase
-                .from("parts")
-                .insert([
-                    {
-                        part_number: form.partNumber,
-                        part_description: form.description,
-                        client: form.client,
-                        incomingQtyPerBin: form.incomingQtyPerBin,
-                        outgoingQtyPerBin: form.outgoingQtyPerBin,
-                        rackName: form.rackName,
-                        partsPerRack: form.partsPerRack,
-                        reqRacksPerBin: form.reqRacksPerBin,
-                        substrate: form.substrate,
-                        repackBinType: form.repackBinType,
-                        annualVolume: form.annualVolume,
-                        oem: form.oem,
-                        oemPartNumber: form.oemPartNumber,
-                        programName: form.programName,
-                    },
-                ]);
-
-            if (saveRunError) {
-                throw saveRunError;
-            }
-        } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError("Unknown error");
-            }
-        } finally {
-            setLoading(false);
-            setForm(initialForm);
-            onClose();
-            toast.success("Part added successfully");
-        }
+        setForm(initialForm);
+        onClose();
+        toast.success("Part added successfully");
     };
 
     return (
         <>
-            <h1 className="mb-6 text-primary">Add Part</h1>
-            <form onSubmit={handlePartAdd} className="max-h-dvh">
+            <form
+                className="relative bg-gray-900 border border-neutral-800 md:mx-1 mt-2 mx-auto max-w-3xl p-8 rounded-2xl px-6 overflow-y-auto"
+                onSubmit={handlePartAdd}
+            >
+                <button
+                    className="absolute top-4 right-4 rounded-md p-1.5 text-neutral-500 hover:text-neutral-200 hover:bg-white/5 transition-colors duration-150"
+                    onClick={onClose}
+                >
+                    <IoIosClose size={28} />
+                </button>
+                <h1 className="mb-6 text-primary">Add Part</h1>
                 <div className="grid grid-cols-2 gap-2">
                     <div>
                         <label className={`${labelBaseStyle} text-text-label`}>
@@ -413,11 +409,8 @@ export const PartAddForm = ({ onClose }: PartAddFormProps) => {
                         type="submit"
                         variant="primary"
                         className="flex-2 hover:bg-amber-500"
-                        disabled={
-                            loading || Object.keys(validationErrors).length > 0
-                        }
                     >
-                        Save Run
+                        {addPart.isPending ? "Adding..." : "Add Part"}
                     </Button>
                 </div>
                 <div className="pt-2">

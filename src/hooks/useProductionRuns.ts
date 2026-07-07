@@ -11,6 +11,7 @@ export interface ProductionRun {
     qtyDefects: number;
     qtyFallOff: number;
     loggedBy: string;
+    loggedById: string;
     loggedByRole: string;
     shift: "morning" | "afternoon" | "midnight";
     runDate: string;
@@ -46,6 +47,7 @@ async function fetchProductionRuns(range?: { from?: string; to?: string }) {
         qtyDefects: run.quantity_defects,
         qtyFallOff: run.quantity_falloff,
         loggedBy: run.profiles?.full_name ?? "Unknown",
+        loggedById: run.logged_by ?? "Unknown",
         loggedByRole: run.profiles?.role ?? "Unknown",
         shift: run.shift,
         runDate: run.run_date,
