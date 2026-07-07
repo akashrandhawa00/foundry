@@ -25,7 +25,7 @@ export const LoginPage = () => {
             return;
         }
 
-        navigate("/production-log", { replace: true });
+        navigate("/", { replace: true });
     };
 
     const labelBaseStyle = "mb-2 inline-block text-sm mb-1.5 text-text-label";

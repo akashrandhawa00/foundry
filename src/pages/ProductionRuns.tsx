@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import { useProductionRuns } from "../hooks/useProductionRuns";
 import { ProductionRunRow } from "../components/ui/ProductionRunRow";
 import { TableSkeleton } from "../components/ui/TableSkeleton";
 import { Button } from "../components/Button";
 import { FaFilter } from "react-icons/fa";
+import { toast } from "sonner";
+import { useAuth } from "../context/AuthContext";
 
 export const ProductionRuns = () => {
     const from = new Date();
@@ -13,8 +15,26 @@ export const ProductionRuns = () => {
     const { runs, loading, error } = useProductionRuns({
         from: filter,
     });
+    const { profile } = useAuth();
 
     const [showFilters, setShowFilters] = useState<boolean>(false);
+
+    // show user the info about purple border for their own runs
+    useEffect(() => {
+        const hintKey = `production-hint-seen-${profile?.id}`;
+
+        const hasSeenProductionHint = localStorage.getItem(hintKey);
+
+        if (!hasSeenProductionHint) {
+            toast.info("Your runs are highlighted", {
+                description:
+                    "Look for the purple border to quickly find production runs created by you.",
+                duration: 10000,
+            });
+
+            localStorage.setItem(hintKey, "true");
+        }
+    });
 
     return (
         <div className="md:px-10 px-6 py-8">

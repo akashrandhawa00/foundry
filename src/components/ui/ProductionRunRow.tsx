@@ -7,7 +7,8 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import DeleteConfirmation from "./DeleteConfirmation";
 import { FaPen, FaTrash } from "react-icons/fa";
 import { toast } from "sonner";
-import { shiftStyles } from "./Rows/OverviewRow";
+import { useAuth } from "../../context/AuthContext";
+import { shiftStyles } from "./Styles";
 
 //styles-----------
 const tdBaseStyle = "px-3 py-3 text-sm";
@@ -29,6 +30,7 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const { editRun, deleteRun } = useProductionRunsMutation();
+    const { profile } = useAuth();
 
     const totalLoss = run.qtyDefects + run.qtyFallOff;
     const createdAt = new Date(run.createdAt).toLocaleString("en-CA", {
@@ -42,11 +44,15 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
         timeZone: "UTC",
     });
 
+    const canEditRun =
+        ["supervisor", "admin"].includes(profile?.role ?? "") ||
+        run.loggedById === profile?.id;
+
     return (
         <>
             <tr
                 onClick={() => setIsExpanded((prev) => !prev)}
-                className={`${isExpanded ? "bg-surface-active/60 " : "hover:bg-brand/40"}  cursor-pointer transition-colors duration-200 border-t border-surface-active `}
+                className={`${isExpanded ? "bg-surface-active/60 " : "hover:bg-brand/40"}  cursor-pointer transition-colors duration-200 border-t  ${run.loggedById === profile?.id ? "border-l-4 border-purple-500/70 border-t-surface-active " : "border-surface-active border-l-4 border-l-transparent"}`}
             >
                 <td className={`${tdBaseStyle}`}>{runDate}</td>
                 <td className={`${tdBaseStyle} uppercase`}>{run.partNumber}</td>
@@ -185,22 +191,31 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                                 </span>
                             </div>
                             {/* actions column */}
+
                             <div className="flex flex-row gap-2">
-                                <button
-                                    onClick={() =>
-                                        setShowEditRunModal((prev) => !prev)
-                                    }
-                                    className="  w-24 inline-flex  py-2 px-3  items-center gap-2 rounded-md transition-colors text-text-secondary bg-gray-900 justify-center duration-200 cursor-pointer text-sm border border-white/20 hover:border-white/40 hover:text-neutral-300 hover:bg-neutral-500/20 "
-                                >
-                                    <FaPen />
-                                    Edit
-                                </button>
-                                <button
-                                    onClick={() => setShowDeleteModal(true)}
-                                    className="  w-26 inline-flex  py-2 px-3 items-center gap-2 rounded-md transition-colors text-text-secondary bg-gray-900 justify-center duration-200 cursor-pointer text-sm border border-white/20 hover:border-red-500/40 hover:text-red-300 hover:bg-red-500/20 "
-                                >
-                                    <FaTrash /> Delete
-                                </button>
+                                {canEditRun && (
+                                    <>
+                                        <button
+                                            onClick={() =>
+                                                setShowEditRunModal(
+                                                    (prev) => !prev,
+                                                )
+                                            }
+                                            className="  w-24 inline-flex  py-2 px-3  items-center gap-2 rounded-md transition-colors text-text-secondary bg-gray-900 justify-center duration-200 cursor-pointer text-sm border border-white/20 hover:border-white/40 hover:text-neutral-300 hover:bg-neutral-500/20 "
+                                        >
+                                            <FaPen />
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() =>
+                                                setShowDeleteModal(true)
+                                            }
+                                            className="  w-26 inline-flex  py-2 px-3 items-center gap-2 rounded-md transition-colors text-text-secondary bg-gray-900 justify-center duration-200 cursor-pointer text-sm border border-white/20 hover:border-red-500/40 hover:text-red-300 hover:bg-red-500/20 "
+                                        >
+                                            <FaTrash /> Delete
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </td>

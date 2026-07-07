@@ -1,19 +1,9 @@
 import { useState } from "react";
 import type { ProductionRun } from "../../../hooks/useProductionRuns";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { shiftStyles } from "../Styles";
 
 const tdBaseStyle = "px-3 py-3 text-sm ";
-
-// export const shiftStyles = {
-//     morning: "bg-emerald-700 text-emerald-200",
-//     afternoon: "bg-blue-600 text-blue-200",
-//     midnight: "bg-rose-800 text-rose-200",
-// };
-export const shiftStyles = {
-    morning: "bg-[#2a9d8f] text-neutral-100",
-    afternoon: "bg-[#e9c46a] text-neutral-900",
-    midnight: "bg-rose-400 text-neutral-900",
-};
 
 const cardBaseStyle = "rounded-lg px-4 py-3 border border-white/20 bg-gray-900";
 const cardHeadingStyle =
