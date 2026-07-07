@@ -103,7 +103,7 @@ export const PartAddForm = ({ onClose }: PartAddFormProps) => {
                     onClose();
                 },
                 onError: (addPartError) => {
-                    toast.error("Error");
+                    toast.error("Failed to add part");
                     setError(
                         addPartError instanceof Error
                             ? addPartError.message

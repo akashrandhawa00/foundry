@@ -123,11 +123,11 @@ export const ProductionEditForm = ({
             },
             {
                 onSuccess: () => {
-                    toast.success("Edit successfully");
+                    toast.success("Edit successfull");
                     onClose();
                 },
                 onError: (editRunError) => {
-                    toast.error("Error");
+                    toast.error("Failed to edit run");
                     setError(
                         editRunError instanceof Error
                             ? editRunError.message

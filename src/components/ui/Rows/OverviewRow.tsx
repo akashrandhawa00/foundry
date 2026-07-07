@@ -10,9 +10,9 @@ const tdBaseStyle = "px-3 py-3 text-sm ";
 //     midnight: "bg-rose-800 text-rose-200",
 // };
 export const shiftStyles = {
-    morning: "bg-emerald-400 text-emerald-900",
-    afternoon: "bg-sky-400 text-sky-900",
-    midnight: "bg-rose-500 text-neutral-200",
+    morning: "bg-[#2a9d8f] text-neutral-100",
+    afternoon: "bg-[#e9c46a] text-neutral-900",
+    midnight: "bg-rose-400 text-neutral-900",
 };
 
 const cardBaseStyle = "rounded-lg px-4 py-3 border border-white/20 bg-gray-900";
@@ -60,8 +60,10 @@ export const OverviewRow = ({ run }: { run: ProductionRun }) => {
                 <td className={`${tdBaseStyle} hidden md:table-cell`}>
                     {run.runTime?.slice(0, 5) ?? "-"}
                 </td>
-                <td className={`${tdBaseStyle}`}>{run.partNumber}</td>
-                <td className={`${tdBaseStyle}`}>{run.partDescription}</td>
+                <td className={`${tdBaseStyle} uppercase`}>{run.partNumber}</td>
+                <td className={`${tdBaseStyle} uppercase`}>
+                    {run.partDescription}
+                </td>
                 <td className={`${tdBaseStyle}`}>
                     <span
                         className={`rounded inline-block px-2 py-0.5 ${shiftStyles[run.shift]}`}

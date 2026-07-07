@@ -15,7 +15,7 @@ const variants: Record<ButtonVariant, string> = {
     default: "text-primary border-white/10 hover:border-white/20",
     destructive:
         "border-red-500 bg-red-500/20 text-white hover:bg-red-500 hover:border-red-500",
-    shiftActive: "border-brand text-brand font-semibold bg-brand/10",
+    shiftActive: "font-semibold",
     primary: "bg-brand text-primary border-brand hover:bg-brand/80",
 };
 

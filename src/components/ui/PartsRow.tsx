@@ -6,6 +6,7 @@ import { FaTrash } from "react-icons/fa";
 import { Modal } from "./Modal";
 import DeleteConfirmation from "./DeleteConfirmation";
 import { toast } from "sonner";
+import { useAuth } from "../../context/AuthContext";
 
 const tdBaseStyle = "px-3 py-3 text-sm";
 const cardBaseStyle = "rounded-lg px-4 py-3 border border-white/20 bg-gray-900";
@@ -17,6 +18,7 @@ export const PartsRow = ({ part }: { part: Part }) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const { deletePart } = useParts();
+    const { profile } = useAuth();
 
     return (
         <>
@@ -180,15 +182,16 @@ export const PartsRow = ({ part }: { part: Part }) => {
                             </div>
                         </div>
                         {/* actions column */}
-                        <div className="flex mx-4 mb-4 md:justify-end ">
-                            <button
-                                onClick={() => setShowDeleteModal(true)}
-                                className="max-w-32 flex flex-1 items-center gap-2 rounded-md transition-colors text-text-secondary bg-gray-900 justify-center px-2 py-2 duration-200 cursor-pointer text-sm border border-white/20 hover:border-red-500/40 hover:text-red-300 hover:bg-red-500/20 "
-                            >
-                                <FaTrash /> Delete Part
-                            </button>
-                        </div>
-
+                        {profile?.role !== "material_handler" && (
+                            <div className="flex mx-4 mb-4 md:justify-end ">
+                                <button
+                                    onClick={() => setShowDeleteModal(true)}
+                                    className="max-w-32 flex flex-1 items-center gap-2 rounded-md transition-colors text-text-secondary bg-gray-900 justify-center px-2 py-2 duration-200 cursor-pointer text-sm border border-white/20 hover:border-red-500/40 hover:text-red-300 hover:bg-red-500/20 "
+                                >
+                                    <FaTrash /> Delete Part
+                                </button>
+                            </div>
+                        )}
                         {/* delete confirmation */}
                         {showDeleteModal && (
                             <Modal
@@ -205,7 +208,7 @@ export const PartsRow = ({ part }: { part: Part }) => {
                                             deletePart.mutate(part.partNumber, {
                                                 onSuccess: () => {
                                                     toast.success(
-                                                        "Production run deleted successfully",
+                                                        "Part deleted successfully",
                                                         {
                                                             icon: <FaTrash />,
                                                         },
@@ -213,7 +216,7 @@ export const PartsRow = ({ part }: { part: Part }) => {
                                                 },
                                                 onError: (deleteError) => {
                                                     toast.error(
-                                                        "Failed to delete run",
+                                                        "Failed to delete part",
                                                     );
                                                     console.error(deleteError);
                                                 },

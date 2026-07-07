@@ -6,34 +6,31 @@ import logo from "../assets/Foundry_light.svg";
 
 export const LoginPage = () => {
     const { user, isLoading: authLoading, signInWithEmail } = useAuth();
-    console.log("isLoading: ", authLoading);
     const navigate = useNavigate();
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
+    const [inputError, setInputError] = useState(false);
 
     if (!authLoading && user) return <Navigate to="/" replace />;
 
     const handleLogin = async (e: React.SubmitEvent) => {
         e.preventDefault();
 
-        try {
-            await signInWithEmail(email, password);
-
-            navigate("/production-log", { replace: true });
-        } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError("An unexpected error occured");
-            }
+        const { error: signInError } = await signInWithEmail(email, password);
+        if (signInError) {
+            setError(signInError);
+            setInputError(true);
+            return;
         }
+
+        navigate("/production-log", { replace: true });
     };
 
     const labelBaseStyle = "mb-2 inline-block text-sm mb-1.5 text-text-label";
     const inputBaseStyle =
-        "w-full rounded-lg outline-none px-4 py-3 border border-white/10 bg-surface focus:border-brand text-sm";
+        "w-full rounded-lg outline-none px-4 py-3 border bg-surface focus:border-brand text-sm";
 
     return (
         <div className="relative flex flex-col md:flex-row-reverse min-h-screen">
@@ -80,9 +77,7 @@ export const LoginPage = () => {
                         <form onSubmit={handleLogin} className="flex flex-col">
                             {error && (
                                 <div className="w-full text-red-400 px-2 py-1 mb-4 flex items-center border-l-2 border-red-400">
-                                    {error === "missing email or phone"
-                                        ? "Invalid Email or password."
-                                        : error}
+                                    {error}
                                 </div>
                             )}
 
@@ -98,9 +93,10 @@ export const LoginPage = () => {
                                     type="email"
                                     placeholder="email@org.com"
                                     value={email}
-                                    className={`leading-1.5 rounded-s-md ${inputBaseStyle}`}
+                                    className={`leading-1.5 rounded-s-md ${inputBaseStyle} ${error && inputError ? "border-2 border-red-400" : "border-white/10"}`}
                                     onChange={(e) => {
                                         setEmail(e.target.value);
+                                        setInputError(false);
                                     }}
                                 />
                             </div>
@@ -115,10 +111,11 @@ export const LoginPage = () => {
                                     id="user_password"
                                     type="password"
                                     placeholder="••••••••"
-                                    className={`relative ${inputBaseStyle}`}
+                                    className={`leading-1.5 rounded-s-md ${inputBaseStyle} ${error && inputError ? "border-2 border-red-400" : "border-white/10"}`}
                                     value={password}
                                     onChange={(e) => {
                                         setPassword(e.target.value);
+                                        setInputError(false);
                                     }}
                                 />
                             </div>

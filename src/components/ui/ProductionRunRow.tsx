@@ -7,14 +7,10 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import DeleteConfirmation from "./DeleteConfirmation";
 import { FaPen, FaTrash } from "react-icons/fa";
 import { toast } from "sonner";
+import { shiftStyles } from "./Rows/OverviewRow";
 
 //styles-----------
 const tdBaseStyle = "px-3 py-3 text-sm";
-export const shiftStyles = {
-    morning: "bg-emerald-700 text-emerald-200",
-    afternoon: "bg-blue-600 text-blue-200",
-    midnight: "bg-rose-800 text-rose-200",
-};
 const cardBaseStyle =
     "rounded-lg px-4 py-3 border border-white/15 bg-gray-900 hover:scale-105 hover:border-white/20 transition-all duration-200";
 const cardHeadingStyle =
@@ -67,7 +63,7 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                 <td className={`${tdBaseStyle}`}>{run.qtyLoaded}</td>
                 <td className={`${tdBaseStyle}`}>{run.qtyCoated}</td>
                 <td
-                    className={`${tdBaseStyle} ${totalLoss > 0 ? "text-danger-text" : ""}`}
+                    className={`${tdBaseStyle} ${totalLoss > 0 ? "font-bold text-red-400" : ""}`}
                 >
                     {totalLoss}
                 </td>
@@ -84,7 +80,7 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                             <div className={`${cardBaseStyle} `}>
                                 <p className={cardHeadingStyle}>Yield Rate</p>
                                 <p
-                                    className={`${yeildRate(run) > 97 ? "text-success" : "text-warning"}`}
+                                    className={`${yeildRate(run) > 97 ? "text-emerald-400" : "text-warning"}`}
                                 >
                                     {yeildRate(run)}%
                                 </p>
@@ -92,7 +88,7 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                             <div className={`${cardBaseStyle}`}>
                                 <p className={cardHeadingStyle}>Defects</p>
                                 <p
-                                    className={`${run.qtyDefects > 0 ? "text-red-300" : ""}`}
+                                    className={`${run.qtyDefects > 0 ? "text-red-400" : ""}`}
                                 >
                                     {run.qtyDefects}
                                 </p>
@@ -108,7 +104,7 @@ export const ProductionRunRow = ({ run }: { run: ProductionRun }) => {
                             <div className={`${cardBaseStyle}`}>
                                 <p className={cardHeadingStyle}>Total Loss</p>
                                 <p
-                                    className={`${run.qtyDefects + run.qtyFallOff > 0 ? "text-danger-text" : ""}`}
+                                    className={`${run.qtyDefects + run.qtyFallOff > 0 ? "text-red-400" : ""}`}
                                 >
                                     {totalLoss}
                                 </p>

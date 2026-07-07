@@ -199,7 +199,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                     <div className="flex gap-2">
                         <Button
                             type="button"
-                            className={`w-full ${form.shift !== "morning" ? "text-text-secondary" : ""} `}
+                            className={`w-full ${form.shift !== "morning" ? "text-text-secondary" : "border-[#2a9d8f] bg-[#2a9d8f]/10 text-[#2a9d8f]"} `}
                             variant={
                                 form.shift === "morning"
                                     ? "shiftActive"
@@ -213,7 +213,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                         </Button>
                         <Button
                             type="button"
-                            className={`w-full ${form.shift !== "afternoon" ? "text-text-secondary" : ""} `}
+                            className={`w-full ${form.shift !== "afternoon" ? "text-text-secondary" : "border-[#e9c46a] bg-[#e9c46a]/10 text-[#e9c46a]"} `}
                             variant={
                                 form.shift === "afternoon"
                                     ? "shiftActive"
@@ -227,7 +227,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                         </Button>
                         <Button
                             type="button"
-                            className={`w-full ${form.shift !== "midnight" ? "text-text-secondary" : ""} `}
+                            className={`w-full ${form.shift !== "midnight" ? "text-text-secondary" : "border-rose-400 bg-rose-400/10 text-rose-400"} `}
                             variant={
                                 form.shift === "midnight"
                                     ? "shiftActive"
@@ -320,7 +320,9 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                             />
                         </div>
                         <div>
-                            <label className={`text-success ${labelBaseStyle}`}>
+                            <label
+                                className={`text-emerald-400 ${labelBaseStyle}`}
+                            >
                                 Coated
                             </label>
                             <input
@@ -344,7 +346,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                             />
                         </div>
                         <div>
-                            <label className={`${labelBaseStyle} text-red-500`}>
+                            <label className={`${labelBaseStyle} text-red-400`}>
                                 Defects
                             </label>
                             <input
@@ -368,9 +370,7 @@ export const ProductionRunForm = ({ onClose }: ProductionRunFormProps) => {
                             />
                         </div>
                         <div>
-                            <label
-                                className={`${labelBaseStyle} text-orange-400/80`}
-                            >
+                            <label className={`${labelBaseStyle} text-warning`}>
                                 Falloff
                             </label>
                             <input

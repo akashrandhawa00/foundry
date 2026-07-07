@@ -19,9 +19,9 @@ const colors = {
     tooltipBg: "var(--color-neutral-900)",
     tooltipBorder: "var(--color-neutral-700)",
     tooltipHoverBg: "var(--color-white)",
-    morning: "var(--color-emerald-500",
-    afternoon: "var(--color-sky-500",
-    midnight: "var(--color-rose-400",
+    morning: "#2a9d8f",
+    afternoon: "#e9c46a",
+    midnight: "var(--color-rose-400)",
 };
 
 export const overViewCardStyle =
