@@ -35,6 +35,8 @@ export const LoginPage = () => {
         setEmail(DEMO_EMAIL);
         setPassword(DEMO_PASSWORD);
 
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
         const { error: signInError } = await signInWithEmail(
             DEMO_EMAIL,
             DEMO_PASSWORD,
