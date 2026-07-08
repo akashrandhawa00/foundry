@@ -28,6 +28,26 @@ export const LoginPage = () => {
         navigate("/", { replace: true });
     };
 
+    const handleDemoLogin = async () => {
+        const DEMO_EMAIL = "user@foundry.com";
+        const DEMO_PASSWORD = "123456";
+
+        setEmail(DEMO_EMAIL);
+        setPassword(DEMO_PASSWORD);
+
+        const { error: signInError } = await signInWithEmail(
+            DEMO_EMAIL,
+            DEMO_PASSWORD,
+        );
+        if (signInError) {
+            setError(signInError);
+            setInputError(true);
+            return;
+        }
+
+        navigate("/", { replace: true });
+    };
+
     const labelBaseStyle = "mb-2 inline-block text-sm mb-1.5 text-text-label";
     const inputBaseStyle =
         "w-full rounded-lg outline-none px-4 py-3 border bg-surface focus:border-brand text-sm";
@@ -119,6 +139,14 @@ export const LoginPage = () => {
                                     }}
                                 />
                             </div>
+                            <Button
+                                type="button"
+                                variant="primary"
+                                onClick={handleDemoLogin}
+                                className={`w-full py-2 mt-4 font-medium rounded tansition duration-200 cursor-pointer`}
+                            >
+                                Demo Account
+                            </Button>
 
                             <Button
                                 type="submit"

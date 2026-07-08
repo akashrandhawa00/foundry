@@ -25,10 +25,10 @@ const colors = {
 };
 
 export const overViewCardStyle =
-    "rounded-lg bg-neutral-900 border border-neutral-800 p-5";
+    "rounded-lg bg-neutral-900 border border-neutral-800 px-4 py-5 md:p-5";
 
 export const cardHeadingStyle =
-    "border-l-4 text-sm border-brand px-2 text-neutral-400 uppercase font-mono my-2";
+    "border-l-4 text-xs md:text-sm border-brand px-2 text-neutral-400 uppercase font-mono my-2";
 
 function KpiCard({
     label,
@@ -56,7 +56,11 @@ function ShiftOutputChart({ data }: { data: DashboardMetrics["shift_trend"] }) {
     return (
         <div className={`${overViewCardStyle}`}>
             <h3 className={cardHeadingStyle}>Output by Shift — This Week</h3>
-            <ResponsiveContainer width="100%" height={220}>
+            <ResponsiveContainer
+                className="-ml-4 md:ml-0 pt-3"
+                width="100%"
+                height={220}
+            >
                 <BarChart data={data}>
                     <CartesianGrid
                         stroke="#262626"
@@ -116,7 +120,11 @@ function YieldTrendChart({ data }: { data: DashboardMetrics["trend"] }) {
     return (
         <div className={`${overViewCardStyle}`}>
             <h3 className={cardHeadingStyle}>Yield — Last 30 Days</h3>
-            <ResponsiveContainer width="100%" height={220}>
+            <ResponsiveContainer
+                className="-ml-4 md:ml-0 pt-3"
+                width="100%"
+                height={220}
+            >
                 <LineChart data={data}>
                     <CartesianGrid
                         stroke="#262626"
